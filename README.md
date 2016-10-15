@@ -22,11 +22,23 @@ respresents given SLP. Its complexity is tied to size of the result.
 
 ## Requirements
 
+* C++ compiler
+  * g++ version 5.4
 * [cmake](https://cmake.org/download/)
+  * version 2.8
 * [boost](http://www.boost.org/)
+  * version 1.58.0
 * flex/bison ([windows](https://sourceforge.net/projects/winflexbison/))
 
 ## Build & Run
+
+    $ git clone ...
+    $ cd slp-poly
+    $ mkdir build
+    $ cd build
+    $ BOOST_ROOT=<Path to Boost> cmake .
+    $ make
+    $ src/slp-poly
 
 ### Windows
 

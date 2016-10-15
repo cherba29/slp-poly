@@ -1,4 +1,17 @@
-cmake_minimum_required(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 PROJECT(slp-poly)
 
-add_executable(slp-poly main.cpp)
+ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
+
+FIND_PACKAGE(Boost COMPONENTS system thread log REQUIRED)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
+
+ADD_EXECUTABLE(slp-poly main.cpp)
+
+TARGET_LINK_LIBRARIES(slp-poly ${Boost_LIBRARIES} )
+
+MESSAGE(STATUS)
+MESSAGE(STATUS "Boost Version = ${Boost_VERSION}")
+MESSAGE(STATUS "Boost Include = ${Boost_INCLUDE_DIRS}")
+MESSAGE(STATUS "Boost Libs = ${Boost_LIBRARIES}")
