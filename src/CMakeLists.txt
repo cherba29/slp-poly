@@ -7,7 +7,7 @@ FIND_PACKAGE(Boost COMPONENTS system thread log REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
-ADD_EXECUTABLE(slp-poly main.cpp)
+ADD_EXECUTABLE(slp-poly main.cpp util/log.cpp)
 
 TARGET_LINK_LIBRARIES(slp-poly ${Boost_LIBRARIES} )
 
