@@ -1,6 +1,9 @@
 .vscode/
 build/
 
+# Generated files.
+src/platform/Platform.cpp
+
 # Compiled Object files
 *.slo
 *.lo
