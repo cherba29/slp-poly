@@ -1,0 +1,3 @@
+[submodule "third_party/cppenum"]
+	path = third_party/cppenum
+	url = https://github.com/cherba29/cppenum
