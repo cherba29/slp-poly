@@ -1,0 +1,43 @@
+---
+name: ReturnValue
+documentation: Task return values
+namespaces:
+default: UNKNOWN
+data_type: int
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: SUCCESS
+    documentation: Task terminated without any errors
+    display: "Success"
+    id: 0
+  - name: BAD_CMD_LINE_OPTION
+    documentation: Bad command line
+    display: "Bad Command Line"
+    id: 1
+  - name: DID_NOT_RUN
+    documentation: Failed to run
+    display: "Failed to run"
+    id: 2
+  - name: PARSE_ERROR
+    documentation: Input file parse error
+    display: "Parse Error"
+    id: 3
+  - name: FILE_ALREADY_EXISTS
+    documentation: Output file already exists
+    display: "File already exists"
+    id: 5
+  - name: OUT_FILE_OPEN_ERROR
+    documentation: Could not create output file
+    display: "Output file open error"
+    id: 6
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 7
+  - name: NA
+    documention: Non applicable option 
+    display: "Not Applicable"
+    id: 8                                  
+...  

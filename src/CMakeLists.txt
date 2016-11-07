@@ -50,7 +50,25 @@ FIND_PACKAGE(Boost COMPONENTS system thread log REQUIRED)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 LINK_DIRECTORIES(${Boost_LIBRARY_DIRS})
 
-ADD_EXECUTABLE(slp-poly main.cpp util/log.cpp platform/Platform.cpp)
+MACRO(GENERATE_ENUM _enum_name)
+  ADD_CUSTOM_COMMAND(
+      OUTPUT ${_enum_name}.cpp ${_enum_name}.h ${_enum_name}.t.cpp 
+      COMMAND python ${CMAKE_SOURCE_DIR}/third_party/cppenum/cppenum/gen.py --config ${CMAKE_CURRENT_SOURCE_DIR}/${_enum_name}.yaml --output_dir ${CMAKE_CURRENT_BINARY_DIR}
+      DEPENDS ${_enum_name}.yaml
+      COMMENT "Generating c++ enum ${_enum_name}")
+  INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+ENDMACRO()
+
+GENERATE_ENUM(ReturnValue)
+
+ADD_EXECUTABLE(slp-poly
+    main.cpp
+    ReturnValue.h
+    ReturnValue.cpp
+    platform/Platform.h
+    platform/Platform.cpp
+    util/log.h
+    util/log.cpp)
 
 TARGET_LINK_LIBRARIES(slp-poly ${Boost_LIBRARIES} )
 

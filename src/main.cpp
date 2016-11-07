@@ -20,6 +20,7 @@
 
 #include <iostream>
 
+#include "ReturnValue.h"
 #include "util/log.h"
 #include "platform/Platform.h"
 
@@ -47,5 +48,5 @@ int main(int argc, char* argv[]) {
   LERR_ << "Error Message.";
   LFTL_ << "Fatal Message.";
 
-  return 0;
+  return ReturnValue::SUCCESS;
 }
