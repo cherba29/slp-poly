@@ -1,8 +1,6 @@
 .vscode/
 build/
-
-# Generated files.
-src/platform/Platform.cpp
+bazel-*
 
 # Compiled Object files
 *.slo

@@ -56,7 +56,7 @@ public:
   static const char* getCompilerFlags();
 
   static const char* getCompileDate();
-  static const char* getCompileTime();
+  static int64_t getBuildTime();
 };
 
 #endif  // SLP_POLY_PLATFORM_H_
