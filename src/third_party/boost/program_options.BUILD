@@ -19,7 +19,7 @@ cc_library(
         "//external:boost-type_traits",
         "//external:boost-iterator",
         "//external:boost-function",
-        #    "//external:boost-lexical_cast",
+        "//external:boost-lexical_cast",
         "//external:boost-smart_ptr",
         "//external:boost-tokenizer",
     ],

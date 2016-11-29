@@ -1,0 +1,50 @@
+---
+name: LogTagEnum
+documentation: Logging line element tags
+namespaces:
+  - logging
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: INDEX
+    documentation: Log line index 
+    display: INDEX
+    id: 1
+  - name: THREAD_ID
+    documentation: Log line thread id
+    display: THREAD_ID
+    id: 2
+  - name: TIME
+    documentation: Log line time
+    display: TIME
+    id: 3
+  - name: MODULE
+    documentation: Log line module name
+    display: MODULE
+    id: 4
+  - name: LEVEL
+    documentation: Log line log level
+    display: LEVEL
+    id: 5
+  - name: FUNCTION
+    documentation: Log line function name
+    display: FUNCTION
+    id: 6
+  - name: FILELINE
+    documentation: Log line filename and line number
+    display: FILELINE
+    id: 7
+    
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 100
+  - name: NA
+    documentation: Non applicable option 
+    display: "Not Applicable"
+    id: 101                                  
+...  
+

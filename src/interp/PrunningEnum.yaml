@@ -1,0 +1,36 @@
+---
+name: PrunningEnum
+documentation: Prunning Choices 
+namespaces:
+  - interp
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: NONE
+    documentation: No pruning
+    display: none
+    value: none
+    id: 1
+  - name: ORIG_ORDER
+    documentation: As in the input
+    display: declared
+    value: declared
+    id: 2
+  - name: MAX_LAST
+    documentation: Maximum degree last
+    display: max_last
+    value: max_last
+    id: 3
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 7
+  - name: NA
+    documention: Non applicable option 
+    display: "Not Applicable"
+    id: 8                                  
+...  
+

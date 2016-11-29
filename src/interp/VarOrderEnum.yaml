@@ -1,0 +1,51 @@
+---
+name: VarOrderEnum
+documentation: Interpolation variable order
+namespaces:
+  - interp
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: ORIGINAL
+    documentation: Original variable order as in input
+    display: declared
+    value: declared
+    id: 1
+  - name: PREDICT_NUM_EVAL_POINTS
+    documentation: Predicted number of evaluations
+    display: evalpts
+    value: evalpts
+    id: 2
+  - name: MAX_DEGREE
+    documentation: Maximum degree first
+    display: maxdeg
+    value: maxdeg
+    id: 3
+  - name: MIN_DEGREE
+    documentation: Minimum degree first
+    display: mindeg
+    value: mindeg
+    id: 4
+  - name: MAX_TERMS
+    documentation: Maximum number of terms first
+    display: maxterms
+    value: maxterms
+    id: 5
+  - name: MIN_TERMS
+    documentation: Minimum number of terms first
+    display: minterms
+    value: minterms
+    id: 6
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 7
+  - name: NA
+    documention: Non applicable option 
+    display: "Not Applicable"
+    id: 8                                  
+...  
+

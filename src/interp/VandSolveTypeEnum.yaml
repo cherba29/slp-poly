@@ -1,0 +1,36 @@
+---
+name: VandSolveTypeEnum
+documentation: Type of Vandermonde Solver
+namespaces:
+  - interp
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: QUAD
+    documentation: Quadratic solver
+    display: QuadVandermonde
+    id: 1
+    value: quad
+  - name: FFT
+    documentation: FFT solver
+    display: FFTVandermonde
+    id: 2
+    value: fft
+  - name: BEST
+    documentation: Predict which one is better solver
+    display: BestVandermonde
+    id: 3
+    value: adapt
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 10
+  - name: NA
+    documentation: Non applicable option 
+    display: "Not Applicable"
+    id: 11                                  
+...  
+

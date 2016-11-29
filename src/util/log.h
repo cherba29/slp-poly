@@ -19,6 +19,10 @@
  * limitations under the License.
  */
 
+#include "util/LogLevelEnum.h"
+#include "util/LogModuleEnum.h"
+#include "util/LogTagEnum.h"
+
 #include <boost/log/sources/severity_channel_logger.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
 

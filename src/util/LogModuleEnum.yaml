@@ -1,0 +1,82 @@
+---
+name: LogModuleEnum
+documentation: Possible modules to log
+namespaces:
+  - logging
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: APPLICATION
+    documentation: General catch all module
+    display: APPLICATION
+    id: 1
+  - name: CODEANNOTATION
+    documentation: Code annotation module part of eval
+    display: CODEANNOTATION
+    id: 2
+  - name: CODEGENERATOR
+    documentation: Code generator module part of eval
+    display: CODEGENERATOR
+    id: 3
+  - name: COMPLEXITY
+    documentation: Complexity equation module
+    display: COMPLEXITY
+    id: 4
+  - name: EVALUATOR
+    documentation: Evaluator module
+    display: EVALUATOR
+    id: 5
+  - name: ESTIMATOR
+    documentation: Estimator module
+    display: ESTIMATOR
+    id: 6
+  - name: INSTRUCTIONMAXDEGREE
+    documentation: Instruction degree estimator
+    display: INSTRUCTIONMAXDEGREE
+    id: 7
+  - name: LOGGER
+    documentation: Logger module
+    display: LOGGER
+    id: 8
+  - name: MAIN
+    documentation: Mainly main function
+    display: MAIN
+    id: 9
+  - name: OPERATION
+    documentation: Operation module
+    display: OPERATION
+    id: 10
+  - name: PARSER
+    documentation: Parser module
+    display: PARSER
+    id: 11
+  - name: RUN
+    documentation: Run module
+    display: RUN
+    id: 12
+  - name: VANDERMONDE
+    documentation: Vandermonde
+    display: VANDERMONDE
+    id: 13
+  - name: INTERPOLATOR
+    documentation: Interpolator module
+    display: INTERPOLATOR
+    id: 14
+  - name: INTERPCONTEXT
+    documentation: Context module
+    display: INTERPCONTEXT
+    id: 15
+    
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 100
+  - name: NA
+    documentation: Non applicable option 
+    display: "Not Applicable"
+    id: 101                                  
+...  
+

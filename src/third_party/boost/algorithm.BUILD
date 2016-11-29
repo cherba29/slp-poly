@@ -12,6 +12,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//external:boost-function",
         "//external:boost-iterator",
         "//external:boost-range",
     ],

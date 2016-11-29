@@ -10,6 +10,7 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//external:boost-core",
         "//external:boost-detail",
         "//external:boost-mpl",
         "//external:boost-static_assert",

@@ -1,0 +1,71 @@
+---
+name: LogLevelEnum
+documentation: Possible modules to log
+namespaces:
+  - logging
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: ALL
+    documentation: Most verbose level 
+    display: ALL
+    id: 1
+    value: all
+  - name: TRACE
+    documentation: Trace level messages
+    display: TRACE
+    id: 2
+    value: trace
+  - name: DEBUG
+    documentation: Debug level messages
+    display: DEBUG
+    id: 3
+    value: debug
+  - name: INFO2
+    documentation: Application level most detailed info messages
+    display: INFO2
+    id: 4
+    value: inf2
+  - name: INFO1
+    documentation: Application level more detailed info messages
+    display: INFO1
+    id: 5
+    value: inf1
+  - name: INFO
+    documentation: Application level info messages
+    display: INFO
+    id: 6
+    value: info
+  - name: WARNING
+    documentation: Warning messages
+    display: WARNING
+    id: 7
+    value: warn
+  - name: ERROR
+    documentation: Error messages
+    display: ERROR
+    id: 8
+    value: error
+  - name: FATAL
+    documentation: Fatal messages
+    display: FATAL
+    id: 9
+    value: fatal
+  - name: NONE
+    documentation: No messages of any kind
+    display: NONE
+    id: 10
+    value: none
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 100
+  - name: NA
+    documentation: Non applicable option 
+    display: "Not Applicable"
+    id: 101                                  
+...  
+

@@ -1,0 +1,118 @@
+---
+name: FieldOptionEnum
+documentation: Field option choice
+namespaces:
+  - runprofile
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: A32
+    documentation: Hardcoded Highest FFT Order Largest 32 bit prime
+    ifdef: FIELD_A32
+    display: A32
+    value: A32
+    id: 1
+  - name: B32
+    documentation: Hardcoded Second Highest FFT Order Largest 32 bit prime
+    ifdef: FIELD_B32
+    display: B32
+    value: B32
+    id: 2
+  - name: C32
+    documentation: Hardcoded Third Highest FFT Order Largest 32 bit prime
+    ifdef: FIELD_C32
+    display: C32
+    value: C32
+    id: 3
+  - name: AB32
+    documentation: Hardcoded Composite field made of A32 and B32 primes
+    ifdef: FIELD_AB32
+    display: AB32
+    value: AB32
+    id: 4
+  - name: AC32
+    documentation: Hardcoded Composite field made of A32 and C32 primes
+    ifdef: FIELD_AC32
+    display: AC32
+    value: AC32
+    id: 5
+  - name: BC32
+    documentation: Hardcoded Composite field made of B32 and C32 primes
+    ifdef: FIELD_BC32
+    display: BC32
+    value: BC32
+    id: 6
+  - name: DYNAMIC32
+    documentation: Runtime chosen single 32-bit prime
+    ifdef: FIELD_DYNAMIC32
+    display: DYNAMIC32
+    value: DYNAMIC32
+    id: 7
+  - name: CRT32
+    documentation: Runtime chosen multiple 32-bit primes
+    ifdef: FIELD_CRT32
+    display: CRT32
+    value: CRT32
+    id: 8
+  - name: A64
+    ifdef: FIELD_A64
+    documentation: Hardcoded Highest FFT Order Largest 64 bit prime
+    display: A64
+    value: A64
+    id: 11
+  - name: B64
+    ifdef: FIELD_B64
+    documentation: Hardcoded Second Highest FFT Order Largest 64 bit prime
+    display: B64
+    value: B64
+    id: 12
+  - name: C64
+    ifdef: FIELD_C64
+    documentation: Hardcoded Third Highest FFT Order Largest 64 bit prime
+    display: C64
+    value: C64
+    id: 13
+  - name: AB64
+    ifdef: FIELD_AB64
+    documentation: Hardcoded Composite field made of A64 and B64 primes
+    display: AB64
+    value: AB64
+    id: 14
+  - name: AC64
+    ifdef: FIELD_AC64
+    documentation: Hardcoded Composite field made of A64 and C64 primes
+    display: AC64
+    value: AC64
+    id: 15
+  - name: BC64
+    ifdef: FIELD_BC64
+    documentation: Hardcoded Composite field made of B64 and C64 primes
+    display: BC64
+    value: BC64
+    id: 16
+  - name: DYNAMIC64
+    ifdef: FIELD_DYNAMIC64
+    documentation: Runtime chosen single 64-bit prime
+    display: DYNAMIC64
+    value: DYNAMIC64
+    id: 17
+  - name: CRT64
+    ifdef: FIELD_CRT64
+    documentation: Runtime chosen multiple 64-bit primes
+    display: CRT64
+    value: CRT64
+    id: 18
+
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 20
+  - name: NA
+    documention: Non applicable option
+    display: "Not Applicable"
+    id: 21
+...
+

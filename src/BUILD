@@ -20,6 +20,7 @@ cc_binary(
     deps = [
         ":ReturnValue",
         "//platform",
+        "//runprofile/factory:command_line",
         "//util:log",
     ],
     stamp = True,

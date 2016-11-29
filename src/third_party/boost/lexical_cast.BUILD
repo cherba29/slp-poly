@@ -12,7 +12,10 @@ cc_library(
     deps = [
         "//external:boost-array",
         "//external:boost-container",
+        "//external:boost-integer",
         "//external:boost-math",
         "//external:boost-numeric_conversion",
+        "//external:boost-range",
+        "//external:boost-throw_exception",
     ],
 )

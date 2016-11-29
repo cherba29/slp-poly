@@ -1,0 +1,37 @@
+---
+name: LevelEnum
+documentation: Possible functions
+namespaces:
+  - smart_assert
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: DEBUG
+    documentation: Debug level assertion
+    display: DEBUG
+    id: 1
+  - name: WARN
+    documentation: Warning level assertion
+    display: WARN
+    id: 2
+  - name: ERROR
+    documentation: Error assertion level
+    display: ERROR
+    id: 3
+  - name: FATAL
+    documentation: Fatal assertion level
+    display: FATAL
+    id: 4
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 10
+  - name: NA
+    documentation: Non applicable option 
+    display: "Not Applicable"
+    id: 11                                  
+...  
+

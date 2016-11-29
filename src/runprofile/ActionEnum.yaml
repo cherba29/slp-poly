@@ -1,0 +1,42 @@
+---
+name: ActionEnum
+documentation: Command line specified possible actions.
+namespaces:
+  - runprofile
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: VERSION
+    documentation: Show version
+    display: "Version"
+    id: 1
+  - name: BENCHMARK
+    documentation: Run benchmarks
+    display: "Benchmark"
+    id: 2
+  - name: MACHINE_INFO
+    documentation: Produce machine information
+    display: "Machine Info"
+    id: 3
+  - name: INTERPOLATE
+    documentation: Run interpolation
+    display: "Interpolate"
+    id: 4
+    value: 15
+  - name: HELP
+    documentation: Show help
+    display: "Help"
+    id: 5
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 6
+  - name: NA
+    documention: Non applicable option 
+    display: "Not Applicable"
+    id: 7                                  
+...  
+

@@ -1,0 +1,33 @@
+---
+name: UnivInterpEnum
+documentation: Type of Univariate interpolator  Solver
+namespaces:
+  - interp
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: NEWTON
+    documentation: Newton Quadratic solver
+    display: newton
+    id: 1
+  - name: VAND
+    documentation: Vandermonde nlog(n)^2 solver
+    display: vand
+    id: 2
+  - name: ADAPT
+    documentation: Predict which one is better solver
+    display: adapt
+    id: 3
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 10
+  - name: NA
+    documentation: Non applicable option 
+    display: "Not Applicable"
+    id: 11                                  
+...  
+

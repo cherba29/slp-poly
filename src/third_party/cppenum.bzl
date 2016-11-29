@@ -37,7 +37,7 @@ _gen_cppenum = rule(
     },
 )
 
-def gen_cppenum(enum_file):
+def gen_cppenum(enum_file, visibility=None):
   name = enum_file[:enum_file.rindex('.')]
   _gen_cppenum(
       name=name + '_genfiles',
@@ -53,6 +53,7 @@ def gen_cppenum(enum_file):
       srcs=[
           name + ".cpp",
       ],
+      visibility=visibility,
   )
 
   native.cc_test(
