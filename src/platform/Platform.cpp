@@ -18,7 +18,9 @@
  *
  */
 
+#include "BuildInfo.h"
 #include "Platform.h"
+
 #include <sstream>
 
 namespace {
@@ -100,8 +102,9 @@ const char* Platform::getCompileDate() {
   return __DATE__;
 }
 
-int64_t Platform::getBuildTime() {
-  return BUILD_TIMESTAMP;
+boost::posix_time::ptime Platform::getBuildTime() {
+  return boost::posix_time::from_time_t(
+      platform::kBuildTimestamp);
 }
 
 const char* Platform::getSite() {
@@ -121,5 +124,5 @@ const char* Platform::getCompilerFlags() {
 }
 
 const char* Platform::getCommitHash(void) {
-  return BUILD_SCM_REVISION;
+  return platform::kBuildScmRevision;
 }

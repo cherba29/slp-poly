@@ -20,6 +20,8 @@
  * limitations under the License.
  */
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 #include <string>
 
 /**
@@ -56,7 +58,7 @@ public:
   static const char* getCompilerFlags();
 
   static const char* getCompileDate();
-  static int64_t getBuildTime();
+  static boost::posix_time::ptime getBuildTime();
 };
 
 #endif  // SLP_POLY_PLATFORM_H_

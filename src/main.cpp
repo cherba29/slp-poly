@@ -26,6 +26,27 @@
 #include "runprofile/RunProfile.h"
 #include "util/log.h"
 
+void showVersion(std::ostream& os) {
+  os << "  Version "
+     << Platform::getMajorVersion() << "."
+     << Platform::getMinorVersion() << "."
+     << Platform::getBugFixVersion()
+     << " built "  << Platform::getBuildTime()
+     << " Revision " << Platform::getCommitHash()
+     << " Committed on " << Platform::getCommitDateTime() << std::endl;
+  os << "    Compiled with " << Platform::getCompilerName()
+     << " version " << Platform::getCompilerVersion() << std::endl;
+  os << "    Compile flags: " << Platform::getCompilerFlags() << std::endl
+     << std::endl;
+  os << "  Report bugs, suggestions or comments to "
+     << Platform::getSite() << std::endl
+     << std::endl;
+  os << "  " << Platform::getSite() << std::endl
+     << std::endl;
+  os << Platform::getLicenseInfo() << std::endl
+     << std::endl;
+}
+
 
 int main(int argc, char* argv[]) {
   logging::init();
@@ -66,7 +87,7 @@ int main(int argc, char* argv[]) {
         status = ReturnValue::DID_NOT_RUN;
         break;
       case runprofile::ActionEnum::VERSION:
-        //showVersion(std::cerr);
+        showVersion(std::cerr);
         status = ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::BENCHMARK:

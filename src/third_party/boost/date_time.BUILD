@@ -12,6 +12,8 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//external:boost-algorithm",
+        "//external:boost-io",
+        "//external:boost-lexical_cast",
         "//external:boost-smart_ptr",
         "//external:boost-throw_exception",
         "//external:boost-tokenizer",
