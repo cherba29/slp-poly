@@ -18,13 +18,18 @@
  * @file main.cpp Entry point for the application.
  */
 
+#include <fstream>
 #include <iostream>
 
 #include "ReturnValue.h"
 #include "platform/Platform.h"
 #include "runprofile/factory/CommandLine.h"
 #include "runprofile/RunProfile.h"
+#include "runprofile/util.h"
 #include "util/log.h"
+#include "util/MultiIndexMap.h"
+#include "util/Timer.h"
+
 
 void showVersion(std::ostream& os) {
   os << "  Version "
@@ -45,6 +50,69 @@ void showVersion(std::ostream& os) {
      << std::endl;
   os << Platform::getLicenseInfo() << std::endl
      << std::endl;
+}
+
+typedef enum {
+  FILE_OPEN = 0,
+  FILE_EXISTS = 1,
+  FILE_OPEN_ERROR = 2
+} OpenFileStatus;
+
+
+OpenFileStatus openFileForWritting(
+  std::ofstream* stream, const std::string& filename, bool newFile = true) {
+  if (newFile) {
+    // Try to open the file
+    std::ofstream ofile(filename.c_str(), std::ios::in);
+    if (!ofile.fail()) {
+      return FILE_EXISTS;
+    }
+    ofile.close();
+  }
+  stream->open(filename.c_str(), std::ios::out);
+  if (stream->fail()) {
+    // LERR_ << "Error opening file '" << filename << "' for writing.";
+    return FILE_OPEN_ERROR;
+  }
+  return FILE_OPEN;
+}
+
+
+ReturnValue saveData(
+    const util::MultiIndexMap& storage,
+    const std::string& filename,
+    bool shouldOverwrite) {
+
+  LOGGER(saveData);
+
+  // Try to open file now before computation starts
+  std::ofstream ofile;
+  OpenFileStatus status = openFileForWritting(&ofile,
+      filename, !shouldOverwrite);
+
+  switch(status) {
+    case FILE_OPEN: // ok
+      break;
+    case FILE_EXISTS:
+      LERR_ << "File '" << filename << "' already exist. "
+               "Will not overwrite unless -w option is used.";
+      return ReturnValue::FILE_ALREADY_EXISTS;
+    case FILE_OPEN_ERROR:
+      LERR_ << "Error opening file '" << filename
+            << "' for writing.";
+      return ReturnValue::OUT_FILE_OPEN_ERROR;
+    default:
+      LERR_ << "Unknown status opening file '" << filename
+            << "' for writing.";
+      return ReturnValue::UNKNOWN;
+  }
+
+  LAPP1_ << "Writing out result into file";
+  ofile << storage;  // write out all results to file
+  ofile.close();
+  LAPP_ << "Done.";
+
+  return ReturnValue::SUCCESS;
 }
 
 
@@ -81,6 +149,25 @@ int main(int argc, char* argv[]) {
     //       << Platform::getBugReportEmail();
     LAPP2_ << " Project site: " << Platform::getSite();
 
+    util::MultiIndexMap m;
+
+    m << *profile;
+
+    m["tool"]["name"] = Platform::getApplicationName();
+    m["tool"]["description"] = Platform::getApplicationDescription();
+    m["tool"]["version"]["major"] = Platform::getMajorVersion();
+    m["tool"]["version"]["minor"] = Platform::getMinorVersion();
+    m["tool"]["version"]["subminor"] = Platform::getBugFixVersion();
+    m["tool"]["version"]["subminor"] = Platform::getBugFixVersion();
+    m["tool"]["build"]["commit_hash"] = Platform::getCommitHash();
+    m["tool"]["build"]["date"] = Platform::getCompileDate();
+    m["tool"]["build"]["compiler"]["name"] = Platform::getCompilerName();
+    m["tool"]["build"]["compiler"]["version"] = Platform::getCompilerVersion();
+    m["tool"]["build"]["compiler"]["flags"] = Platform::getCompilerFlags();
+    m["tool"]["site"] = Platform::getSite();
+    m["tool"]["license"] = Platform::getLicenseInfo();
+
+    m["execution"]["start"] = util::getCurrentTimeString();
     switch (profile->getAction().getId()) {
       case runprofile::ActionEnum::HELP:
         std::cerr << profile->getOptionDescription() << std::endl;
@@ -105,6 +192,11 @@ int main(int argc, char* argv[]) {
       default:
         throw std::logic_error("Unknown/unimplemented action");
     }
+
+    m["execution"]["status"] = status.toString();
+    m["execution"]["end"] = util::getCurrentTimeString();
+
+    saveData(m, profile->getOutputFileName(), profile->isOverwrite());
 
   } catch (const std::exception& e) {
     LERR_ << e.what() << std::endl;

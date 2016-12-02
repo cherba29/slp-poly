@@ -44,3 +44,18 @@ cc_library(
         "//runprofile/factory:__pkg__",
     ],
 )
+
+cc_library(
+    name = "util",
+    hdrs = [
+        "util.h",
+    ],
+    deps = [
+        ":runprofile",
+        "//util:log",
+        "//util:multi_index_map",
+    ],
+    visibility = [
+        "//:__pkg__",
+    ],
+)

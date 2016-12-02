@@ -10,5 +10,6 @@ cc_library(
     ],
     visibility = ["//visibility:public"],
     deps = [
+        "//external:boost-type_index",
     ],
 )

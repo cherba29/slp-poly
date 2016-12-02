@@ -20,8 +20,11 @@ cc_binary(
     deps = [
         ":ReturnValue",
         "//platform",
+        "//runprofile:util",
         "//runprofile/factory:command_line",
         "//util:log",
+        "//util:multi_index_map",
+        "//util:timer",
     ],
     stamp = True,
 )
