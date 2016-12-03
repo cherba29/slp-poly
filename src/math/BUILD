@@ -7,7 +7,14 @@ cc_library(
     deps = [
         "//external:boost-static_assert",
     ],
-    visibility = ["//runprofile:__pkg__",]
+    visibility = [
+        "//complexity:__pkg__",
+        "//math/fft:__pkg__",
+        "//run:__pkg__",
+        "//runprofile:__pkg__",
+        "//operation/field:__pkg__",
+        "//operation/vandermonde:__pkg__",
+    ]
 )
 
 cc_test(

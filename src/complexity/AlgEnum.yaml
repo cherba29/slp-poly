@@ -1,0 +1,73 @@
+---
+name: AlgEnum
+documentation: Interpolation variable order
+namespaces:
+  - complexity
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: VAND_QUAD_SETUP
+    documentation: Vandermonde matrix quadratic alg setup
+    display: VandQuadSetup
+    value: VandQuadSetup
+    id: 1
+  - name: VAND_QUAD_SOLVE
+    documentation: Vandermonde matrix quadratic algorithm solve
+    display: VandQuandSolve
+    value: VandQuandSolve
+    id: 2
+  - name: VAND_FFT_SETUP
+    documentation: Vandermonde matrix fft alg setup
+    display: VandFFTSetup
+    value: VandFFTSetup
+    id: 4
+  - name: VAND_FFT_SOLVE
+    documentation: Vandermonde matrix fft algorithm solve
+    display: VandFFTSolve
+    value: VandFFTSolve
+    id: 5
+  - name: EVAL
+    documentation: Evaluator
+    display: Eval
+    value: Eval
+    id: 6
+  - name: FIELD_ADD
+    documentation: Field add
+    display: FieldAdd
+    value: FieldAdd
+    id: 7
+  - name: FIELD_SUB
+    documentation: Field subtract
+    display: FieldSub
+    value: FieldSub
+    id: 8
+  - name: FIELD_MUL
+    documentation: Field multiply
+    display: FieldMul
+    value: FieldMul
+    id: 9
+  - name: FIELD_DIV
+    documentation: Field divide
+    display: FieldDiv
+    value: FieldDiv
+    id: 10
+  - name: FIELD_INV
+    documentation: Field inverse
+    display: FieldInv
+    value: FieldInv
+    id: 11
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: Unknown
+    value: Unknown
+    id: 101
+  - name: NA
+    documentation: Non applicable option 
+    display: Not Applicable
+    value: NA
+    id: 102                                
+...  
+

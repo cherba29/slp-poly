@@ -23,6 +23,7 @@
 
 #include "ReturnValue.h"
 #include "platform/Platform.h"
+#include "run/FieldBenchmarks.h"
 #include "runprofile/factory/CommandLine.h"
 #include "runprofile/RunProfile.h"
 #include "runprofile/util.h"
@@ -75,6 +76,25 @@ OpenFileStatus openFileForWritting(
     return FILE_OPEN_ERROR;
   }
   return FILE_OPEN;
+}
+
+int runMachineInfo(
+    const runprofile::RunProfile& /* profile */,
+    util::MultiIndexMap* /* mmap */) {
+
+  return 1;
+}
+
+
+int runBenchmark(
+    const runprofile::RunProfile& /* profile */, util::MultiIndexMap* mmap) {
+
+  run::FieldBenchmarks fb;
+
+  LAPP1_ << "Measuring speed of Field operations: ";
+  fb.run(&((*mmap)["benchmark"]["field"]));
+
+  return 0;
 }
 
 
@@ -187,12 +207,12 @@ int main(int argc, char* argv[]) {
         status = ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::BENCHMARK:
-        //status = (0 == runBenchmark(*profile, &m))
-        //    ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
+        status = (0 == runBenchmark(*profile, &m))
+            ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::MACHINE_INFO:
-        //status = (0 == runMachineInfo(*profile, &m))
-        //    ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
+        status = (0 == runMachineInfo(*profile, &m))
+            ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::INTERPOLATE:
         //status = (0 == runInterpolation(*profile, &m))
