@@ -16,6 +16,7 @@ RunProfile::RunProfile()
   for (int i = 0; i < logging::LogModuleEnum::NUM_ENUMS; ++i) {
     logLevel_[i] = logging::LogLevelEnum::WARNING;
   }
+  logLevel_[logging::LogModuleEnum::APPLICATION] = logging::LogLevelEnum::INFO2;
 }
 
 RunProfile::~RunProfile() {

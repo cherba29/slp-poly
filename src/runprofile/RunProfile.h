@@ -6,10 +6,14 @@
  */
 
 #include "runprofile/ActionEnum.h"
-#include "util/log.h"
+#include "util/LogLevelEnum.h"
+#include "util/LogModuleEnum.h"
+#include "util/LogTagEnum.h"
+
+#include <boost/optional.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include <string>
-#include <boost/optional.hpp>
 
 
 namespace runprofile {

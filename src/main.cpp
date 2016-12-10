@@ -26,9 +26,11 @@
 #include "runprofile/factory/CommandLine.h"
 #include "runprofile/RunProfile.h"
 #include "runprofile/util.h"
-#include "util/log.h"
 #include "util/MultiIndexMap.h"
 #include "util/Timer.h"
+
+#define LOG_MODULE ::logging::LogModuleEnum::MAIN
+#include "util/log.h"
 
 
 void showVersion(std::ostream& os) {
@@ -83,7 +85,7 @@ ReturnValue saveData(
     const std::string& filename,
     bool shouldOverwrite) {
 
-  LOGGER(saveData);
+  LOGGER;
 
   // Try to open file now before computation starts
   std::ofstream ofile;
@@ -117,9 +119,11 @@ ReturnValue saveData(
 
 
 int main(int argc, char* argv[]) {
-  logging::init();
+  // Initialize default logging.
+  // The sink can be reconfigured later depending on command line arguments.
+  boost::shared_ptr<logging::sink_t> log_sink = logging::init();
 
-  LOGGER(main);
+  LOGGER;
 
   std::cout << Platform::getApplicationName()
             << " - " << Platform::getApplicationDescription();
@@ -135,7 +139,18 @@ int main(int argc, char* argv[]) {
     std::unique_ptr<runprofile::RunProfile> profile
         = runprofile::factory::CommandLine::getRunProfile(argc,argv);
 
-    // TODO: set logging based on specified runprofile.
+    // Set logging level for each module
+    std::vector<
+      std::pair<logging::LogModuleEnum, logging::LogLevelEnum>
+    > moduleLogLevels;
+    for (int i = 0; i < logging::LogModuleEnum::NUM_ENUMS; i++) {
+      moduleLogLevels.push_back(std::make_pair(
+        logging::LogModuleEnum(i),
+        profile->getLogLevel(logging::LogModuleEnum(i))
+      ));
+    }
+    logging::setModuleLogLevels(log_sink, moduleLogLevels);
+    logging::setLogTags(log_sink, profile->getLogTags());
 
     LAPP1_ << "Run profile:" << std::endl << *profile;
  
@@ -196,7 +211,9 @@ int main(int argc, char* argv[]) {
     m["execution"]["status"] = status.toString();
     m["execution"]["end"] = util::getCurrentTimeString();
 
-    saveData(m, profile->getOutputFileName(), profile->isOverwrite());
+    if (profile->getOutputFileName().size() > 0) {
+      saveData(m, profile->getOutputFileName(), profile->isOverwrite());
+    }
 
   } catch (const std::exception& e) {
     LERR_ << e.what() << std::endl;

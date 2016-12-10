@@ -18,55 +18,49 @@
 
 #include "log.h"
 
+#include "util/LogTagEnum.h"
+#include "util/LogModuleEnum.h"
+
 #include <ostream>
 #include <fstream>
 
 #include <boost/core/null_deleter.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/log/attributes/current_thread_id.hpp>
+#include <boost/log/attributes/named_scope.hpp>
 #include <boost/log/core.hpp>
+#include <boost/log/expressions.hpp>
 #include <boost/log/sinks/sync_frontend.hpp>
 #include <boost/log/sinks/text_ostream_backend.hpp>
 #include <boost/log/utility/setup/common_attributes.hpp>
+#include <boost/log/utility/setup/formatter_parser.hpp>
 
 
 BOOST_LOG_ATTRIBUTE_KEYWORD(line_id, "LineID", unsigned int)
-BOOST_LOG_ATTRIBUTE_KEYWORD(severity, "Severity", logging::severity_level)
-BOOST_LOG_ATTRIBUTE_KEYWORD(channel, "Channel", std::string)
+BOOST_LOG_ATTRIBUTE_KEYWORD(severity, "Severity", logging::LogLevelEnum)
+BOOST_LOG_ATTRIBUTE_KEYWORD(channel, "Channel", logging::LogModuleEnum)
 BOOST_LOG_ATTRIBUTE_KEYWORD(timestamp, "Timestamp", boost::posix_time::ptime)
+BOOST_LOG_ATTRIBUTE_KEYWORD(
+    thread_id, "ThreadID",
+    boost::log::attributes::current_thread_id::value_type)
+BOOST_LOG_ATTRIBUTE_KEYWORD(
+    scope, "Scope", boost::log::attributes::named_scope::value_type)
+
 
 namespace logging {
 
-std::ostream& operator<< (std::ostream& strm, severity_level level) {
-  static const char* strings[] = {
-      "T ",  // trace
-      "D ",  // debug
-      "I2",  // info
-      "I1",  // info
-      "I ",  // info
-      "A2",  // app
-      "A1",  // app
-      "A ",  // app
-      "W ",  // warning
-      "E ",  // error
-      "F "   // fatal 
-  };
-
-  if (static_cast<std::size_t>(level) < sizeof(strings) / sizeof(*strings)) {
-    strm << strings[level];
-  } else {
-    strm << static_cast<int>(level);
-  }
-  return strm;
-}
-
-
-void log_formatter(boost::log::record_view const& rec,
-                  boost::log::formatting_ostream& strm) {
-    strm << rec[line_id] << " ";
+void log_formatter(const boost::log::record_view& rec,
+                   boost::log::formatting_ostream& strm) {
+    boost::log::value_ref<unsigned int, tag::line_id> line_id_ref
+        = rec[line_id];
+    if (line_id_ref) {
+      strm << line_id_ref.get() << " ";
+    }
     strm << rec[severity] << " ";
     strm << rec[timestamp] << " ";
     strm << rec[channel] << " ";
+    strm << rec[scope] << " ";
 
     boost::log::value_ref<std::string> fullpath
         = boost::log::extract<std::string>("File", rec);
@@ -78,23 +72,133 @@ void log_formatter(boost::log::record_view const& rec,
 }
 
 
-void init() {
-  typedef boost::log::sinks::synchronous_sink<
-      boost::log::sinks::text_ostream_backend> text_sink;
-  boost::shared_ptr<text_sink> sink = boost::make_shared<text_sink>();
+bool log_filter(const boost::log::attribute_value_set& attr_set) {
+  return attr_set[severity] > LogLevelEnum::DEBUG;
+}
 
+boost::shared_ptr<sink_t> init() {
+  boost::shared_ptr<sink_t> sink = boost::make_shared<sink_t>();
+
+  // Log to stderr. 
   boost::shared_ptr<std::ostream> stream(&std::clog, boost::null_deleter());
   sink->locked_backend()->add_stream(stream);
 
+  boost::log::register_simple_formatter_factory<
+      LogLevelEnum, char>(severity.get_name());
+  boost::log::register_simple_formatter_factory<
+      LogModuleEnum, char>(channel.get_name());
+
   sink->set_formatter(&log_formatter);
+  sink->set_filter(&log_filter);
 
   boost::shared_ptr<boost::log::core> core = boost::log::core::get();
   core->add_sink(sink);
 
-  core->add_global_attribute(
-      line_id.get_name(), boost::log::attributes::counter<unsigned int>(1));
-  core->add_global_attribute(
-      timestamp.get_name(), boost::log::attributes::local_clock());
+  return sink;
+}
+
+
+void setModuleLogLevels(
+    boost::shared_ptr<sink_t>& sink,
+    const std::vector<std::pair<logging::LogModuleEnum,logging::LogLevelEnum> >& moduleLevels) {
+
+  typedef boost::log::expressions::channel_severity_filter_actor
+      <logging::LogModuleEnum, logging::LogLevelEnum> min_severity_filter;
+  min_severity_filter min_severity
+      = boost::log::expressions::channel_severity_filter(channel, severity);
+
+  // Set minimum default logging level for each module.
+  //for (unsigned int i = 0; i < logging::LogModuleEnum::NUM_ENUMS; ++i) {
+  //  min_severity[logging::LogModuleEnum(i)] = logging::LogLevelEnum::ALL;
+  //}
+
+  for (unsigned int i = 0; i < moduleLevels.size(); ++i) {
+    min_severity[moduleLevels[i].first] = moduleLevels[i].second;
+  }
+
+  sink->set_filter(min_severity);
+}
+
+void setLogTags(
+    boost::shared_ptr<sink_t>& sink,
+    const std::vector<logging::LogTagEnum>& tags) {
+ 
+  boost::shared_ptr<boost::log::core> core = boost::log::core::get();
+
+  std::ostringstream oss;
+  for (size_t i = 0; i < tags.size(); ++i) {
+    switch(tags[i].getId()) {
+      case LogTagEnum::INDEX: {
+        if (i && tags[i-1]==logging::LogTagEnum::THREAD_ID) {
+          oss << ".";
+        }
+        oss << "[%" << line_id.get_name() << "%] ";
+      } break;
+      case LogTagEnum::THREAD_ID: {
+        oss << "T%" << thread_id.get_name() << "% ";
+      } break;
+      case LogTagEnum::TIME: {
+        oss << "%" << timestamp.get_name() << "% ";
+      } break;
+      case LogTagEnum::MODULE: {
+        oss << "%" << channel.get_name() << "%";
+      } break;
+      case LogTagEnum::LEVEL: {
+        if (i && tags[i-1]==logging::LogTagEnum::MODULE) {
+          oss << "-";
+        }
+        oss << "%" << severity.get_name() << "% ";
+      } break;
+      case LogTagEnum::FUNCTION: {
+        oss << "%" << "File" << "% ";
+      } break;
+      case LogTagEnum::FILELINE: {
+        oss << "%" << "Line" << "% ";
+      } break;
+      default:
+        std::cerr << "Bad tag specification " << tags[i] << std::endl;
+        break;
+    }
+  }
+  oss << " %Message%";
+
+  boost::log::basic_formatter<char> formatter = boost::log::parse_formatter(
+      oss.str());
+  sink->set_formatter(formatter);
+
+  // Select attributes based on specified tags.
+  for (size_t i = 0; i < tags.size(); ++i) {
+
+    switch(tags[i].getId()) {
+      case LogTagEnum::INDEX: {
+        core->add_global_attribute(
+            line_id.get_name(),
+            boost::log::attributes::counter<unsigned int>(1));
+      } break;
+      case LogTagEnum::THREAD_ID: {
+        core->add_global_attribute(
+            thread_id.get_name(), boost::log::attributes::current_thread_id());
+
+      } break;
+      case LogTagEnum::TIME: {
+        core->add_global_attribute(
+            timestamp.get_name(), boost::log::attributes::local_clock());
+      } break;
+      case LogTagEnum::MODULE: {
+      } break;
+      case LogTagEnum::LEVEL: {
+      } break;
+      case LogTagEnum::FUNCTION: {
+        core->add_global_attribute(
+            scope.get_name(), boost::log::attributes::named_scope());
+      } break;
+      case LogTagEnum::FILELINE: {
+      } break;
+      default:
+        std::cerr << "Bad tag specification " << tags[i] << std::endl;
+        break;
+    }
+  }
 }
 
 }  // namespace logging

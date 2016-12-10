@@ -23,51 +23,58 @@
 #include "util/LogModuleEnum.h"
 #include "util/LogTagEnum.h"
 
+#include <boost/log/sinks/sync_frontend.hpp>
+#include <boost/log/sinks/text_ostream_backend.hpp>
 #include <boost/log/sources/severity_channel_logger.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
 
 
-#define LOGGER_(log_,sv) BOOST_LOG_SEV(log_, sv) \
-  << boost::log::add_value("Line", __LINE__)     \
-  << boost::log::add_value("File", __FILE__)     \
-  << boost::log::add_value("Function", BOOST_CURRENT_FUNCTION)
+#define LOGGER_(log_,module,sv) \
+  BOOST_LOG_CHANNEL_SEV(log_, module, sv) \
+    << boost::log::add_value("Line", __LINE__)     \
+    << boost::log::add_value("File", __FILE__)     \
+    << boost::log::add_value("Function", BOOST_CURRENT_FUNCTION)
 
-#define LTRC_  LOGGER_(lg_, logging::trace)
-#define LDBG_  LOGGER_(lg_, logging::debug)
-#define LINF_  LOGGER_(lg_, logging::info)
-#define LINF1_ LOGGER_(lg_, logging::info1)
-#define LINF2_ LOGGER_(lg_, logging::info2)
-#define LAPP_  LOGGER_(lg_, logging::app)
-#define LAPP1_ LOGGER_(lg_, logging::app1)
-#define LAPP2_ LOGGER_(lg_, logging::app2)
-#define LWRN_  LOGGER_(lg_, logging::warning)
-#define LERR_  LOGGER_(lg_, logging::error)
-#define LFTL_  LOGGER_(lg_, logging::fatal)
+#define LTRC_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::TRACE)
+#define LDBG_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::DEBUG)
+#define LINF_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::INFO)
+#define LINF1_ LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::INFO1)
+#define LINF2_ LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::INFO2)
+#define LAPP_  LOGGER_(lg_, ::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO)
+#define LAPP1_ LOGGER_(lg_, ::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO1)
+#define LAPP2_ LOGGER_(lg_, ::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO2)
+#define LWRN_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::WARNING)
+#define LERR_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::ERROR)
+#define LFTL_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::FATAL)
 
 namespace logging {
 
-enum severity_level {
-   trace,
-   debug,
-   info2,
-   info1,
-   info,
-   app2,
-   app1,
-   app,
-   warning,
-   error,
-   fatal
-};
-
 typedef boost::log::sources::severity_channel_logger<
-    severity_level, std::string> logger_type;
+    LogLevelEnum, LogModuleEnum> logger_type;
 
-void init();
+typedef boost::log::sinks::synchronous_sink<
+    boost::log::sinks::text_ostream_backend> sink_t;
+
+boost::shared_ptr<sink_t> init();
+
+/**
+ * @brief Set log level for each module in the list
+ */
+void setModuleLogLevels(
+    boost::shared_ptr<sink_t>& sink,
+    const std::vector<std::pair<LogModuleEnum,LogLevelEnum> >& moduleLevels);
+
+/**
+ * @brief Specify which tags to show on each log line
+ * @see LogTagEnum
+ */
+void setLogTags(
+    boost::shared_ptr<sink_t>& sink,
+    const std::vector<LogTagEnum>& tags);
 
 }  // namespace logging
 
-#define LOGGER(c) logging::logger_type lg_(boost::log::keywords::channel = #c);
+#define LOGGER logging::logger_type lg_
 
 #endif  // SLP_POLY_UTIL_LOG_H 
 
