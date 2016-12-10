@@ -25,27 +25,28 @@
 
 #include <boost/log/sinks/sync_frontend.hpp>
 #include <boost/log/sinks/text_ostream_backend.hpp>
+#include <boost/log/sources/global_logger_storage.hpp>
 #include <boost/log/sources/severity_channel_logger.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
 
 
-#define LOGGER_(log_,module,sv) \
-  BOOST_LOG_CHANNEL_SEV(log_, module, sv) \
+#define LOGGER_(module,sv) \
+  BOOST_LOG_CHANNEL_SEV(slp_global_logger::get(), module, sv) \
     << boost::log::add_value("Line", __LINE__)     \
     << boost::log::add_value("File", __FILE__)     \
     << boost::log::add_value("Function", BOOST_CURRENT_FUNCTION)
 
-#define LTRC_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::TRACE)
-#define LDBG_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::DEBUG)
-#define LINF_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::INFO)
-#define LINF1_ LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::INFO1)
-#define LINF2_ LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::INFO2)
-#define LAPP_  LOGGER_(lg_, ::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO)
-#define LAPP1_ LOGGER_(lg_, ::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO1)
-#define LAPP2_ LOGGER_(lg_, ::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO2)
-#define LWRN_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::WARNING)
-#define LERR_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::ERROR)
-#define LFTL_  LOGGER_(lg_, LOG_MODULE, logging::LogLevelEnum::FATAL)
+#define LTRC_  LOGGER_(LOG_MODULE, logging::LogLevelEnum::TRACE)
+#define LDBG_  LOGGER_(LOG_MODULE, logging::LogLevelEnum::DEBUG)
+#define LINF_  LOGGER_(LOG_MODULE, logging::LogLevelEnum::INFO)
+#define LINF1_ LOGGER_(LOG_MODULE, logging::LogLevelEnum::INFO1)
+#define LINF2_ LOGGER_(LOG_MODULE, logging::LogLevelEnum::INFO2)
+#define LAPP_  LOGGER_(::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO)
+#define LAPP1_ LOGGER_(::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO1)
+#define LAPP2_ LOGGER_(::logging::LogModuleEnum::APPLICATION, logging::LogLevelEnum::INFO2)
+#define LWRN_  LOGGER_(LOG_MODULE, logging::LogLevelEnum::WARNING)
+#define LERR_  LOGGER_(LOG_MODULE, logging::LogLevelEnum::ERROR)
+#define LFTL_  LOGGER_(LOG_MODULE, logging::LogLevelEnum::FATAL)
 
 namespace logging {
 
@@ -74,7 +75,7 @@ void setLogTags(
 
 }  // namespace logging
 
-#define LOGGER logging::logger_type lg_
+BOOST_LOG_INLINE_GLOBAL_LOGGER_DEFAULT(slp_global_logger, logging::logger_type)
 
 #endif  // SLP_POLY_UTIL_LOG_H 
 

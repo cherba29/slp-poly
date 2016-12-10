@@ -50,8 +50,6 @@ void showVersion(std::ostream& os) {
      << std::endl;
   os << "  " << Platform::getSite() << std::endl
      << std::endl;
-  os << Platform::getLicenseInfo() << std::endl
-     << std::endl;
 }
 
 typedef enum {
@@ -84,8 +82,6 @@ ReturnValue saveData(
     const util::MultiIndexMap& storage,
     const std::string& filename,
     bool shouldOverwrite) {
-
-  LOGGER;
 
   // Try to open file now before computation starts
   std::ofstream ofile;
@@ -122,8 +118,6 @@ int main(int argc, char* argv[]) {
   // Initialize default logging.
   // The sink can be reconfigured later depending on command line arguments.
   boost::shared_ptr<logging::sink_t> log_sink = logging::init();
-
-  LOGGER;
 
   std::cout << Platform::getApplicationName()
             << " - " << Platform::getApplicationDescription();

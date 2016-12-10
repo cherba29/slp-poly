@@ -220,7 +220,7 @@ std::unique_ptr<RunProfile> CommandLine::getRunProfile(
         "  error - \t Only show severe problems.\n"
         "  fatal - \t Fatal errors.\n"
         "  none - \tNo tracing not even errors.")
-    ("log-tags", po::value<std::string>(&logTags)->default_value("itm"),
+    ("log-tags", po::value<std::string>(&logTags)->default_value("itml"),
         "Show various tags in the log\n"
         "i -\t Incrementing index (first default)\n"
         "t -\t Running timer (second default)\n"
