@@ -9,6 +9,7 @@ cc_binary(
     ],
     deps = [
         ":ReturnValue",
+        "//context/maple:parser",
         "//platform",
         "//run:field_benchmarks",
         "//runprofile:util",

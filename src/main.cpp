@@ -22,6 +22,8 @@
 #include <iostream>
 
 #include "ReturnValue.h"
+
+#include "context/maple/Driver.h"
 #include "platform/Platform.h"
 #include "run/FieldBenchmarks.h"
 #include "runprofile/factory/CommandLine.h"
@@ -93,6 +95,65 @@ int runBenchmark(
 
   LAPP1_ << "Measuring speed of Field operations: ";
   fb.run(&((*mmap)["benchmark"]["field"]));
+
+  return 0;
+}
+
+
+int runInterpolation(
+    const runprofile::RunProfile& profile, util::MultiIndexMap* mmap) {
+
+  boost::shared_ptr<runprofile::InterpProfile const> iprof
+      = profile.getInterpProfile();
+
+  if (!iprof) {
+    LERR_ << "No interpolation profile is defined.";
+    return ReturnValue::DID_NOT_RUN;
+  }
+
+  util::MultiIndexMap& m = *mmap;
+
+  LAPP1_ << "Parsing input file '" << profile.getInputFileName() << "' ...";
+
+  // Parse maple input file into context
+  boost::shared_ptr<context::InterpContext> ctxtPtr(
+      new context::InterpContext());
+  maple::Driver parseDriver;
+  //parseDriver.setDebugScanner(true);
+  //parseDriver.setDebugParser(true);
+
+  boost::timer tm;
+  if (!parseDriver.parse_file(profile.getInputFileName(), ctxtPtr)) {
+    LERR_ << "Could not parse input file: " << profile.getInputFileName();
+    return ReturnValue::PARSE_ERROR;
+  }
+  m["input"]["parsetime"] = tm.elapsed();
+
+  LAPP1_ << "Done parsing. Got " << ctxtPtr->getNumberOfStatements()
+         << " statements to execute.";
+
+  m["input"]["problem"]["numberofstatements"] = ctxtPtr->getNumberOfStatements();
+
+  LAPP1_ << "Total nVars "
+         << ctxtPtr->getNumberOfVariables()
+         << " variables to interpolate.";
+
+  int nVars = ctxtPtr->getNumberOfVariables();
+  m["input"]["problem"]["variable"]["total"] = nVars ;
+  std::ostringstream varsStr;
+  for (int i = 0; i < nVars; ++i) {
+    const std::string varName = ctxtPtr->getVarName(i);
+    m["input"]["problem"]["variable"]["list"] += varName;
+    if (i) {
+      varsStr << ",";
+    }
+    varsStr << varName;
+  }
+  LAPP1_ << "Variables " << varsStr.str();
+
+  //run::Interpolation interp(iprof);
+
+  //interp.run(ctxtPtr, &(m["interpolation"]));
 
   return 0;
 }
@@ -215,8 +276,8 @@ int main(int argc, char* argv[]) {
             ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::INTERPOLATE:
-        //status = (0 == runInterpolation(*profile, &m))
-        //    ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
+        status = (0 == runInterpolation(*profile, &m))
+            ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
         break;
       default:
         throw std::logic_error("Unknown/unimplemented action");

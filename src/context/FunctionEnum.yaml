@@ -1,0 +1,25 @@
+---
+name: FunctionEnum
+documentation: Possible functions
+namespaces:
+  - context
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: DET
+    documentation: Determinant function
+    display: "det"
+    id: 1
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 10
+  - name: NA
+    documentation: Non applicable option
+    display: "Not Applicable"
+    id: 11
+...
+

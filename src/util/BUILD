@@ -35,6 +35,8 @@ cc_library(
     visibility = [
         "//:__pkg__",
         "//complexity:__pkg__",
+        "//context:__pkg__",
+        "//context/maple:__pkg__",
         "//math/fft:__pkg__",
         "//runprofile:__pkg__",
         "//run:__pkg__",
@@ -78,6 +80,7 @@ cc_library(
         "//external:boost-lexical_cast",
     ],
     visibility = [
+        "//context:__pkg__",
         "//math/fft:__pkg__",
         "//math/vandermonde:__pkg__",
         "//runprofile:__pkg__",
