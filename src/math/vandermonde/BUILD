@@ -2,7 +2,10 @@ cc_library(
     name = "solver",
     hdrs = [
         "Solver.h",
-    ]
+    ],
+    visibility = [
+        "//interp:__pkg__",
+    ],
 )
 
 cc_library(
@@ -17,6 +20,7 @@ cc_library(
         "//util:smart_assert",
     ],
     visibility = [
+        "//interp:__pkg__",
         "//operation/vandermonde:__pkg__",
     ],
 )
@@ -31,6 +35,7 @@ cc_library(
         ":solver",
     ],
     visibility = [
+        "//interp:__pkg__",
         "//operation/vandermonde:__pkg__",
     ],
 )

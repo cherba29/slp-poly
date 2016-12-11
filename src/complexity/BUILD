@@ -3,6 +3,7 @@ load("//third_party:cppenum.bzl", "gen_cppenum")
 gen_cppenum(
     enum_file="AlgEnum.yaml",
     visibility = [
+        "//interp:__pkg__",
         "//run:__pkg__",
     ],
 )
@@ -20,6 +21,7 @@ cc_library(
     ],
     visibility = [
         "//run:__pkg__",
+        "//operation/eval:__pkg__",
         "//operation/field:__pkg__",
         "//operation/vandermonde:__pkg__",
     ],
@@ -60,6 +62,7 @@ cc_library(
         "//external:boost-timer",
     ],
     visibility = [
+        "//interp:__pkg__",
         "//run:__pkg__",
     ],
 )
@@ -71,6 +74,22 @@ cc_test(
     ],
     deps = [
         ":perf",
+    ],
+)
+
+cc_library(
+    name = "perf_alg",
+    hdrs = [
+        "PerfAlg.h",
+    ],
+    srcs = [
+    ],
+    deps = [
+        ":perf",
+        "//util:log",
+    ],
+    visibility = [
+        "//interp:__pkg__",
     ],
 )
 
@@ -90,6 +109,7 @@ cc_library(
     ],
     visibility = [
         "//run:__pkg__",
+        "//operation/eval:__pkg__",
         "//operation/field:__pkg__",
         "//operation/vandermonde:__pkg__",
     ],

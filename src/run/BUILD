@@ -20,3 +20,24 @@ cc_library(
         "//:__pkg__",
     ]
 )
+
+cc_library(
+    name = "interpolation",
+    hdrs = [
+        "Interpolation.h",
+    ],
+    srcs = [
+        "Interpolation.cpp",
+    ],
+    deps = [
+        "//eval/util:instruction_counter",
+        "//interp:interpolator",
+        "//runprofile",
+        "//operation/eval:benchmark",
+        "//operation/vandermonde:benchmark",
+        "//util:multi_index_map",
+    ],
+    visibility = [
+        "//:__pkg__",
+    ],
+)

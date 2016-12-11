@@ -41,6 +41,7 @@ cc_library(
     ],
     visibility = [
         "//:__pkg__",
+        "//run:__pkg__",
         "//runprofile/factory:__pkg__",
     ],
 )

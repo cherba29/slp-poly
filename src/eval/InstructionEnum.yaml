@@ -1,0 +1,101 @@
+---
+name: InstructionEnum
+documentation: Instructions
+namespaces:
+  - eval
+default: UNKNOWN
+data_type: string
+options:
+  inline: false
+  test_driver: false
+items:
+  - name: ADD
+    documentation: Add two values
+    display: "ADD"
+    id: 1
+  - name: ADDC
+    documentation: Add value and a constant
+    display: "ADDC"
+    id: 2
+  - name: ADDTO
+    documentation: Add to existing value same as +=
+    display: "ADDTO"
+    id: 3
+  - name: NEG
+    documentation: Negate given value
+    display: "NEG"
+    id: 4
+  - name: SUB
+    documentation: Subtract two values
+    display: "SUB"
+    id: 5
+  - name: SUBC
+    documentation: Subtract constant from value
+    display: "SUBC"
+    id: 6
+  - name: SUBFROM
+    documentation: Subtract from existing value same as -=
+    display: "SUBFROM"
+    id: 7
+  - name: MUL
+    documentation: Multiply two values
+    display: MUL
+    id: 8
+  - name: MULC
+    documentation: Multiply value by constant value
+    display: MULC
+    id: 9
+  - name: MULBY
+    documentation: Multiply existing value same as *=
+    display: MULBY
+    id: 10
+  - name: DIV
+    documentation: Divide two values
+    display: DUV
+    id: 11
+  - name: DIVC
+    documentation: Divide value by constant value
+    display: DIVC
+    id: 12
+  - name: DIVBY
+    documentation: Divide existing value same as /=
+    display: DIVBY
+    id: 13
+  - name: POW
+    documentation: Power value by positive integer constant
+    display: POW
+    id: 14
+  - name: DET
+    documentation: Compute determinant of given matrix and its size
+    display: DET
+    id: 15
+  - name: DET2P
+    documentation: Compute determinant of given matrix whose capacity is power of 2
+    display: DET2P
+    id: 16
+  - name: SET
+    documentation: Set value to given constant
+    display: SET
+    id: 17
+  - name: SETM
+    documentation: Set values to given constant
+    display: SETM
+    id: 18
+  - name: SETM2P
+    documentation: Set memory with capacity of power of 2 to a constant
+    display: SETM2P
+    id: 19
+  - name: COPY
+    documentation: Copy one value to other
+    display: COPY
+    id: 20
+  - name: UNKNOWN
+    documentation: Default non-selection option
+    display: "Unknown"
+    id: 100
+  - name: NA
+    documention: Non applicable option
+    display: "Not Applicable"
+    id: 101
+...
+

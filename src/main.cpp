@@ -26,6 +26,7 @@
 #include "context/maple/Driver.h"
 #include "platform/Platform.h"
 #include "run/FieldBenchmarks.h"
+#include "run/Interpolation.h"
 #include "runprofile/factory/CommandLine.h"
 #include "runprofile/RunProfile.h"
 #include "runprofile/util.h"
@@ -151,9 +152,9 @@ int runInterpolation(
   }
   LAPP1_ << "Variables " << varsStr.str();
 
-  //run::Interpolation interp(iprof);
+  run::Interpolation interp(iprof);
 
-  //interp.run(ctxtPtr, &(m["interpolation"]));
+  interp.run(ctxtPtr, &(m["interpolation"]));
 
   return 0;
 }

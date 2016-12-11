@@ -1,0 +1,40 @@
+cc_library(
+    name = "prime",
+    hdrs = [
+        "prime.h",
+    ],
+    srcs = [
+        "prime.cpp",
+    ],
+    deps = [
+        ":modular-x86",
+        ":random",
+        "//math:base",
+        "//external:boost-config",
+    ],
+    visibility = [
+        "//interp:__pkg__",
+    ],
+)    
+
+cc_library(
+    name = "random",
+    hdrs = [
+        "random.h",
+    ],
+    deps = [
+        "//external:boost-random",
+    ],
+)    
+
+cc_library(
+    name = "modular-x86",
+    hdrs = [
+        "modular-x86.h",
+    ],
+    deps = [
+        "//math:base",
+        "//external:boost-smart_ptr",
+        "//util:smart_assert",
+    ],
+)    

@@ -12,6 +12,7 @@ cc_binary(
         "//context/maple:parser",
         "//platform",
         "//run:field_benchmarks",
+        "//run:interpolation",
         "//runprofile:util",
         "//runprofile/factory:command_line",
         "//util:log",

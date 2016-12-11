@@ -100,6 +100,7 @@ cc_library(
         "//util:log",
     ],
     visibility = [
+        "//eval:__pkg__",
         "//context/maple:__pkg__",
     ],
 )
@@ -159,6 +160,9 @@ cc_library(
     ],
     deps = [
         ":context",
+    ],
+    visibility = [
+        "//eval:__pkg__",
     ],
 )
 
