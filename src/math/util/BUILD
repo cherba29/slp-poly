@@ -25,6 +25,9 @@ cc_library(
     deps = [
         "//external:boost-random",
     ],
+    visibility = [
+        "//math/field:__pkg__",
+    ],
 )    
 
 cc_library(
@@ -36,5 +39,21 @@ cc_library(
         "//math:base",
         "//external:boost-smart_ptr",
         "//util:smart_assert",
+    ],
+    visibility = [
+        "//math/field:__pkg__",
+    ],
+)
+
+cc_library(
+    name = "static",
+    hdrs = [
+        "static.h",
+    ],
+    deps = [
+        "//external:boost-static_assert",
+    ],
+    visibility = [
+        "//math/field:__pkg__",
     ],
 )    

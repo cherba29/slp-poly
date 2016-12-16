@@ -74,6 +74,7 @@ cc_test(
     ],
     deps = [
         ":perf",
+        "//complexity:AlgEnum",
     ],
 )
 

@@ -1,0 +1,4 @@
+# Define set of fields to compile code for.
+build --copt=-DFIELD_A32
+
+

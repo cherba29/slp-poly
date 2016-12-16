@@ -10,6 +10,7 @@ cc_library(
     visibility = [
         "//complexity:__pkg__",
         "//math/fft:__pkg__",
+        "//math/field:__pkg__",
         "//math/field/util:__pkg__",
         "//math/util:__pkg__",
         "//run:__pkg__",

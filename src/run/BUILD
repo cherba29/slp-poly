@@ -27,9 +27,12 @@ cc_library(
         "Interpolation.h",
     ],
     srcs = [
+        "A32.cpp",
         "Interpolation.cpp",
     ],
     deps = [
+        ":field_benchmarks",
+        "//math/field:field_uint",
         "//eval/util:instruction_counter",
         "//interp:interpolator",
         "//runprofile",
