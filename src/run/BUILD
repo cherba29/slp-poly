@@ -28,7 +28,11 @@ cc_library(
     ],
     srcs = [
         "A32.cpp",
+        "B32.cpp",
+        "C32.cpp",
         "A64.cpp",
+        "B64.cpp",
+        "C64.cpp",
         "Interpolation.cpp",
     ],
     deps = [

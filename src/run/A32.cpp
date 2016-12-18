@@ -2,16 +2,15 @@
 /**
  * @file A32.cpp Run interpolation using first single hardcode prime.
  *
- * $URL$
- * $Id$
  */
 
 #include "Interpolation.h"
 #include "FieldBenchmarks.h"
 
 #include "math/field/Field_uint.h"
-#include "util/SmartAssert.h"
+#include "math/util/prime.h"
 
+#include "util/SmartAssert.h"
 #include "util/log.h"
 
 #define LOG_MODULE ::logging::Module::RUN

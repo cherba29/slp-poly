@@ -2,14 +2,14 @@
 /**
  * @file A64.cpp Run interpolation using first single hardcode prime
  *
- * $URL$
- * $Id$
  */
 
 #include "Interpolation.h"
 #include "FieldBenchmarks.h"
+
 #include "math/field/Field_uint.h"
 #include "math/util/prime.h"
+
 #include "util/SmartAssert.h"
 #include "util/log.h"
 
