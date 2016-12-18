@@ -12,7 +12,10 @@ gen_cppenum(
 
 gen_cppenum(
     enum_file="VandSolveTypeEnum.yaml",
-    visibility = ["//runprofile:__pkg__",],
+    visibility = [
+        "//run:__pkg__",
+        "//runprofile:__pkg__",
+    ],
 )
 
 gen_cppenum(

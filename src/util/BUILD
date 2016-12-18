@@ -88,6 +88,7 @@ cc_library(
         "//math/fft:__pkg__",
         "//math/util:__pkg__",
         "//math/vandermonde:__pkg__",
+        "//run:__pkg__",
         "//runprofile:__pkg__",
     ]
 )

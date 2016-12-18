@@ -5,7 +5,7 @@ gen_cppenum(enum_file="ActionEnum.yaml")
 gen_cppenum(enum_file="FieldOptionEnum.yaml")
 
 cc_library(
-    name = "interpprofile",
+    name = "interp_profile",
     hdrs = [
         "InterpProfile.h",
     ],
@@ -22,7 +22,10 @@ cc_library(
         "//util:smart_assert",
         "//external:boost-algorithm",
         "//external:boost-optional",
-    ]
+    ],
+    visibility = [
+        "//run:__pkg__",
+    ],
 )
 
 cc_library(
@@ -35,13 +38,12 @@ cc_library(
     ],
     deps = [
         ":ActionEnum",
-        ":interpprofile",
+        ":interp_profile",
         "//external:boost-optional",
         "//util:log",
     ],
     visibility = [
         "//:__pkg__",
-        "//run:__pkg__",
         "//runprofile/factory:__pkg__",
     ],
 )

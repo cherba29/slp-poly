@@ -28,6 +28,7 @@ cc_library(
     ],
     visibility = [
         "//math/field:__pkg__",
+        "//run:__pkg__",
     ],
 )    
 
