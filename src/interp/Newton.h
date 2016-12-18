@@ -31,7 +31,7 @@ void newton(unsigned int maxdeg, const F* x, const F* y, F* f) {
   F fVal;
   F mult;
   // Allocate coefficient array on the stack.
-#if _MSC_VER
+#if _MSC_VER || defined __clang__
   F* q = static_cast<F*>(alloca(sizeof(F) * (maxdeg + 1)));
 #else
   F q[maxdeg + 1];
@@ -67,7 +67,7 @@ newtonInterpolateUnivariateEvaluator(
     unsigned int maxdeg, const std::string& varName, E& evaluator) {
   unsigned int nTerms = maxdeg+1;
   // Use stack allocation for these arrays.
-#if _MSC_VER
+#if _MSC_VER || defined __clang__
   F* xPoints = static_cast<F*>(alloca(sizeof(F) * nTerms));
   F* yPoints = static_cast<F*>(alloca(sizeof(F) * nTerms));
   F* coeffs = static_cast<F*>(alloca(sizeof(F) * nTerms));

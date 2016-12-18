@@ -28,11 +28,13 @@ cc_library(
     ],
     srcs = [
         "A32.cpp",
+        "A64.cpp",
         "Interpolation.cpp",
     ],
     deps = [
         ":field_benchmarks",
         "//math/field:field_uint",
+        "//math/util:prime",
         "//eval/util:instruction_counter",
         "//interp:interpolator",
         "//runprofile",

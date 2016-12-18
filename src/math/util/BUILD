@@ -14,6 +14,7 @@ cc_library(
     ],
     visibility = [
         "//interp:__pkg__",
+        "//run:__pkg__",
     ],
 )    
 

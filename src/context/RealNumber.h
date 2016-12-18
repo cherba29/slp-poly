@@ -12,6 +12,9 @@ namespace context {
 class RealNumber : public Value {
 public:
   RealNumber(double val) : val_(val) { }
+  
+  double getValue() const { return val_; }
+
   virtual void accept(Processor& proc) const { proc.process(*this); }
 private:
   double val_;

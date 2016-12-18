@@ -29,6 +29,8 @@
 #include <boost/log/sources/severity_channel_logger.hpp>
 #include <boost/log/utility/manipulators/add_value.hpp>
 
+#include <vector>
+
 
 #define LOGGER_(module,sv) \
   BOOST_LOG_CHANNEL_SEV(slp_global_logger::get(), module, sv) \

@@ -293,7 +293,7 @@ void Field_uint<UIntType,MOD>::add(Field_uint<UIntType,MOD>* dest,
                                    const Field_uint<UIntType,MOD>* src2, int n) {
   Field_uint<UIntType,MOD>* last = dest + n;
 	for (; dest != last; ++dest, ++src1, ++src2) {
-    dest->val_ = MOD - src1.val_;
+    dest->val_ = MOD - src1->val_;
 	  if (dest->val_ > src2->val_) {
 		  dest->val_ -= src2->val_;
 		  dest->val_ = MOD - dest->val_;
