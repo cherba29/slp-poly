@@ -2,9 +2,15 @@
 build --copt=-DFIELD_A32
 build --copt=-DFIELD_B32
 build --copt=-DFIELD_C32
+build --copt=-DFIELD_AB32
+build --copt=-DFIELD_AC32
+build --copt=-DFIELD_BC32
 build --copt=-DFIELD_A64
 build --copt=-DFIELD_B64
 build --copt=-DFIELD_C64
+build --copt=-DFIELD_AB64
+build --copt=-DFIELD_AC64
+build --copt=-DFIELD_BC64
 
 # clang built binary core dumps.
 # build --client_env=CC=clang
