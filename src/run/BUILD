@@ -39,10 +39,13 @@ cc_library(
         "AB64.cpp",
         "AC64.cpp",
         "BC64.cpp",
+        "Dynamic32.cpp",
+        "Dynamic64.cpp",
         "Interpolation.cpp",
     ],
     deps = [
         ":field_benchmarks",
+        "//math/field:field",
         "//math/field:field_uint",
         "//math/field:field_uint2x",
         "//math/util:prime",

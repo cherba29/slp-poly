@@ -1,4 +1,22 @@
 cc_library(
+    name = "field",
+    hdrs = [
+        "Field.h",
+        "Field-Impl.h",
+    ],
+    deps = [
+        "//math:base",
+        "//math/util:modular-x86",
+        "//math/util:random",
+        "//math/util:static",
+    ],
+    visibility = [
+        "//run:__pkg__",
+    ],
+
+)
+
+cc_library(
     name = "field_uint",
     hdrs = [
         "Field_uint.h",
