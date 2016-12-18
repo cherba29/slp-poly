@@ -57,6 +57,7 @@ cc_library(
         ":AB32",
         ":AC32",
         ":BC32",
+        ":CRT32",
         ":Dynamic32",
         ":A64",
         ":B64",
@@ -64,6 +65,7 @@ cc_library(
         ":AB64",
         ":AC64",
         ":BC64",
+        ":CRT64",
         ":Dynamic64",
     ],
     visibility = [
@@ -143,6 +145,19 @@ cc_library(
         ":field_benchmarks",
         ":interpolation_def",
         "//math/field:field_uint2x",
+        "//math/util:prime",
+        "//util:log",
+        "//util:smart_assert",
+    ],
+)
+
+cc_library(
+    name = "CRT32",
+    srcs = ["CRT32.cpp"],
+    deps = [
+        ":field_benchmarks",
+        ":interpolation_def",
+        "//math/field:crt",
         "//math/util:prime",
         "//util:log",
         "//util:smart_assert",
@@ -234,6 +249,19 @@ cc_library(
         ":field_benchmarks",
         ":interpolation_def",
         "//math/field:field_uint2x",
+        "//math/util:prime",
+        "//util:log",
+        "//util:smart_assert",
+    ],
+)
+
+cc_library(
+    name = "CRT64",
+    srcs = ["CRT64.cpp"],
+    deps = [
+        ":field_benchmarks",
+        ":interpolation_def",
+        "//math/field:crt",
         "//math/util:prime",
         "//util:log",
         "//util:smart_assert",

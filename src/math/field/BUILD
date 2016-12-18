@@ -1,4 +1,20 @@
 cc_library(
+    name = "crt",
+    hdrs = [
+        "CRT.h",
+        "CRT-Impl.h",
+    ],
+    deps = [
+        "//math:base",
+        "//math/util:random",
+    ],
+    visibility = [
+        "//run:__pkg__",
+    ],
+
+)
+
+cc_library(
     name = "field",
     hdrs = [
         "Field.h",
