@@ -28,6 +28,17 @@ cc_library(
     ],
 )
 
+cc_test(
+    name = "interp_profile_test",
+    srcs = [
+        "InterpProfile.t.cpp",
+    ],
+    deps = [
+        ":interp_profile",
+        "//external:boost-test",
+    ],
+)
+
 cc_library(
     name = "runprofile",
     hdrs = [
@@ -45,6 +56,18 @@ cc_library(
     visibility = [
         "//:__pkg__",
         "//runprofile/factory:__pkg__",
+    ],
+)
+
+cc_test(
+    name = "run_profile_test",
+    srcs = [
+        "RunProfile.t.cpp",
+    ],
+    deps = [
+        ":runprofile",
+        "//runprofile/factory:command_line",
+        "//external:boost-test",
     ],
 )
 

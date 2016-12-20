@@ -24,6 +24,7 @@ cc_library(
         "include/boost/**/*",
     ]),
     copts = [
+        # http://www.boost.org/doc/libs/1_62_0/libs/test/doc/html/boost_test/adv_scenarios/static_lib_customizations/init_func.html
         "-DBOOST_TEST_ALTERNATIVE_INIT_API",
     ],
     includes = [

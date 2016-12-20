@@ -14,6 +14,8 @@ cc_library(
     ],
     visibility = [
         "//interp:__pkg__",
+        "//math:__pkg__",
+        "//math/field:__pkg__",
         "//run:__pkg__",
     ],
 )    
@@ -43,6 +45,7 @@ cc_library(
         "//util:smart_assert",
     ],
     visibility = [
+        "//math:__pkg__",
         "//math/field:__pkg__",
     ],
 )

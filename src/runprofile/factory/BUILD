@@ -14,5 +14,8 @@ cc_library(
         "//external:boost-static_assert",
         "//external:boost-type_traits",
     ],
-    visibility = ["//:__pkg__",],
+    visibility = [
+        "//:__pkg__",
+        "//runprofile:__pkg__",
+    ],
 )

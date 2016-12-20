@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <interp/Newton.h>
-#include <operation/field/setup.h>
+#include "interp/Newton.h"
+#include "operation/field/setup.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -54,3 +54,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(newton_alg, F, math::FieldTypes) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+
+bool init_unit_test() {
+  return true;
+}

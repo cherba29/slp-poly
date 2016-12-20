@@ -19,7 +19,7 @@ new_git_repository(
     name = "com_github_cherba29_cppenum",
     build_file = "third_party/cppenum.BUILD",
     remote = "https://github.com/cherba29/cppenum.git",
-    tag = "0.1.0",
+    commit = "e8bd60f2ac14266688a1aab83040d931ce43045f",
 )
 
 bind(

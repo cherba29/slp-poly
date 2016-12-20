@@ -137,3 +137,8 @@ BOOST_AUTO_TEST_CASE( multiindex_test_list2 ) {
   BOOST_CHECK( output.check_length(sizeof(expected)-1, false));
   BOOST_CHECK( output.is_equal(expected, false));
 }
+
+
+bool init_unit_test() {
+  return true;
+}

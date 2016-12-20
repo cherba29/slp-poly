@@ -21,6 +21,7 @@ cc_library(
     ],
     visibility = [
         "//interp:__pkg__",
+        "//math:__pkg__",
         "//operation/vandermonde:__pkg__",
     ],
 )
@@ -36,6 +37,7 @@ cc_library(
     ],
     visibility = [
         "//interp:__pkg__",
+        "//math:__pkg__",
         "//operation/vandermonde:__pkg__",
     ],
 )

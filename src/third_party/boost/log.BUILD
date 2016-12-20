@@ -19,7 +19,7 @@ cc_library(
         "include/",
         "src/",
     ],
-    linkopts = ["-pthread"],
+    linkopts = ["-pthread", "-lrt"],
     visibility = ["//visibility:public"],
     deps = [
         "//external:boost-align",

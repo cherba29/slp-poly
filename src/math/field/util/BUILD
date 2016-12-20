@@ -10,5 +10,6 @@ cc_library(
     visibility = [
         "//eval:__pkg__",
         "//eval/util:__pkg__",
+        "//operation/field:__pkg__",
     ],
 )

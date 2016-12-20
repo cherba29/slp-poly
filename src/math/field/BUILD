@@ -9,6 +9,24 @@ cc_library(
         "//math/util:random",
     ],
     visibility = [
+        "//operation/field:__pkg__",
+        "//run:__pkg__",
+    ],
+
+)
+
+cc_library(
+    name = "crt2",
+    hdrs = [
+        "CRT2.h",
+        "CRT2-Impl.h",
+    ],
+    deps = [
+        "//math:base",
+        "//math/util:random",
+    ],
+    visibility = [
+        "//operation/field:__pkg__",
         "//run:__pkg__",
     ],
 
@@ -24,9 +42,11 @@ cc_library(
         "//math:base",
         "//math/util:modular-x86",
         "//math/util:random",
+        "//math/util:prime",
         "//math/util:static",
     ],
     visibility = [
+        "//operation/field:__pkg__",
         "//run:__pkg__",
     ],
 
@@ -45,6 +65,7 @@ cc_library(
         "//math/util:static",
     ],
     visibility = [
+        "//operation/field:__pkg__",
         "//run:__pkg__",
     ],
 
@@ -63,6 +84,7 @@ cc_library(
         "//math/util:static",
     ],
     visibility = [
+        "//operation/field:__pkg__",
         "//run:__pkg__",
     ],
 )

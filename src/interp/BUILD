@@ -69,7 +69,11 @@ cc_library(
 cc_test(
     name = "newton_test",
     srcs = ["Newton.t.cpp"],
-    deps = [":newton",],
+    deps = [
+        ":newton",
+        "//operation/field:setup",
+        "//external:boost-test",
+    ],
 )
 
 cc_library(

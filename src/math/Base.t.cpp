@@ -1,5 +1,5 @@
-#include <math/Base.h>
-#include <operation/field/setup.h>
+#include "math/Base.h"
+#include "operation/field/setup.h"
 
 #include <boost/test/unit_test.hpp>
 
@@ -30,3 +30,8 @@ BOOST_AUTO_TEST_CASE(intlog) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+
+bool init_unit_test() {
+  return true;
+}
