@@ -1,17 +1,17 @@
 load("//third_party:cppenum.bzl", "gen_cppenum")
 
 gen_cppenum(
-    enum_file="PrunningEnum.yaml",
-    visibility = ["//runprofile:__pkg__",],
+    enum_file = "PrunningEnum.yaml",
+    visibility = ["//runprofile:__pkg__"],
 )
 
 gen_cppenum(
-    enum_file="UnivInterpEnum.yaml",
-    visibility = ["//runprofile:__pkg__",],
+    enum_file = "UnivInterpEnum.yaml",
+    visibility = ["//runprofile:__pkg__"],
 )
 
 gen_cppenum(
-    enum_file="VandSolveTypeEnum.yaml",
+    enum_file = "VandSolveTypeEnum.yaml",
     visibility = [
         "//run:__pkg__",
         "//runprofile:__pkg__",
@@ -19,26 +19,29 @@ gen_cppenum(
 )
 
 gen_cppenum(
-    enum_file="VarOrderEnum.yaml",
-    visibility = ["//runprofile:__pkg__",],
+    enum_file = "VarOrderEnum.yaml",
+    visibility = ["//runprofile:__pkg__"],
 )
 
 cc_library(
     name = "interpolator",
+    srcs = [
+        "Interpolator.cpp",
+    ],
     hdrs = [
         "Interpolator.h",
         "Interpolator-impl.h",
     ],
-    srcs = [
-        "Interpolator.cpp",
+    visibility = [
+        "//run:__pkg__",
     ],
     deps = [
         ":PrunningEnum",
         ":VarOrderEnum",
         ":newton",
         ":vand_solver_factory",
-        "//algebra:polynomial",
         "//algebra:partial_polynomial",
+        "//algebra:polynomial",
         "//complexity:perf",
         "//eval:code_generator",
         "//eval:univ_evaluator",
@@ -47,9 +50,6 @@ cc_library(
         "//math/util:prime",
         "//util:timer",
     ],
-    visibility = [
-        "//run:__pkg__",
-    ],
 )
 
 cc_library(
@@ -57,12 +57,12 @@ cc_library(
     hdrs = [
         "Newton.h",
     ],
+    visibility = [
+        "//run:__pkg__",
+    ],
     deps = [
         "//algebra:polynomial",
         "//util:log",
-    ],
-    visibility = [
-        "//run:__pkg__",
     ],
 )
 
@@ -71,19 +71,21 @@ cc_test(
     srcs = ["Newton.t.cpp"],
     deps = [
         ":newton",
-        "//operation/field:setup",
         "//external:boost-test",
+        "//operation/field:setup",
     ],
 )
 
 cc_library(
     name = "vand_solver_factory",
+    srcs = [
+        "VandSolverFactory.cpp",
+    ],
     hdrs = [
         "VandSolverFactory.h",
         "VandSolverFactory-impl.h",
     ],
-    srcs = [
-        "VandSolverFactory.cpp",
+    visibility = [
     ],
     deps = [
         ":VandSolveTypeEnum",
@@ -92,7 +94,5 @@ cc_library(
         "//math/vandermonde:fft_solver",
         "//math/vandermonde:quad_solver",
         "//math/vandermonde:solver",
-    ],
-    visibility = [
     ],
 )

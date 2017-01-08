@@ -1,33 +1,33 @@
 cc_library(
     name = "polynomial",
+    srcs = [
+        "Polynomial.cpp",
+    ],
     hdrs = [
         "Polynomial.h",
         "Polynomial-impl.h",
     ],
-    srcs = [
-        "Polynomial.cpp",
-    ],
+    visibility = ["//interp:__pkg__"],
     deps = [
     ],
-    visibility = ["//interp:__pkg__",],
 )
 
 cc_library(
     name = "partial_polynomial",
-    hdrs = [
-        "PartialPolynomial.h",
-    ],
     srcs = [
         "PartialPolynomial.cpp",
     ],
-    deps = [
-        ":polynomial",
-        "//util:smart_assert",
-        "//external:boost-function",
-        "//external:boost-smart_ptr",
+    hdrs = [
+        "PartialPolynomial.h",
     ],
     visibility = [
         "//interp:__pkg__",
+    ],
+    deps = [
+        ":polynomial",
+        "//external:boost-function",
+        "//external:boost-smart_ptr",
+        "//util:smart_assert",
     ],
 )
 

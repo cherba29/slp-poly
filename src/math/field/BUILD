@@ -4,15 +4,14 @@ cc_library(
         "CRT.h",
         "CRT-Impl.h",
     ],
-    deps = [
-        "//math:base",
-        "//math/util:random",
-    ],
     visibility = [
         "//operation/field:__pkg__",
         "//run:__pkg__",
     ],
-
+    deps = [
+        "//math:base",
+        "//math/util:random",
+    ],
 )
 
 cc_library(
@@ -21,15 +20,14 @@ cc_library(
         "CRT2.h",
         "CRT2-Impl.h",
     ],
-    deps = [
-        "//math:base",
-        "//math/util:random",
-    ],
     visibility = [
         "//operation/field:__pkg__",
         "//run:__pkg__",
     ],
-
+    deps = [
+        "//math:base",
+        "//math/util:random",
+    ],
 )
 
 cc_library(
@@ -38,18 +36,17 @@ cc_library(
         "Field.h",
         "Field-Impl.h",
     ],
-    deps = [
-        "//math:base",
-        "//math/util:modular-x86",
-        "//math/util:random",
-        "//math/util:prime",
-        "//math/util:static",
-    ],
     visibility = [
         "//operation/field:__pkg__",
         "//run:__pkg__",
     ],
-
+    deps = [
+        "//math:base",
+        "//math/util:modular-x86",
+        "//math/util:prime",
+        "//math/util:random",
+        "//math/util:static",
+    ],
 )
 
 cc_library(
@@ -58,17 +55,16 @@ cc_library(
         "Field_uint.h",
         "Field_uint-Impl.h",
     ],
+    visibility = [
+        "//operation/field:__pkg__",
+        "//run:__pkg__",
+    ],
     deps = [
         "//math:base",
         "//math/util:modular-x86",
         "//math/util:random",
         "//math/util:static",
     ],
-    visibility = [
-        "//operation/field:__pkg__",
-        "//run:__pkg__",
-    ],
-
 )
 
 cc_library(
@@ -77,15 +73,15 @@ cc_library(
         "Field_uint2x.h",
         "Field_uint2x-Impl.h",
     ],
+    visibility = [
+        "//operation/field:__pkg__",
+        "//run:__pkg__",
+    ],
     deps = [
         "//math:base",
         "//math/util:modular-x86",
         "//math/util:random",
         "//math/util:static",
-    ],
-    visibility = [
-        "//operation/field:__pkg__",
-        "//run:__pkg__",
     ],
 )
 
@@ -95,12 +91,12 @@ cc_library(
         "Field_uint2x32.h",
         "Field_uint2x32-Impl.h",
     ],
+    visibility = [
+    ],
     deps = [
         "//math:base",
         "//math/util:modular-x86",
         "//math/util:random",
         "//math/util:static",
-    ],
-    visibility = [
     ],
 )

@@ -1,10 +1,13 @@
 cc_library(
-    name="field_benchmarks",
-    hdrs=[
+    name = "field_benchmarks",
+    srcs = [
+        "FieldBenchmarks.cpp",
+    ],
+    hdrs = [
         "FieldBenchmarks.h",
     ],
-    srcs=[
-        "FieldBenchmarks.cpp",
+    visibility = [
+        "//:__pkg__",
     ],
     deps = [
         "//complexity:AlgEnum",
@@ -16,11 +19,7 @@ cc_library(
         "//operation/vandermonde:benchmark",
         "//util:multi_index_map",
     ],
-    visibility = [
-        "//:__pkg__",
-    ]
 )
-
 
 cc_library(
     name = "interpolation_def",
@@ -32,15 +31,15 @@ cc_library(
         "//complexity:perf",
         "//eval:code_generator",
         "//eval/util:instruction_counter",
+        "//external:boost-smart_ptr",
         "//interp:VandSolveTypeEnum",
         "//interp:interpolator",
-        "//operation/eval:benchmark",
-        "//operation/vandermonde:benchmark",
         "//math/util:prime",
         "//math/util:random",
+        "//operation/eval:benchmark",
+        "//operation/vandermonde:benchmark",
         "//runprofile:interp_profile",
         "//util:multi_index_map",
-        "//external:boost-smart_ptr",
     ],
 )
 
@@ -49,27 +48,27 @@ cc_library(
     srcs = [
         "Interpolation.cpp",
     ],
-    deps = [
-        ":interpolation_def",
-        ":A32",
-        ":B32",
-        ":C32",
-        ":AB32",
-        ":AC32",
-        ":BC32",
-        ":CRT32",
-        ":Dynamic32",
-        ":A64",
-        ":B64",
-        ":C64",
-        ":AB64",
-        ":AC64",
-        ":BC64",
-        ":CRT64",
-        ":Dynamic64",
-    ],
     visibility = [
         "//:__pkg__",
+    ],
+    deps = [
+        ":A32",
+        ":A64",
+        ":AB32",
+        ":AB64",
+        ":AC32",
+        ":AC64",
+        ":B32",
+        ":B64",
+        ":BC32",
+        ":BC64",
+        ":C32",
+        ":C64",
+        ":CRT32",
+        ":CRT64",
+        ":Dynamic32",
+        ":Dynamic64",
+        ":interpolation_def",
     ],
 )
 
@@ -84,7 +83,7 @@ cc_library(
         "//util:log",
         "//util:smart_assert",
     ],
-)    
+)
 
 cc_library(
     name = "B32",
@@ -97,7 +96,7 @@ cc_library(
         "//util:log",
         "//util:smart_assert",
     ],
-)    
+)
 
 cc_library(
     name = "C32",
@@ -110,7 +109,7 @@ cc_library(
         "//util:log",
         "//util:smart_assert",
     ],
-)    
+)
 
 cc_library(
     name = "AB32",
@@ -170,7 +169,7 @@ cc_library(
     deps = [
         ":field_benchmarks",
         ":interpolation_def",
-        "//math/field:field",
+        "//math/field",
         "//math/util:prime",
         "//util:log",
         "//util:smart_assert",
@@ -188,7 +187,7 @@ cc_library(
         "//util:log",
         "//util:smart_assert",
     ],
-)    
+)
 
 cc_library(
     name = "B64",
@@ -201,7 +200,7 @@ cc_library(
         "//util:log",
         "//util:smart_assert",
     ],
-)    
+)
 
 cc_library(
     name = "C64",
@@ -214,7 +213,7 @@ cc_library(
         "//util:log",
         "//util:smart_assert",
     ],
-)    
+)
 
 cc_library(
     name = "AB64",
@@ -274,7 +273,7 @@ cc_library(
     deps = [
         ":field_benchmarks",
         ":interpolation_def",
-        "//math/field:field",
+        "//math/field",
         "//math/util:prime",
         "//util:log",
         "//util:smart_assert",

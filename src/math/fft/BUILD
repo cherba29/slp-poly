@@ -1,19 +1,19 @@
 cc_library(
     name = "algorithm",
+    srcs = [
+        "algorithm.cpp",
+    ],
     hdrs = [
         "algorithm.h",
         "algorithm-impl.h",
     ],
-    srcs = [
-        "algorithm.cpp",
-    ],
-    deps = [
-        "//math:base",
-        "//external:boost-smart_ptr",
-        "//util:log",
-        "//util:smart_assert",
-    ],
     visibility = [
         "//math/vandermonde:__pkg__",
+    ],
+    deps = [
+        "//external:boost-smart_ptr",
+        "//math:base",
+        "//util:log",
+        "//util:smart_assert",
     ],
 )

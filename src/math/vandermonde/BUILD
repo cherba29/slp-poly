@@ -14,15 +14,15 @@ cc_library(
         "FFTSolver.h",
         "FFTSolver-Impl.h",
     ],
-    deps = [
-        ":solver",
-        "//math/fft:algorithm",
-        "//util:smart_assert",
-    ],
     visibility = [
         "//interp:__pkg__",
         "//math:__pkg__",
         "//operation/vandermonde:__pkg__",
+    ],
+    deps = [
+        ":solver",
+        "//math/fft:algorithm",
+        "//util:smart_assert",
     ],
 )
 
@@ -32,13 +32,12 @@ cc_library(
         "QuadSolver.h",
         "QuadSolver-Impl.h",
     ],
-    deps = [
-        ":solver",
-    ],
     visibility = [
         "//interp:__pkg__",
         "//math:__pkg__",
         "//operation/vandermonde:__pkg__",
     ],
+    deps = [
+        ":solver",
+    ],
 )
-

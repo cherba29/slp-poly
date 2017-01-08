@@ -3,14 +3,14 @@ cc_library(
     hdrs = [
         "benchmark.h",
     ],
+    visibility = [
+        "//run:__pkg__",
+    ],
     deps = [
-        "//eval:evaluator",
         "//complexity:equation",
         "//complexity:tracker",
+        "//eval:evaluator",
         "//external:boost-smart_ptr",
         "//external:boost-timer",
     ],
-    visibility = [
-        "//run:__pkg__",
-    ]
 )

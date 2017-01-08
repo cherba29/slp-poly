@@ -1,11 +1,7 @@
-
 cc_library(
     name = "base",
     hdrs = [
         "Base.h",
-    ],
-    deps = [
-        "//external:boost-static_assert",
     ],
     visibility = [
         "//complexity:__pkg__",
@@ -13,11 +9,14 @@ cc_library(
         "//math/field:__pkg__",
         "//math/field/util:__pkg__",
         "//math/util:__pkg__",
-        "//run:__pkg__",
-        "//runprofile:__pkg__",
         "//operation/field:__pkg__",
         "//operation/vandermonde:__pkg__",
-    ]
+        "//run:__pkg__",
+        "//runprofile:__pkg__",
+    ],
+    deps = [
+        "//external:boost-static_assert",
+    ],
 )
 
 cc_test(
@@ -38,9 +37,9 @@ cc_test(
         "Field.t.cpp",
     ],
     deps = [
-        "//operation/field:setup",
         "//external:boost-test",
         "//external:boost-timer",
+        "//operation/field:setup",
     ],
 )
 
@@ -50,9 +49,9 @@ cc_test(
         "modular-x86.t.cpp",
     ],
     deps = [
+        "//external:boost-test",
         "//math/util:modular-x86",
         "//math/util:prime",
-        "//external:boost-test",
     ],
 )
 
@@ -62,8 +61,8 @@ cc_test(
         "Prime.t.cpp",
     ],
     deps = [
-        "//math/util:prime",
         "//external:boost-test",
+        "//math/util:prime",
     ],
 )
 
@@ -73,9 +72,9 @@ cc_test(
         "Vandermonde.t.cpp",
     ],
     deps = [
+        "//external:boost-test",
         "//math/vandermonde:fft_solver",
         "//math/vandermonde:quad_solver",
         "//operation/field:setup",
-        "//external:boost-test",
     ],
 )

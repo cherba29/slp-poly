@@ -3,13 +3,13 @@ cc_library(
     hdrs = [
         "Field-Util.h",
     ],
-    deps = [
-        "//math:base",
-        "//external:boost-smart_ptr",
-    ],
     visibility = [
         "//eval:__pkg__",
         "//eval/util:__pkg__",
         "//operation/field:__pkg__",
+    ],
+    deps = [
+        "//external:boost-smart_ptr",
+        "//math:base",
     ],
 )

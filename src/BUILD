@@ -1,11 +1,15 @@
 load("//third_party:cppenum.bzl", "gen_cppenum")
 
-gen_cppenum(enum_file="ReturnValue.yaml")
+gen_cppenum(enum_file = "ReturnValue.yaml")
 
 cc_binary(
     name = "slp-poly",
     srcs = [
         "main.cpp",
+    ],
+    stamp = True,
+    visibility = [
+        "//try_out:__pkg__",
     ],
     deps = [
         ":ReturnValue",
@@ -18,9 +22,5 @@ cc_binary(
         "//util:log",
         "//util:multi_index_map",
         "//util:timer",
-    ],
-    stamp = True,
-    visibility = [
-        "//try_out:__pkg__",
     ],
 )

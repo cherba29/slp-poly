@@ -3,16 +3,16 @@ cc_library(
     hdrs = [
         "benchmark.h",
     ],
+    visibility = [
+        "//run:__pkg__",
+    ],
     deps = [
         "//complexity:equation",
         "//complexity:tracker",
-        "//math/vandermonde:fft_solver",
-        "//math/vandermonde:quad_solver",
         "//external:boost-smart_ptr",
         "//external:boost-timer",
         "//math:base",
+        "//math/vandermonde:fft_solver",
+        "//math/vandermonde:quad_solver",
     ],
-    visibility = [
-        "//run:__pkg__",
-    ]
 )

@@ -1,12 +1,12 @@
 cc_library(
-    name="svd",
-    hdrs=[
-        "svd.h",
-    ],
-    srcs=[
+    name = "svd",
+    srcs = [
         "svd.cpp",
+    ],
+    hdrs = [
+        "svd.h",
     ],
     visibility = [
         "//complexity:__pkg__",
-    ]
+    ],
 )

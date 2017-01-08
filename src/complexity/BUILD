@@ -1,7 +1,7 @@
 load("//third_party:cppenum.bzl", "gen_cppenum")
 
 gen_cppenum(
-    enum_file="AlgEnum.yaml",
+    enum_file = "AlgEnum.yaml",
     visibility = [
         "//interp:__pkg__",
         "//run:__pkg__",
@@ -10,60 +10,60 @@ gen_cppenum(
 
 cc_library(
     name = "equation",
-    hdrs = [
-        "Equation.h",
-    ],
     srcs = [
         "Equation.cpp",
     ],
-    deps = [
-        "//util:log",
+    hdrs = [
+        "Equation.h",
     ],
     visibility = [
-        "//run:__pkg__",
         "//operation/eval:__pkg__",
         "//operation/field:__pkg__",
         "//operation/vandermonde:__pkg__",
+        "//run:__pkg__",
+    ],
+    deps = [
+        "//util:log",
     ],
 )
 
 cc_library(
     name = "estimator",
-    hdrs = [
-        "Estimator.h",
-    ],
     srcs = [
         "Estimator.cpp",
     ],
-    deps = [
-        ":tracker",
-        "//math:base",
-        "//util:log",
-        "//external:boost-function",
-        "//external:boost-smart_ptr",
+    hdrs = [
+        "Estimator.h",
     ],
     visibility = [
         "//run:__pkg__",
+    ],
+    deps = [
+        ":tracker",
+        "//external:boost-function",
+        "//external:boost-smart_ptr",
+        "//math:base",
+        "//util:log",
     ],
 )
 
 cc_library(
     name = "perf",
-    hdrs = [
-        "Perf.h",
-    ],
     srcs = [
         "Perf.cpp",
     ],
-    deps = [
-        ":estimator",
-        ":tracker",
-        "//util:log",
-        "//external:boost-timer",
+    hdrs = [
+        "Perf.h",
     ],
     visibility = [
         "//interp:__pkg__",
         "//run:__pkg__",
+    ],
+    deps = [
+        ":estimator",
+        ":tracker",
+        "//external:boost-timer",
+        "//util:log",
     ],
 )
 
@@ -81,38 +81,38 @@ cc_test(
 
 cc_library(
     name = "perf_alg",
+    srcs = [
+    ],
     hdrs = [
         "PerfAlg.h",
     ],
-    srcs = [
+    visibility = [
+        "//interp:__pkg__",
     ],
     deps = [
         ":perf",
         "//util:log",
     ],
-    visibility = [
-        "//interp:__pkg__",
-    ],
 )
 
 cc_library(
     name = "tracker",
-    hdrs = [
-        "Tracker.h",
-    ],
     srcs = [
         "Tracker.cpp",
     ],
-    deps = [
-        ":equation",
-        "//math/numeric:svd",
-        "//external:boost-smart_ptr",
-        "//util:log",
+    hdrs = [
+        "Tracker.h",
     ],
     visibility = [
-        "//run:__pkg__",
         "//operation/eval:__pkg__",
         "//operation/field:__pkg__",
         "//operation/vandermonde:__pkg__",
+        "//run:__pkg__",
+    ],
+    deps = [
+        ":equation",
+        "//external:boost-smart_ptr",
+        "//math/numeric:svd",
+        "//util:log",
     ],
 )

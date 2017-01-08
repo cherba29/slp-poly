@@ -5,6 +5,9 @@ cc_library(
     hdrs = [
         "context.h",
     ],
+    visibility = [
+        "//context/maple:__pkg__",
+    ],
     deps = [
         ":FunctionEnum",
         ":assignment",
@@ -25,9 +28,6 @@ cc_library(
         ":table",
         ":value",
         ":value_list",
-    ],
-    visibility = [
-        "//context/maple:__pkg__",
     ],
 )
 
@@ -67,7 +67,7 @@ cc_library(
 )
 
 gen_cppenum(
-    enum_file="FunctionEnum.yaml",
+    enum_file = "FunctionEnum.yaml",
 )
 
 cc_library(
@@ -95,13 +95,13 @@ cc_library(
     hdrs = [
         "InterpContext.h",
     ],
+    visibility = [
+        "//context/maple:__pkg__",
+        "//eval:__pkg__",
+    ],
     deps = [
         ":context",
         "//util:log",
-    ],
-    visibility = [
-        "//eval:__pkg__",
-        "//context/maple:__pkg__",
     ],
 )
 
@@ -152,17 +152,17 @@ cc_library(
 
 cc_library(
     name = "printer",
-    hdrs = [
-        "Printer.h",
-    ],
     srcs = [
         "Printer.cpp",
     ],
-    deps = [
-        ":context",
+    hdrs = [
+        "Printer.h",
     ],
     visibility = [
         "//eval:__pkg__",
+    ],
+    deps = [
+        ":context",
     ],
 )
 
@@ -208,8 +208,8 @@ cc_library(
         "String.h",
     ],
     deps = [
-        ":value",
         ":processor",
+        ":value",
     ],
 )
 
@@ -234,21 +234,21 @@ cc_library(
 
 cc_library(
     name = "value",
-    hdrs = [
-        "Value.h",
-    ],
     srcs = [
         "Value.cpp",
+    ],
+    hdrs = [
+        "Value.h",
     ],
 )
 
 cc_library(
     name = "value_list",
-    hdrs = [
-        "ValueList.h",
-    ],
     srcs = [
         "ValueList.cpp",
+    ],
+    hdrs = [
+        "ValueList.h",
     ],
     deps = [
         ":value",
