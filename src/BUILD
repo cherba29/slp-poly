@@ -20,4 +20,7 @@ cc_binary(
         "//util:timer",
     ],
     stamp = True,
+    visibility = [
+        "//try_out:__pkg__",
+    ],
 )

@@ -52,22 +52,7 @@ namespace logging {
 
 void log_formatter(const boost::log::record_view& rec,
                    boost::log::formatting_ostream& strm) {
-    boost::log::value_ref<unsigned int, tag::line_id> line_id_ref
-        = rec[line_id];
-    if (line_id_ref) {
-      strm << line_id_ref.get() << " ";
-    }
     strm << rec[severity] << " ";
-    strm << rec[timestamp] << " ";
-    strm << rec[channel] << " ";
-    strm << rec[scope] << " ";
-
-    boost::log::value_ref<std::string> fullpath
-        = boost::log::extract<std::string>("File", rec);
-    strm << boost::filesystem::path(fullpath.get()).filename().string() << ":";
-
-    strm << boost::log::extract<int>("Line", rec) << " ";
-
     strm << rec[boost::log::expressions::smessage];
 }
 
@@ -106,11 +91,6 @@ void setModuleLogLevels(
       <logging::LogModuleEnum, logging::LogLevelEnum> min_severity_filter;
   min_severity_filter min_severity
       = boost::log::expressions::channel_severity_filter(channel, severity);
-
-  // Set minimum default logging level for each module.
-  //for (unsigned int i = 0; i < logging::LogModuleEnum::NUM_ENUMS; ++i) {
-  //  min_severity[logging::LogModuleEnum(i)] = logging::LogLevelEnum::ALL;
-  //}
 
   for (unsigned int i = 0; i < moduleLevels.size(); ++i) {
     min_severity[moduleLevels[i].first] = moduleLevels[i].second;

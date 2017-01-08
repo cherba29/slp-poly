@@ -297,17 +297,5 @@ int main(int argc, char* argv[]) {
   }
   // catch (...) { } // comment out to core dump on unexpected exceptions
 
-  LTRC_ << "Trace message.";
-  LDBG_ << "Debug message.";
-  LINF2_ << "Info2 Message.";
-  LINF1_ << "Info1 Message.";
-  LINF_ << "Info Message.";
-  LAPP2_ << "App2 Message.";
-  LAPP1_ << "App2 Message.";
-  LAPP_ << "App Message.";
-  LWRN_ << "Warning Message.";
-  LERR_ << "Error Message.";
-  LFTL_ << "Fatal Message.";
-
   return status.getId();
 }
