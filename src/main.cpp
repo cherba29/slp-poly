@@ -47,12 +47,8 @@ void showVersion(std::ostream& os) {
      << " Committed on " << Platform::getCommitDateTime() << std::endl;
   os << "    Compiled with " << Platform::getCompilerName()
      << " version " << Platform::getCompilerVersion() << std::endl;
-  os << "    Compile flags: " << Platform::getCompilerFlags() << std::endl
-     << std::endl;
   os << "  Report bugs, suggestions or comments to "
      << Platform::getSite() << std::endl
-     << std::endl;
-  os << "  " << Platform::getSite() << std::endl
      << std::endl;
 }
 
@@ -205,7 +201,6 @@ int main(int argc, char* argv[]) {
             << " - " << Platform::getApplicationDescription();
   std::cout << " Version " << Platform::getVersionStr()
             << " Commit " << Platform::getCommitHash()
-            << " " << Platform::getBuildType()
             << std::endl << std::endl;
 
   ReturnValue status = ReturnValue::UNKNOWN;

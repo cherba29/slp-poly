@@ -44,7 +44,7 @@ class SlpPolyTest(unittest.TestCase):
     self.assertMatches(
         stdout,
         '^slp-poly - Polynomial Interpolator \(slp-poly\) Version ' 
-        '[0-9]\.[0-9]\.[0-9] Commit [a-z0-9] RelWithDebInfo\n\n$')
+        '[0-9]\.[0-9]\.[0-9] Commit [a-z0-9]\n\n$')
     self.assertMultiLineEqual(
         '\n'.join([
             'ERROR At least one of the options',
@@ -65,7 +65,7 @@ class SlpPolyTest(unittest.TestCase):
     self.assertMatches(
         stdout,
         '^slp-poly - Polynomial Interpolator \(slp-poly\) Version ' 
-        '[0-9]\.[0-9]\.[0-9] Commit [a-z0-9] RelWithDebInfo\n\n$')
+        '[0-9]\.[0-9]\.[0-9] Commit [a-z0-9]\n\n$')
     self.assertMultiLineEqual("""\
 Allowed options:
 
@@ -113,6 +113,22 @@ General Options:
 
 """,
         stderr)
+
+  def testVersionFlag(self):
+    returncode, stdout, stderr = self.Run('--version')
+    self.assertEqual(0, returncode)
+    self.assertMatches(
+        stdout,
+        '^slp-poly - Polynomial Interpolator \(slp-poly\) Version ' 
+        '[0-9]\.[0-9]\.[0-9] Commit [a-z0-9]\n\n$')
+    self.assertMatches(
+        stderr,
+        '^  Version [0-9]\.[0-9]\.[0-9] built ' 
+        '[0-9]{4}-[A-z][a-z]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} '
+        'Revision 0 Committed on \n'
+        '    Compiled with GCC compiler version [^\n]+\n'
+        '  Report bugs, suggestions or comments to https://github.com/cherba29/slp-poly\n'
+        '\n$')
 
 if __name__ == '__main__':
   unittest.main()
