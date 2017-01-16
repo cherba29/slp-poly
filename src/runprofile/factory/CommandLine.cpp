@@ -233,7 +233,7 @@ std::unique_ptr<RunProfile> CommandLine::getRunProfile(
         "Config file with same syntax as command line. "
         "Can be specified with '@name', too.")
     ("output-file,o", po::value<std::string>(),
-        "Output file to save results in yml format.\n"
+        "Output file to save results in yaml format.\n"
         "If not specified the output will be dumped to"
         "the terminal at the end of execution")
     ("overwrite,w", po::bool_switch(&w_given),
@@ -450,7 +450,7 @@ std::unique_ptr<RunProfile> CommandLine::getRunProfile(
     if (b_given) {
       oss << "\nUsage: " << argv[0] << " -b [-o <output file>]\n\n"
              "Measure speed of key algorithms on this machine,\n"
-             "saving output in YML format output file";
+             "saving output in YAML format output file";
     } else if (v_given) {
       oss << "\nUsage: " << argv[0] << " -v\n\n"
              "shows version,license and other information.";
@@ -458,7 +458,7 @@ std::unique_ptr<RunProfile> CommandLine::getRunProfile(
       //oss << machineOptions;
       oss << "\nUsage: " << argv[0] << " -m <output file>\n\n"
              "Measures speed and gathers relevant machine specifications\n"
-             "saving output in YML format output file."
+             "saving output in YAML format output file."
              "This information can be used to compare relative speed of \n"
              "machines and predict how long a problem might take to solve\n"
              "based on how much time the solution took on a different machine.";

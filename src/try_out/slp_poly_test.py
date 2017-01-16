@@ -106,7 +106,7 @@ General Options:
                             h - Thread id
   --response-file arg       Config file with same syntax as command line. Can 
                             be specified with '@name', too.
-  -o [ --output-file ] arg  Output file to save results in yml format.
+  -o [ --output-file ] arg  Output file to save results in yaml format.
                             If not specified the output will be dumped tothe 
                             terminal at the end of execution
   -w [ --overwrite ]        overwrite output file if it exists
@@ -129,6 +129,20 @@ General Options:
         '    Compiled with GCC compiler version [^\n]+\n'
         '  Report bugs, suggestions or comments to https://github.com/cherba29/slp-poly\n'
         '\n$')
+
+  def testBenchmarkHelpFlag(self):
+    returncode, stdout, stderr = self.Run('-b', '--help')
+    self.assertEqual(2, returncode)
+    self.assertMatches(
+        stdout,
+        '^slp-poly - Polynomial Interpolator \(slp-poly\) Version ' 
+        '[0-9]\.[0-9]\.[0-9] Commit [a-z0-9]\n\n$')
+    self.assertMatches(
+        stderr,
+        '^\nUsage: ./slp-poly -b \[-o <output file>\]\n'
+        '\n'
+        'Measure speed of key algorithms on this machine,\n'
+        'saving output in YAML format output file\n$')
 
 if __name__ == '__main__':
   unittest.main()
