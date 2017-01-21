@@ -12,11 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
+import os
 import re
+import shutil
 import subprocess
+import tempfile
 import unittest
+import yaml
 
 _APP_NAME = './slp-poly'
+
+
+@contextlib.contextmanager
+def TempDir():
+  temp_dir = tempfile.mkdtemp()
+  try:
+    yield temp_dir
+  finally:
+    shutil.rmtree(temp_dir)
+
+
+@contextlib.contextmanager
+def TempFileName(filename):
+  with TempDir() as temp_dir:
+    yield os.path.join(temp_dir, filename)
 
 
 class SlpPolyTest(unittest.TestCase):
@@ -30,6 +50,15 @@ class SlpPolyTest(unittest.TestCase):
           "String text does not match regexp pattern\n"\
           "    text:    %r\n"\
           "    pattern: %r" % (text, pattern))
+
+  def TmpFileName(self, filename):
+    tmp_dir = os.environ.get('TEST_TMPDIR')
+    if tmp_dir is None:
+      raise AssertionError('TEST_TMPDIR env variable is not set. '
+                           'Environment {}'
+                           .format(yaml.dump(os.environ,
+                                             default_flow_style=False)))
+    return os.path.join(tmp_dir, filename)
 
   def Run(self, *args):
     cmd = (_APP_NAME, ) + args
@@ -61,7 +90,7 @@ class SlpPolyTest(unittest.TestCase):
 
   def testHelp(self):
     returncode, stdout, stderr = self.Run('--help')
-    self.assertEqual(2, returncode)
+    self.assertEqual(2, returncode, stderr)
     self.assertMatches(
         stdout,
         '^slp-poly - Polynomial Interpolator \(slp-poly\) Version ' 
@@ -143,6 +172,29 @@ General Options:
         '\n'
         'Measure speed of key algorithms on this machine,\n'
         'saving output in YAML format output file\n$')
+
+  def testBenchmarkOutputFile(self):
+    with TempFileName('benchmark.yaml') as output_file:
+      returncode, stdout, stderr = self.Run('-b', '-o', output_file)
+      self.assertEqual(0, returncode)
+      with open(output_file) as f:
+        content = f.read()
+
+    self.assertMatches(
+        stdout,
+        '^slp-poly - Polynomial Interpolator \(slp-poly\) Version ' 
+        '[0-9]\.[0-9]\.[0-9] Commit [a-z0-9]\n\n$')
+    try:
+      data = yaml.load(content)
+    except Exception as e:
+      self.fail('Failed to parse\n{}\n\n{}'.format(content, e))
+    self.assertEqual(output_file, data['output']['filename'])
+    self.assertEqual('slp-poly', data['tool']['name'])
+    self.assertEqual('Success', data['execution']['status'])
+    self.assertIn('Field_uint32_3221225473', data['benchmark']['field'])
+    self.assertIsNotNone(
+        data['benchmark']['field']['Field_uint32_3221225473']
+        ['vandermonde']['setup']['quad']['equation'])
 
 if __name__ == '__main__':
   unittest.main()

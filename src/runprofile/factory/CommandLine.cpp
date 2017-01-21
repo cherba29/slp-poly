@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
@@ -145,20 +146,39 @@ std::istream& operator>>(std::istream& is, ModLogLevel& modLogLevel) {
   size_t pos = s.find_first_of('=');
   if (pos != std::string::npos) {
     ::logging::LogModuleEnum module;
-    module.setToValue(s.substr(0,pos).c_str());
+    const std::string module_name = s.substr(0,pos);
+    module.setToValue(module_name.c_str());
     if (!module || module == ::logging::LogModuleEnum::UNKNOWN) {
-      throw std::logic_error(std::string("Unknown module: ") + s.substr(0,pos));
+      std::stringstream ss;
+      for (int i = 0; i < ::logging::LogModuleEnum::NUM_ENUMS; ++i) {
+        if (::logging::LogModuleEnum(i) != ::logging::LogModuleEnum::INVALID &&
+            ::logging::LogModuleEnum(i) != ::logging::LogModuleEnum::UNKNOWN) {
+          ss << " " << ::logging::LogModuleEnum(i);
+        }
+      }
+      throw std::logic_error(
+          std::string("Unknown module: [") + module_name
+          + "] use one of" + ss.str());
     }
+
     ::logging::LogLevelEnum level;
     level.setToValue(s.substr(pos+1).c_str());
 
     if (!level || level == ::logging::LogLevelEnum::UNKNOWN) {
-      throw std::logic_error(std::string("Unknown logging level: ")
-          + s.substr(pos+1));
+      std::stringstream ss;
+      for (int i = 0; i < ::logging::LogLevelEnum::NUM_ENUMS; ++i) {
+        if (::logging::LogLevelEnum(i) != ::logging::LogLevelEnum::INVALID &&
+            ::logging::LogLevelEnum(i) != ::logging::LogLevelEnum::UNKNOWN) {
+          ss << " " << ::logging::LogLevelEnum(i);
+        }
+      }
+
+      throw std::logic_error(std::string("Unknown logging level: [")
+          + s.substr(pos+1) + "] use one of" + ss.str());
     }
-	//modLogLevel = ModLogLevel(module, level);
-	modLogLevel.log_module = module;
-	modLogLevel.log_level = level;
+    //modLogLevel = ModLogLevel(module, level);
+    modLogLevel.log_module = module;
+    modLogLevel.log_level = level;
   } else {
     throw po::validation_error(po::validation_error::invalid_option_value,
         s, "module logging level, expecting module=level");

@@ -42,12 +42,33 @@ const int needToQuoteSize = sizeof(needToQuote) / sizeof(const char*);
 std::string ymlEscapeString(const std::string& str) {
   if (stringContains(str, needToQuote, needToQuoteSize)) {
     std::ostringstream oss;
-    oss << "\"" << str << "\"";
+    oss << '"';
+    for (std::string::const_iterator i = str.begin(), end = str.end(); i != end; ++i) {
+      unsigned char c = *i;
+      if (' ' <= c and c <= '~' and c != '\\' and c != '"') {
+        oss << c;
+      } else {
+        oss << '\\';
+        switch(c) {
+          case '"':  oss << '"';  break;
+          case '\\': oss << '\\'; break;
+          case '\t': oss << 't';  break;
+          case '\r': oss << 'r';  break;
+          case '\n': oss << 'n';  break;
+          default:
+            char const* const hexdig = "0123456789ABCDEF";
+            oss << 'x';
+            oss << hexdig[c >> 4];
+            oss << hexdig[c & 0xF];
+        }
+      }
+    }
+    oss << '"';
     return oss.str();
   }
   return str;
 }
-}
+}  // namespace
 
 namespace util {
 

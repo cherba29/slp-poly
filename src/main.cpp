@@ -264,15 +264,15 @@ int main(int argc, char* argv[]) {
         status = ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::BENCHMARK:
-        status = (0 == runBenchmark(*profile, &m))
+        status = (0 != runBenchmark(*profile, &m))
             ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::MACHINE_INFO:
-        status = (0 == runMachineInfo(*profile, &m))
+        status = (0 != runMachineInfo(*profile, &m))
             ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::INTERPOLATE:
-        status = (0 == runInterpolation(*profile, &m))
+        status = (0 != runInterpolation(*profile, &m))
             ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
         break;
       default:
