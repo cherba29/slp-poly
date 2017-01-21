@@ -96,6 +96,7 @@ boost::shared_ptr<TrackWithEqn> Perf::getTracker(const std::string& alg) {
 const Equation* Perf::getEquation(const std::string& alg) {
   Name2TrackerMap::iterator it = trackedAlgs.find(alg);
   if (it == trackedAlgs.end()) {
+    LDBG_ << "Algorithm " << alg << " is not tracked";
     return NULL;
   }
   return &(it->second->getEquation());

@@ -1,9 +1,7 @@
-#ifndef NTRP_RUN_FIELD_BENCHMARKS_H_
-#define NTRP_RUN_FIELD_BENCHMARKS_H_
+#ifndef SLP_POLY_FIELD_BENCHMARKS_H_
+#define SLP_POLY_FIELD_BENCHMARKS_H_
 
-/**
- * @file FieldBenchmarks.h Test performance of given field on various algorithms
- */
+//! Test performance of given field on various algorithms
 
 #include "complexity/Equation.h"
 #include "complexity/Estimator.h"
@@ -99,13 +97,11 @@ public:
   int runCRT64(util::MultiIndexMap* m);
 #endif
 
-
+  //! Calls run[FIELD] methods in sequence.
   int run(util::MultiIndexMap* mmap);
 
   template <typename F>
   int runWithField(util::MultiIndexMap* mmap) {
-//    const double MAX_FIELD_TEST_TIME = 2.0; // seconds
-
     util::MultiIndexMap& m = (*mmap)[F::getId()];
     m["sizeof"] = sizeof(F);
     unsigned int order = math::field::getFourierOrder<F>();
@@ -113,21 +109,30 @@ public:
     m["fourier_order"] = order;
     m["size"] = F::getSize();
 
-    runFieldOperation<operation::field::Add<F> >(complexity::AlgEnum::FIELD_ADD, &(m["operation"]["add"]));
-    runFieldOperation<operation::field::Subtract<F> >(complexity::AlgEnum::FIELD_SUB, &(m["operation"]["sub"]));
-    runFieldOperation<operation::field::Multiply<F> >(complexity::AlgEnum::FIELD_MUL, &(m["operation"]["mul"]));
-    runFieldOperation<operation::field::Divide<F> >(complexity::AlgEnum::FIELD_DIV, &(m["operation"]["div"]));
-    runFieldOperation<operation::field::Inverse<F> >(complexity::AlgEnum::FIELD_INV, &(m["operation"]["inv"]));
+    runFieldOperation<operation::field::Add<F> >(
+        complexity::AlgEnum::FIELD_ADD, &(m["operation"]["add"]));
+    runFieldOperation<operation::field::Subtract<F> >(
+        complexity::AlgEnum::FIELD_SUB, &(m["operation"]["sub"]));
+    runFieldOperation<operation::field::Multiply<F> >(
+        complexity::AlgEnum::FIELD_MUL, &(m["operation"]["mul"]));
+    runFieldOperation<operation::field::Divide<F> >(
+        complexity::AlgEnum::FIELD_DIV, &(m["operation"]["div"]));
+    runFieldOperation<operation::field::Inverse<F> >(
+        complexity::AlgEnum::FIELD_INV, &(m["operation"]["inv"]));
 
     const double BENCHMARK_TIME_LIMIT = 2.0;
     {
-      using namespace complexity;
-      LAPP1_ << "Benchmarking " << AlgEnum::VAND_QUAD_SETUP << " for " << BENCHMARK_TIME_LIMIT << " sec";
-      Perf::exercise(AlgEnum::VAL_OF_VAND_QUAD_SETUP,operation::vandermonde::QuadSetup<F>(),BENCHMARK_TIME_LIMIT);
-      const Equation* eq = Perf::getEquation(AlgEnum::VAL_OF_VAND_QUAD_SETUP);
+      LAPP1_ << "Benchmarking " << complexity::AlgEnum::VAND_QUAD_SETUP 
+             << " for " << BENCHMARK_TIME_LIMIT << " sec";
+      const complexity::AlgEnum alg = complexity::AlgEnum::VAND_QUAD_SETUP;
+      complexity::Perf::registerAlg<complexity::QuadEquation>(alg.toString());
+      complexity::Perf::exercise(
+          alg.toString(), operation::vandermonde::QuadSetup<F>(), BENCHMARK_TIME_LIMIT);
+      const complexity::Equation* eq = complexity::Perf::getEquation(alg.toString());
       if (eq) {
         double timeToEval = eq->evaluateAt(1000000);
-        LAPP1_ << "Vandermonde Quad setup for size 1000000 in " << std::fixed << std::setprecision(4)
+        LAPP1_ << "Vandermonde Quad setup for size 1000000 in " 
+               << std::fixed << std::setprecision(4)
                << timeToEval << " secs equation " << std::scientific << *eq;
         m["vandermonde"]["setup"]["quad"]["equation"] = *eq;
       } else {
@@ -189,9 +194,9 @@ public:
     return 0;
   }
 
-}; // class FieldBenchmarks
-} // namespace run
+};  // class FieldBenchmarks
+}  // namespace run
 
 #undef LOG_MODULE
 
-#endif  // NTRP_RUN_FIELD_BENCHMARKS_H_
+#endif  // SLP_POLY_FIELD_BENCHMARKS_H_
