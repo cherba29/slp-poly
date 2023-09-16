@@ -50,6 +50,15 @@ CMake based build produces single executable `slp-poly`.
 
 ### Linux
 
+#### Bazel
+
+1. `cd src`
+1.  `bazel build //:slp-poly`
+1. Test `python -m slp_poly_test`
+1. Run ` ./bazel-bin/slp-poly --benchmark -o benchmark.yaml`
+
+#### CMake
+
 1. `mkdir build`
 1. `cd build`
 1. `cmake -G "Unix Makefiles" -Wdev -DCMAKE_BUILD_TYPE=Debug ..`

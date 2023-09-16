@@ -11,7 +11,7 @@ def cc_flex_bison_library(
       cmd = "flex -o $(@D)/%s $(location %s)" % (flex_out_file, flex_file)
   )
 
-  arg_adjust = "$$(bison --version | grep -qE '^bison .* 3\..*' && echo -Wno-deprecated)"
+  arg_adjust = "$$(bison --version | grep -qE '^bison .* 3\\..*' && echo -Wno-deprecated)"
   bison_name = bison_file[:bison_file.rindex('.')] 
   h_out_file =  bison_name + ".hpp"
   cpp_out_file =  bison_name + ".cpp"

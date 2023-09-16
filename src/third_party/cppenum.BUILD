@@ -13,5 +13,3 @@ py_binary(
     ],
     visibility = ["//visibility:public"],
 )
-
-

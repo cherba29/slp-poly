@@ -1,7 +1,7 @@
 def _impl(ctx):
   input_file = ctx.files.enum_file[0]
   enum_name = input_file.basename[:-len(input_file.extension)] 
-  ctx.action(
+  ctx.actions.run(
       inputs=[input_file],
       #outputs=[enum_name + '.cpp', enum_name + '.h', enum_name + 't.cpp'],
       outputs=[ctx.outputs.header, ctx.outputs.cpp, ctx.outputs.test],
@@ -19,8 +19,8 @@ _gen_cppenum = rule(
         "enum_name": attr.string(),
         "enum_file": attr.label(
             mandatory=True,
-            allow_files=True,
-            single_file=True
+            # allow_files=True,
+            allow_single_file=True
         ),
         "_gen_tool": attr.label(
             executable=True,

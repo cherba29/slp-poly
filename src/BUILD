@@ -7,7 +7,8 @@ cc_binary(
     srcs = [
         "main.cpp",
     ],
-    stamp = True,
+    # -1 -- Embedding of build information is controlled by the --[no]stamp flag.
+    stamp = -1, 
     visibility = [
         "//try_out:__pkg__",
     ],

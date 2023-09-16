@@ -11,6 +11,7 @@ bazel-*
 # Precompiled Headers
 *.gch
 *.pch
+*.pyc
 
 # Compiled Dynamic libraries
 *.so
@@ -31,3 +32,4 @@ bazel-*
 *.exe
 *.out
 *.app
+slp-poly

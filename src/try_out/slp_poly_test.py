@@ -63,7 +63,7 @@ class SlpPolyTest(unittest.TestCase):
   def Run(self, *args):
     cmd = (_APP_NAME, ) + args
     process = subprocess.Popen(
-        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     stdout, stderr = process.communicate()
     return process.returncode, stdout, stderr
 
@@ -177,7 +177,7 @@ General Options:
     with TempFileName('benchmark.yaml') as output_file:
       returncode, stdout, stderr = self.Run('-b', '-o', output_file)
       self.assertEqual(0, returncode)
-      with open(output_file) as f:
+      with open(output_file, 'r') as f:
         content = f.read()
 
     self.assertMatches(

@@ -1,6 +1,8 @@
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "new_git_repository")
+
 new_git_repository(
     name = "com_github_google_googletest",
-    build_file = "third_party/googletest.BUILD",
+    build_file = "@//third_party:googletest.BUILD",
     remote = "https://github.com/google/googletest.git",
     tag = "release-1.7.0",
 )
@@ -17,9 +19,9 @@ bind(
 
 new_git_repository(
     name = "com_github_cherba29_cppenum",
-    build_file = "third_party/cppenum.BUILD",
+    build_file = "@//third_party:cppenum.BUILD",
     remote = "https://github.com/cherba29/cppenum.git",
-    commit = "e8bd60f2ac14266688a1aab83040d931ce43045f",
+    commit = "6e12d4d9ed574ab5361b5f08bb80ce455fc2c54a",
 )
 
 bind(
@@ -35,7 +37,7 @@ BOOST_RELEASE_TAG = "boost-1.62.0"
 
 new_git_repository(
     name = "com_github_boost_algorithm",
-    build_file = "third_party/boost/algorithm.BUILD",
+    build_file = "@//third_party/boost:algorithm.BUILD",
     remote = "https://github.com/boostorg/algorithm.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -49,7 +51,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_align",
-    build_file = "third_party/boost/align.BUILD",
+    build_file = "@//third_party/boost:align.BUILD",
     remote = "https://github.com/boostorg/align.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -63,7 +65,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_any",
-    build_file = "third_party/boost/any.BUILD",
+    build_file = "@//third_party/boost:any.BUILD",
     remote = "https://github.com/boostorg/any.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -77,7 +79,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_array",
-    build_file = "third_party/boost/array.BUILD",
+    build_file = "@//third_party/boost:array.BUILD",
     remote = "https://github.com/boostorg/array.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -91,7 +93,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_asio",
-    build_file = "third_party/boost/asio.BUILD",
+    build_file = "@//third_party/boost:asio.BUILD",
     remote = "https://github.com/boostorg/asio.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -105,7 +107,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_assert",
-    build_file = "third_party/boost/assert.BUILD",
+    build_file = "@//third_party/boost:assert.BUILD",
     remote = "https://github.com/boostorg/assert.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -119,7 +121,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_atomic",
-    build_file = "third_party/boost/atomic.BUILD",
+    build_file = "@//third_party/boost:atomic.BUILD",
     remote = "https://github.com/boostorg/atomic.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -133,7 +135,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_bind",
-    build_file = "third_party/boost/bind.BUILD",
+    build_file = "@//third_party/boost:bind.BUILD",
     remote = "https://github.com/boostorg/bind.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -147,7 +149,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_chrono",
-    build_file = "third_party/boost/chrono.BUILD",
+    build_file = "@//third_party/boost:chrono.BUILD",
     remote = "https://github.com/boostorg/chrono.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -161,7 +163,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_concept_check",
-    build_file = "third_party/boost/concept_check.BUILD",
+    build_file = "@//third_party/boost:concept_check.BUILD",
     remote = "https://github.com/boostorg/concept_check.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -175,7 +177,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_config",
-    build_file = "third_party/boost/config.BUILD",
+    build_file = "@//third_party/boost:config.BUILD",
     remote = "https://github.com/boostorg/config.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -189,7 +191,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_container",
-    build_file = "third_party/boost/container.BUILD",
+    build_file = "@//third_party/boost:container.BUILD",
     remote = "https://github.com/boostorg/container.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -203,7 +205,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_core",
-    build_file = "third_party/boost/core.BUILD",
+    build_file = "@//third_party/boost:core.BUILD",
     remote = "https://github.com/boostorg/core.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -217,7 +219,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_detail",
-    build_file = "third_party/boost/detail.BUILD",
+    build_file = "@//third_party/boost:detail.BUILD",
     remote = "https://github.com/boostorg/detail.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -231,7 +233,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_date_time",
-    build_file = "third_party/boost/date_time.BUILD",
+    build_file = "@//third_party/boost:date_time.BUILD",
     remote = "https://github.com/boostorg/date_time.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -245,7 +247,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_exception",
-    build_file = "third_party/boost/exception.BUILD",
+    build_file = "@//third_party/boost:exception.BUILD",
     remote = "https://github.com/boostorg/exception.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -259,7 +261,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_filesystem",
-    build_file = "third_party/boost/filesystem.BUILD",
+    build_file = "@//third_party/boost:filesystem.BUILD",
     remote = "https://github.com/boostorg/filesystem.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -273,7 +275,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_foreach",
-    build_file = "third_party/boost/foreach.BUILD",
+    build_file = "@//third_party/boost:foreach.BUILD",
     remote = "https://github.com/boostorg/foreach.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -287,7 +289,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_function",
-    build_file = "third_party/boost/function.BUILD",
+    build_file = "@//third_party/boost:function.BUILD",
     remote = "https://github.com/boostorg/function.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -301,7 +303,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_function_types",
-    build_file = "third_party/boost/function_types.BUILD",
+    build_file = "@//third_party/boost:function_types.BUILD",
     remote = "https://github.com/boostorg/function_types.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -315,7 +317,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_functional",
-    build_file = "third_party/boost/functional.BUILD",
+    build_file = "@//third_party/boost:functional.BUILD",
     remote = "https://github.com/boostorg/functional.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -329,7 +331,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_fusion",
-    build_file = "third_party/boost/fusion.BUILD",
+    build_file = "@//third_party/boost:fusion.BUILD",
     remote = "https://github.com/boostorg/fusion.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -343,7 +345,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_integer",
-    build_file = "third_party/boost/integer.BUILD",
+    build_file = "@//third_party/boost:integer.BUILD",
     remote = "https://github.com/boostorg/integer.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -357,7 +359,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_interprocess",
-    build_file = "third_party/boost/interprocess.BUILD",
+    build_file = "@//third_party/boost:interprocess.BUILD",
     remote = "https://github.com/boostorg/interprocess.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -371,7 +373,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_intrusive",
-    build_file = "third_party/boost/intrusive.BUILD",
+    build_file = "@//third_party/boost:intrusive.BUILD",
     remote = "https://github.com/boostorg/intrusive.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -385,7 +387,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_io",
-    build_file = "third_party/boost/io.BUILD",
+    build_file = "@//third_party/boost:io.BUILD",
     remote = "https://github.com/boostorg/io.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -399,7 +401,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_iterator",
-    build_file = "third_party/boost/iterator.BUILD",
+    build_file = "@//third_party/boost:iterator.BUILD",
     remote = "https://github.com/boostorg/iterator.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -413,7 +415,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_lexical_cast",
-    build_file = "third_party/boost/lexical_cast.BUILD",
+    build_file = "@//third_party/boost:lexical_cast.BUILD",
     remote = "https://github.com/boostorg/lexical_cast.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -427,7 +429,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_locale",
-    build_file = "third_party/boost/locale.BUILD",
+    build_file = "@//third_party/boost:locale.BUILD",
     remote = "https://github.com/boostorg/locale.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -441,7 +443,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_log",
-    build_file = "third_party/boost/log.BUILD",
+    build_file = "@//third_party/boost:log.BUILD",
     remote = "https://github.com/boostorg/log.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -455,7 +457,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_math",
-    build_file = "third_party/boost/math.BUILD",
+    build_file = "@//third_party/boost:math.BUILD",
     remote = "https://github.com/boostorg/math.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -469,7 +471,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_move",
-    build_file = "third_party/boost/move.BUILD",
+    build_file = "@//third_party/boost:move.BUILD",
     remote = "https://github.com/boostorg/move.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -483,7 +485,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_mpl",
-    build_file = "third_party/boost/mpl.BUILD",
+    build_file = "@//third_party/boost:mpl.BUILD",
     remote = "https://github.com/boostorg/mpl.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -497,7 +499,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_multi_index",
-    build_file = "third_party/boost/multi_index.BUILD",
+    build_file = "@//third_party/boost:multi_index.BUILD",
     remote = "https://github.com/boostorg/multi_index.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -511,7 +513,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_numeric_conversion",
-    build_file = "third_party/boost/numeric_conversion.BUILD",
+    build_file = "@//third_party/boost:numeric_conversion.BUILD",
     remote = "https://github.com/boostorg/numeric_conversion.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -525,7 +527,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_optional",
-    build_file = "third_party/boost/optional.BUILD",
+    build_file = "@//third_party/boost:optional.BUILD",
     remote = "https://github.com/boostorg/optional.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -539,7 +541,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_parameter",
-    build_file = "third_party/boost/parameter.BUILD",
+    build_file = "@//third_party/boost:parameter.BUILD",
     remote = "https://github.com/boostorg/parameter.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -553,7 +555,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_phoenix",
-    build_file = "third_party/boost/phoenix.BUILD",
+    build_file = "@//third_party/boost:phoenix.BUILD",
     remote = "https://github.com/boostorg/phoenix.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -567,7 +569,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_predef",
-    build_file = "third_party/boost/predef.BUILD",
+    build_file = "@//third_party/boost:predef.BUILD",
     remote = "https://github.com/boostorg/predef.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -581,7 +583,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_preprocessor",
-    build_file = "third_party/boost/preprocessor.BUILD",
+    build_file = "@//third_party/boost:preprocessor.BUILD",
     remote = "https://github.com/boostorg/preprocessor.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -595,7 +597,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_program_options",
-    build_file = "third_party/boost/program_options.BUILD",
+    build_file = "@//third_party/boost:program_options.BUILD",
     remote = "https://github.com/boostorg/program_options.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -609,7 +611,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_property_tree",
-    build_file = "third_party/boost/property_tree.BUILD",
+    build_file = "@//third_party/boost:property_tree.BUILD",
     remote = "https://github.com/boostorg/property_tree.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -623,7 +625,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_proto",
-    build_file = "third_party/boost/proto.BUILD",
+    build_file = "@//third_party/boost:proto.BUILD",
     remote = "https://github.com/boostorg/proto.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -637,7 +639,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_random",
-    build_file = "third_party/boost/random.BUILD",
+    build_file = "@//third_party/boost:random.BUILD",
     remote = "https://github.com/boostorg/random.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -651,7 +653,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_range",
-    build_file = "third_party/boost/range.BUILD",
+    build_file = "@//third_party/boost:range.BUILD",
     remote = "https://github.com/boostorg/range.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -665,7 +667,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_ratio",
-    build_file = "third_party/boost/ratio.BUILD",
+    build_file = "@//third_party/boost:ratio.BUILD",
     remote = "https://github.com/boostorg/ratio.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -679,7 +681,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_regex",
-    build_file = "third_party/boost/regex.BUILD",
+    build_file = "@//third_party/boost:regex.BUILD",
     remote = "https://github.com/boostorg/regex.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -693,7 +695,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_serialization",
-    build_file = "third_party/boost/serialization.BUILD",
+    build_file = "@//third_party/boost:serialization.BUILD",
     remote = "https://github.com/boostorg/serialization.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -707,7 +709,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_smart_ptr",
-    build_file = "third_party/boost/smart_ptr.BUILD",
+    build_file = "@//third_party/boost:smart_ptr.BUILD",
     remote = "https://github.com/boostorg/smart_ptr.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -721,7 +723,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_spirit",
-    build_file = "third_party/boost/spirit.BUILD",
+    build_file = "@//third_party/boost:spirit.BUILD",
     remote = "https://github.com/boostorg/spirit.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -735,7 +737,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_static_assert",
-    build_file = "third_party/boost/static_assert.BUILD",
+    build_file = "@//third_party/boost:static_assert.BUILD",
     remote = "https://github.com/boostorg/static_assert.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -749,7 +751,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_system",
-    build_file = "third_party/boost/system.BUILD",
+    build_file = "@//third_party/boost:system.BUILD",
     remote = "https://github.com/boostorg/system.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -763,7 +765,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_test",
-    build_file = "third_party/boost/test.BUILD",
+    build_file = "@//third_party/boost:test.BUILD",
     remote = "https://github.com/boostorg/test.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -777,7 +779,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_thread",
-    build_file = "third_party/boost/thread.BUILD",
+    build_file = "@//third_party/boost:thread.BUILD",
     remote = "https://github.com/boostorg/thread.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -791,7 +793,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_throw_exception",
-    build_file = "third_party/boost/throw_exception.BUILD",
+    build_file = "@//third_party/boost:throw_exception.BUILD",
     remote = "https://github.com/boostorg/throw_exception.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -805,7 +807,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_timer",
-    build_file = "third_party/boost/timer.BUILD",
+    build_file = "@//third_party/boost:timer.BUILD",
     remote = "https://github.com/boostorg/timer.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -819,7 +821,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_tokenizer",
-    build_file = "third_party/boost/tokenizer.BUILD",
+    build_file = "@//third_party/boost:tokenizer.BUILD",
     remote = "https://github.com/boostorg/tokenizer.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -833,7 +835,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_tuple",
-    build_file = "third_party/boost/tuple.BUILD",
+    build_file = "@//third_party/boost:tuple.BUILD",
     remote = "https://github.com/boostorg/tuple.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -847,7 +849,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_type_index",
-    build_file = "third_party/boost/type_index.BUILD",
+    build_file = "@//third_party/boost:type_index.BUILD",
     remote = "https://github.com/boostorg/type_index.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -861,7 +863,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_type_traits",
-    build_file = "third_party/boost/type_traits.BUILD",
+    build_file = "@//third_party/boost:type_traits.BUILD",
     remote = "https://github.com/boostorg/type_traits.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -875,7 +877,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_typeof",
-    build_file = "third_party/boost/typeof.BUILD",
+    build_file = "@//third_party/boost:typeof.BUILD",
     remote = "https://github.com/boostorg/typeof.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -889,7 +891,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_utility",
-    build_file = "third_party/boost/utility.BUILD",
+    build_file = "@//third_party/boost:utility.BUILD",
     remote = "https://github.com/boostorg/utility.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -903,7 +905,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_variant",
-    build_file = "third_party/boost/variant.BUILD",
+    build_file = "@//third_party/boost:variant.BUILD",
     remote = "https://github.com/boostorg/variant.git",
     tag = BOOST_RELEASE_TAG,
 )
@@ -917,7 +919,7 @@ bind(
 
 new_git_repository(
     name = "com_github_boost_winapi",
-    build_file = "third_party/boost/winapi.BUILD",
+    build_file = "@//third_party/boost:winapi.BUILD",
     remote = "https://github.com/boostorg/winapi.git",
     tag = BOOST_RELEASE_TAG,
 )
