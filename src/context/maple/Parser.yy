@@ -141,7 +141,7 @@ assignments
   
 assignment
   : ID ASSIGN value { // nothing
-    driver.getContext()->addStatement(new context::Assignment(*$1, $3));
+    driver.getContext()->addStatement(new ::context::Assignment(*$1, $3));
     if (!driver.getContext()->addIdentifier(*$1, true)) {
       std::ostringstream ss;
       ss << "Was not able to parse assignment for '" << (*$1)
@@ -256,15 +256,15 @@ assignment
 value
   : '(' value ')'  { $$ = $2;  }
   | ID             { 
-    $$ = new context::Id(*$1); 
+    $$ = new ::context::Id(*$1); 
     driver.getContext()->addIdentifier(*$1, false);
   }
-  | INTEGER        { $$ = new context::Integer(*$1); }
-  | REAL           { $$ = new context::RealNumber($1); }
-  | STRING         { $$ = new context::String(*$1); }
-  | BQSTRING       { $$ = new context::String(*$1); }
+  | INTEGER        { $$ = new ::context::Integer(*$1); }
+  | REAL           { $$ = new ::context::RealNumber($1); }
+  | STRING         { $$ = new ::context::String(*$1); }
+  | BQSTRING       { $$ = new ::context::String(*$1); }
   | '[' values ']' { $$ = $2; }
-  | '-' value %prec UMINUS  { $$ = new context::Negation($2); }
+  | '-' value %prec UMINUS  { $$ = new ::context::Negation($2); }
   | summation      { $$ = $1; }
   | product        { $$ = $1; }
   | value '^' INTEGER          {
@@ -283,13 +283,13 @@ value
       error(@$, ss.str());
       YYERROR;
     } else {
-      $$ = new context::Power($1, power); 
+      $$ = new ::context::Power($1, power); 
     }
   }
   | DET '(' ID ')' { 
-    context::Matrix* mtx = driver.getContext()->getMatrix(*$3);
+    ::context::Matrix* mtx = driver.getContext()->getMatrix(*$3);
     if (mtx->getNRows() == mtx->getNCols()) {
-      $$ = new context::Determinant(mtx); 
+      $$ = new ::context::Determinant(mtx); 
     } else {
       std::ostringstream ss;
       ss << "Determinant is only valid for square matrices. '" << (*$3) << "' "
@@ -299,10 +299,10 @@ value
     }
   } 
   | ID '(' arguments ')'      {
-    context::FunctionEnum func;
+    ::context::FunctionEnum func;
     func.setToValue($1->c_str());
     if (func) { 
-      $$ = new context::Function(func, $3);
+      $$ = new ::context::Function(func, $3);
     } else {
       std::ostringstream ss;
       ss << "Unknown function " << *$1;
@@ -313,7 +313,7 @@ value
   ;
 values
   : value {
-    $$ = new context::ValueList();
+    $$ = new ::context::ValueList();
     $$->addValue($1);
   }
   | values ',' value {
@@ -322,17 +322,17 @@ values
   }
   ;
 
-//  | value '-' value      { $$ = new context::Subtraction($1, $3); }
-//  | value '*' value      { $$ = new context::Multiplication($1, $3); }
-//  | value '/' value      { $$ = new context::Division($1, $3); }
+//  | value '-' value      { $$ = new ::context::Subtraction($1, $3); }
+//  | value '*' value      { $$ = new ::context::Multiplication($1, $3); }
+//  | value '/' value      { $$ = new ::context::Division($1, $3); }
 
 summation : value '+' value      { 
-    $$ = new context::Sum(); 
+    $$ = new ::context::Sum(); 
     $$->add($1);
     $$->add($3);
   }
   | value '-' value      { 
-    $$ = new context::Sum(); 
+    $$ = new ::context::Sum(); 
     $$->add($1);
     $$->subtract($3);
   }
@@ -346,12 +346,12 @@ summation : value '+' value      {
   }
   
 product : value '*' value      {   
-    $$ = new context::Product(); 
+    $$ = new ::context::Product(); 
     $$->multiply($1);
     $$->multiply($3);
   }
   | value '/' value      {   
-    $$ = new context::Product(); 
+    $$ = new ::context::Product(); 
     $$->multiply($1);
     $$->divide($3);
   }
@@ -366,7 +366,7 @@ product : value '*' value      {
   
 table_entries
   : ID '=' value {
-      $$ = new context::Table();
+      $$ = new ::context::Table();
     $$->setEntry(*$1, $3);
   }
   | table_entries ',' ID '=' value {
@@ -399,7 +399,7 @@ matrix_entries
       error(@$, ss.str());
       YYERROR;
     } else {
-      $$ = new context::Matrix();
+      $$ = new ::context::Matrix();
       $$->setEntry(row,column,$7);
     }
   }
@@ -442,7 +442,7 @@ matrix_entries
 
 arguments
   : argument {
-    $$ = new context::ValueList();
+    $$ = new ::context::ValueList();
     $$->addValue($1);
   }
   | arguments ',' argument {
@@ -456,7 +456,7 @@ argument
     $$ = $1;
   }
   | ID '=' value {
-    $$ = new context::NamedValue(*$1, $3);
+    $$ = new ::context::NamedValue(*$1, $3);
   }
   ;
 
