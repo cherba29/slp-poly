@@ -17,7 +17,7 @@ cc_flex_bison_library(
     deps = [
         "//context",
         "//context:interp_context",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//util:log",
     ],
 )

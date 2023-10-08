@@ -713,8 +713,3 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_field_det2p, F, FieldTypes)  {
 }
 */
 BOOST_AUTO_TEST_SUITE_END()
-
-
-bool init_unit_test() {
-  return true;
-}

@@ -39,10 +39,10 @@ cc_library(
         ":LogLevelEnum",
         ":LogModuleEnum",
         ":LogTagEnum",
-        "//external:boost-core",
-        "//external:boost-date_time",
-        "//external:boost-filesystem",
-        "//external:boost-log",
+        "@boost//:core",
+        "@boost//:date_time",
+        "@boost//:filesystem",
+        "@boost//:log",
     ],
 )
 
@@ -56,16 +56,17 @@ cc_library(
         "//runprofile:__pkg__",
     ],
     deps = [
-        "//external:boost-variant",
+        "@boost//:variant",
     ],
 )
 
 cc_test(
     name = "multi_index_map_test",
     srcs = ["MultiIndexMap.t.cpp"],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
         ":multi_index_map",
-        "//external:boost-test",
+        "@boost//:test.so",
     ],
 )
 
@@ -89,7 +90,7 @@ cc_library(
     ],
     deps = [
         ":LevelEnum",
-        "//external:boost-lexical_cast",
+        "@boost//:lexical_cast",
     ],
 )
 

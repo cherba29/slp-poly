@@ -10,7 +10,7 @@ cc_library(
         "//complexity:equation",
         "//complexity:tracker",
         "//eval:evaluator",
-        "//external:boost-smart_ptr",
-        "//external:boost-timer",
+        "@boost//:smart_ptr",
+        "@boost//:timer",
     ],
 )

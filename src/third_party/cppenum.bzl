@@ -61,8 +61,9 @@ def gen_cppenum(enum_file, visibility=None):
       srcs=[
           name + ".t.cpp",
       ],
+      defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
       deps=[
           ":" + name,
-          "//external:boost-test",
+          "@boost//:test.so",
       ], 
   )

@@ -15,7 +15,7 @@ cc_library(
     deps = [
         ":modular-x86",
         ":random",
-        "//external:boost-config",
+        "@boost//:config",
         "//math:base",
     ],
 )
@@ -30,7 +30,7 @@ cc_library(
         "//run:__pkg__",
     ],
     deps = [
-        "//external:boost-random",
+        "@boost//:random",
     ],
 )
 
@@ -44,7 +44,7 @@ cc_library(
         "//math/field:__pkg__",
     ],
     deps = [
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//math:base",
         "//util:smart_assert",
     ],
@@ -59,6 +59,6 @@ cc_library(
         "//math/field:__pkg__",
     ],
     deps = [
-        "//external:boost-static_assert",
+        "@boost//:static_assert",
     ],
 )

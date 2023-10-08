@@ -25,8 +25,8 @@ cc_library(
     ],
     deps = [
         ":polynomial",
-        "//external:boost-function",
-        "//external:boost-smart_ptr",
+        "@boost//:function",
+        "@boost//:smart_ptr",
         "//util:smart_assert",
     ],
 )
@@ -34,8 +34,9 @@ cc_library(
 cc_test(
     name = "partial_polynomial_test",
     srcs = ["PartialPolynomial.t.cpp"],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
         ":partial_polynomial",
-        "//external:boost-test",
+        "@boost//:test.so",
     ],
 )

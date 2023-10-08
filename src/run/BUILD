@@ -31,7 +31,7 @@ cc_library(
         "//complexity:perf",
         "//eval:code_generator",
         "//eval/util:instruction_counter",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//interp:VandSolveTypeEnum",
         "//interp:interpolator",
         "//math/util:prime",

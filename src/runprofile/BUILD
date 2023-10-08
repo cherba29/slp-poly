@@ -17,8 +17,8 @@ cc_library(
     ],
     deps = [
         ":FieldOptionEnum",
-        "//external:boost-algorithm",
-        "//external:boost-optional",
+        "@boost//:algorithm",
+        "@boost//:optional",
         "//interp:PrunningEnum",
         "//interp:UnivInterpEnum",
         "//interp:VandSolveTypeEnum",
@@ -33,9 +33,10 @@ cc_test(
     srcs = [
         "InterpProfile.t.cpp",
     ],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
         ":interp_profile",
-        "//external:boost-test",
+        "@boost//:test.so",
     ],
 )
 
@@ -54,7 +55,7 @@ cc_library(
     deps = [
         ":ActionEnum",
         ":interp_profile",
-        "//external:boost-optional",
+        "@boost//:optional",
         "//util:log",
     ],
 )
@@ -64,9 +65,10 @@ cc_test(
     srcs = [
         "RunProfile.t.cpp",
     ],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
         ":runprofile",
-        "//external:boost-test",
+        "@boost//:test.so",
         "//runprofile/factory:command_line",
     ],
 )

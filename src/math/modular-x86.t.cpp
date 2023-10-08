@@ -115,8 +115,3 @@ BOOST_AUTO_TEST_CASE_TEMPLATE( multi_mod_test, U, UIntTypes ) {
 
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
-bool init_unit_test() {
-  return true;
-}

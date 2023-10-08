@@ -8,6 +8,7 @@
 
 #include "operation/field/setup.h"
 //#include <boost/timer.hpp>
+// #define BOOST_TEST_MAIN
 #include <boost/test/unit_test.hpp>
 
 
@@ -105,9 +106,4 @@ BOOST_AUTO_TEST_CASE_TEMPLATE( vand_fft_simple, F, math::FieldTypes ) {
 
 
 BOOST_AUTO_TEST_SUITE_END();
-
-
-bool init_unit_test() {
-  return true;
-}
 

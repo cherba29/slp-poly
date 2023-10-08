@@ -9,8 +9,8 @@ cc_library(
     deps = [
         "//complexity:equation",
         "//complexity:tracker",
-        "//external:boost-smart_ptr",
-        "//external:boost-timer",
+        "@boost//:smart_ptr",
+        "@boost//:timer",
         "//math:base",
         "//math/vandermonde:fft_solver",
         "//math/vandermonde:quad_solver",

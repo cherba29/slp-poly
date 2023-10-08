@@ -11,11 +11,11 @@ cc_library(
         "//runprofile:__pkg__",
     ],
     deps = [
-        "//external:boost-algorithm",
-        "//external:boost-bind",
-        "//external:boost-program_options",
-        "//external:boost-static_assert",
-        "//external:boost-type_traits",
+        "@boost//:algorithm",
+        "@boost//:bind",
+        "@boost//:program_options",
+        "@boost//:static_assert",
+        "@boost//:type_traits",
         "//runprofile",
     ],
 )

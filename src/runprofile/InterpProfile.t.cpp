@@ -1,6 +1,4 @@
 #include "runprofile/InterpProfile.h"
-
-#define BOOST_TEST_ALTERNATIVE_INIT_API
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(interp_profile)
@@ -17,8 +15,3 @@ BOOST_AUTO_TEST_CASE(setFieldOption_basic) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
-bool init_unit_test() {
-  return true;
-}

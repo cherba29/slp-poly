@@ -13,8 +13,3 @@ BOOST_AUTO_TEST_CASE( maybe_prime ) {
   //BOOST_CHECK(math::maybe_prime(maxVal));
 }
 BOOST_AUTO_TEST_SUITE_END()
-
-
-bool init_unit_test() {
-  return true;
-}

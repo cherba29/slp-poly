@@ -40,8 +40,8 @@ cc_library(
     ],
     deps = [
         ":tracker",
-        "//external:boost-function",
-        "//external:boost-smart_ptr",
+        "@boost//:function",
+        "@boost//:smart_ptr",
         "//math:base",
         "//util:log",
     ],
@@ -59,10 +59,11 @@ cc_library(
         "//interp:__pkg__",
         "//run:__pkg__",
     ],
+    defines = ["BOOST_TIMER_ENABLE_DEPRECATED"],
     deps = [
         ":estimator",
         ":tracker",
-        "//external:boost-timer",
+        "@boost//:timer",
         "//util:log",
     ],
 )
@@ -72,10 +73,11 @@ cc_test(
     srcs = [
         "Perf.t.cpp",
     ],
+    defines = ["BOOST_TIMER_ENABLE_DEPRECATED", "BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
         ":perf",
         "//complexity:AlgEnum",
-        "//external:boost-test",
+        "@boost//:test.so",
     ],
 )
 
@@ -111,7 +113,7 @@ cc_library(
     ],
     deps = [
         ":equation",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//math/numeric:svd",
         "//util:log",
     ],

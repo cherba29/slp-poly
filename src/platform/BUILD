@@ -9,7 +9,7 @@ cc_library(
     visibility = ["//:__pkg__"],
     deps = [
         ":build_info",
-        "//external:boost-date_time",
+        "@boost//:date_time",
     ],
 )
 

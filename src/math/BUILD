@@ -15,7 +15,7 @@ cc_library(
         "//runprofile:__pkg__",
     ],
     deps = [
-        "//external:boost-static_assert",
+        "@boost//:static_assert",
     ],
 )
 
@@ -24,9 +24,10 @@ cc_test(
     srcs = [
         "Base.t.cpp",
     ],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
         ":base",
-        "//external:boost-test",
+        "@boost//:test.so",
         "//operation/field:setup",
     ],
 )
@@ -36,9 +37,10 @@ cc_test(
     srcs = [
         "Field.t.cpp",
     ],
+    defines = ["BOOST_TIMER_ENABLE_DEPRECATED", "BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
-        "//external:boost-test",
-        "//external:boost-timer",
+        "@boost//:test.so",
+        "@boost//:timer",
         "//operation/field:setup",
     ],
 )
@@ -48,8 +50,9 @@ cc_test(
     srcs = [
         "modular-x86.t.cpp",
     ],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
-        "//external:boost-test",
+        "@boost//:test.so",
         "//math/util:modular-x86",
         "//math/util:prime",
     ],
@@ -60,8 +63,9 @@ cc_test(
     srcs = [
         "Prime.t.cpp",
     ],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
-        "//external:boost-test",
+        "@boost//:test.so",
         "//math/util:prime",
     ],
 )
@@ -71,8 +75,9 @@ cc_test(
     srcs = [
         "Vandermonde.t.cpp",
     ],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
-        "//external:boost-test",
+        "@boost//:test.so",
         "//math/vandermonde:fft_solver",
         "//math/vandermonde:quad_solver",
         "//operation/field:setup",

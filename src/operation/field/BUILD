@@ -11,7 +11,7 @@ cc_library(
     deps = [
         "//complexity:equation",
         "//complexity:tracker",
-        "//external:boost-timer",
+        "@boost//:timer",
         "//math:base",
         "//util:log",
     ],
@@ -27,7 +27,7 @@ cc_library(
         "//math:__pkg__",
     ],
     deps = [
-        "//external:boost-mpl",
+        "@boost//:mpl",
         "//math/field",
         "//math/field:crt",
         "//math/field:crt2",

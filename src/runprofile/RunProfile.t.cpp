@@ -96,8 +96,3 @@ BOOST_AUTO_TEST_CASE( getRunProfile_interpolate_machine_info ) {
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
-
-bool init_unit_test() {
-  return true;
-}

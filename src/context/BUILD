@@ -39,7 +39,7 @@ cc_library(
     deps = [
         ":statement",
         ":value",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
     ],
 )
 
@@ -50,7 +50,7 @@ cc_library(
     ],
     deps = [
         ":value",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
     ],
 )
 
@@ -62,7 +62,7 @@ cc_library(
     deps = [
         ":FunctionEnum",
         ":value_list",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
     ],
 )
 
@@ -133,7 +133,7 @@ cc_library(
     ],
     deps = [
         ":value",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//util:smart_assert",
     ],
 )
@@ -145,7 +145,7 @@ cc_library(
     ],
     deps = [
         ":value",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//util:smart_assert",
     ],
 )
@@ -180,7 +180,7 @@ cc_library(
     ],
     deps = [
         ":value",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//util:smart_assert",
     ],
 )
@@ -220,7 +220,7 @@ cc_library(
     ],
     deps = [
         ":value",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//util:smart_assert",
     ],
 )

@@ -9,7 +9,7 @@ cc_library(
         "//operation/field:__pkg__",
     ],
     deps = [
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//math:base",
     ],
 )

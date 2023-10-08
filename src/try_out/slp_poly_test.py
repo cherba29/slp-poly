@@ -83,7 +83,6 @@ class SlpPolyTest(unittest.TestCase):
             '  interpolate',
             'must be specified on a command line. '
             'Use -h for help on possible options.',
-            '',
             ''
         ]),
         stderr)

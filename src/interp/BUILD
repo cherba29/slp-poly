@@ -46,7 +46,7 @@ cc_library(
         "//eval:code_generator",
         "//eval:univ_evaluator",
         "//eval/util:instruction_max_degree",
-        "//external:boost-smart_ptr",
+        "@boost//:smart_ptr",
         "//math/util:prime",
         "//util:timer",
     ],
@@ -69,9 +69,10 @@ cc_library(
 cc_test(
     name = "newton_test",
     srcs = ["Newton.t.cpp"],
+    defines = ["BOOST_TEST_MAIN", "BOOST_TEST_DYN_LINK"],
     deps = [
         ":newton",
-        "//external:boost-test",
+        "@boost//:test.so",
         "//operation/field:setup",
     ],
 )
