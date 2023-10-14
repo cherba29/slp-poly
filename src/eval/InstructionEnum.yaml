@@ -51,7 +51,7 @@ items:
     id: 10
   - name: DIV
     documentation: Divide two values
-    display: DUV
+    display: DIV
     id: 11
   - name: DIVC
     documentation: Divide value by constant value

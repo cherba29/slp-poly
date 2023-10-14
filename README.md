@@ -69,11 +69,22 @@ CMake based build produces single executable `slp-poly`.
 ## Running
 
 ```
-bazel-bin/slp-poly \
-  --level APPLICATION=trace \
-  --interpolate try_out/csci6335-simple.slp \
-  --output-file try_out/csci6335-simple.slp.out
+ bazel-bin/slp-poly \
+   --level APPLICATION=trace \
+   --interpolate $PWD/try_out/csci6335-simple.slp \
+   -w \
+   --output-file $PWD/try_out/csci6335-simple.slp.out \
+   --asmfile $PWD/try_out/csci6335-simple.slp.asm
 ```
+
+```
+ bazel-bin/slp-poly \
+   --level APPLICATION=trace \
+   --interpolate $PWD/try_out/csci6335-example.slp \
+   -w \
+   --output-file $PWD/try_out/csci6335-example.slp.out \
+   --asmfile $PWD/try_out/csci6335-example.slp.asm
+ ```
 
 ## Developing
 

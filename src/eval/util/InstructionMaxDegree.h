@@ -24,13 +24,19 @@ class Exponent {
   std::vector<unsigned int> v_;
 public:
   Exponent (int n) : v_(n) { }
+
   void setDegree(int idx, int deg) { v_[idx] = deg; }
+
   size_t getSize() const { return v_.size(); }
+
   unsigned int getDegree(size_t idx) const { return v_[idx]; }
+
   const unsigned int* getDegrees() const { return &v_[0]; }
+
   void initZero() {
     std::fill(v_.begin(),v_.end(),0);
   }
+
   static void add(Exponent& d, const Exponent& s1, const Exponent& s2) {
     std::vector<unsigned int>::const_iterator s1It = s1.v_.begin();
     std::vector<unsigned int>::const_iterator s1End = s1.v_.end();
@@ -43,6 +49,20 @@ public:
     std::vector<unsigned int>::iterator dIt = d.v_.begin();
     for (; s1It != s1End; ++s1It, ++s2It, ++dIt) *dIt = *s1It + *s2It;
   }
+
+  static void sub(Exponent& d, const Exponent& s1, const Exponent& s2) {
+    std::vector<unsigned int>::const_iterator s1It = s1.v_.begin();
+    std::vector<unsigned int>::const_iterator s1End = s1.v_.end();
+    std::vector<unsigned int>::const_iterator s2It = s2.v_.begin();
+    ASSERT0(s1.v_.size() == s2.v_.size())(s1.v_.size())(s2.v_.size())
+      .msg("Cannot add exponents of different sizes");
+    ASSERT0(d.v_.size() <= s1.v_.size())(d.v_.size())(s1.v_.size())
+      .msg("Destination size is too large");
+    d.v_.resize(s1.v_.size());
+    std::vector<unsigned int>::iterator dIt = d.v_.begin();
+    for (; s1It != s1End; ++s1It, ++s2It, ++dIt) *dIt = *s1It - *s2It;
+  }
+
   static void mul(Exponent& d, const Exponent& s1, unsigned int e) {
     std::vector<unsigned int>::const_iterator s1It = s1.v_.begin();
     std::vector<unsigned int>::const_iterator s1End = s1.v_.end();
@@ -52,6 +72,7 @@ public:
     std::vector<unsigned int>::iterator dIt = d.v_.begin();
     for (; s1It != s1End; ++s1It, ++dIt) *dIt = *s1It * e;
   }
+
   static void max(Exponent& d, const Exponent& s1, const Exponent& s2) {
     std::vector<unsigned int>::const_iterator s1It = s1.v_.begin();
     std::vector<unsigned int>::const_iterator s1End = s1.v_.end();
@@ -153,6 +174,27 @@ public:
         break;
       }
 
+      case InstructionEnum::DIV: {
+        const Exponent& src1Degs = getExponent(instr.getSource1());
+        const Exponent& src2Degs = getExponent(instr.getSource2());
+        Exponent::sub(destDegs, src1Degs, src2Degs);
+        LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
+              << destDegs << "(" << instr.getDestination() << ") <-- "
+              << src1Degs << "(" << instr.getSource1() << ") "
+              << src2Degs << "(" << instr.getSource2() << ") " ;
+
+        break;
+      }
+      case InstructionEnum::DIVBY: {
+        const Exponent& src1Degs = getExponent(instr.getSource1());
+        Exponent::sub(destDegs, destDegs, src1Degs);
+        LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
+              << destDegs << "(" << instr.getDestination() << ") <-- "
+              << src1Degs << "(" << instr.getSource1() << ") ";
+
+        break;
+      }
+
       case InstructionEnum::POW: {
         const Exponent& src1Degs = getExponent(instr.getSource1());
         int src2Val = instr.getSource2();
@@ -165,6 +207,7 @@ public:
       }
       case InstructionEnum::NEG:
       case InstructionEnum::COPY:
+      case InstructionEnum::DIVC:
       case InstructionEnum::MULC:
       case InstructionEnum::ADDC: {
         destDegs = getExponent(instr.getSource1());
@@ -213,7 +256,7 @@ public:
 
       default: {
         ASSERT0(false)(instructionCounter_)(instr.getType().toString())
-          .msg("Unknown instruction");
+          .error("Unknown instruction");
         break;
       }
     }

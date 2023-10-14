@@ -46,8 +46,6 @@ int COMPILER_VERSION  = 0;
 #endif /* defined _MSCVER */
 #endif /* defined __GNUC__ */
 
-const char* LICENSE_INFO = "Apache License 2.0";
-
 }
 
 const char* Platform::getApplicationName() {

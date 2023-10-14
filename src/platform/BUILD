@@ -7,6 +7,7 @@ cc_library(
         "Platform.h",
     ],
     visibility = ["//:__pkg__"],
+    defines = ["BOOST_BIND_GLOBAL_PLACEHOLDERS"],
     deps = [
         ":build_info",
         "@boost//:date_time",
