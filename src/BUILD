@@ -1,3 +1,4 @@
+load("//third_party/clang_format:clang_format.bzl", "clang_format")
 load("//third_party:cppenum.bzl", "gen_cppenum")
 
 gen_cppenum(enum_file = "ReturnValue.yaml")
@@ -25,3 +26,7 @@ cc_binary(
         "//util:timer",
     ],
 )
+
+# Note! Needs needs to be the last declaration in the file
+# in order to correctly pick up earlier declared cc_* rules.
+clang_format()

@@ -88,4 +88,9 @@ CMake based build produces single executable `slp-poly`.
 
 ## Developing
 
-TBD
+Format source files with clang_format. You might need to first
+install `clang-format` for example with `sudo apt install clang-format`
+
+```
+bazel run //:clang_format
+```
