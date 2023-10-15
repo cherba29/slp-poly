@@ -5,19 +5,20 @@
  * @file NamedValue.h Definition of parsed context::NamedValue class
  */
 
-#include <string>
 #include "Value.h"
+
+#include <string>
 namespace context {
 
 /**
  * @brief Named value ID = val, e.g. in maple table
  */
-class NamedValue : public Value  {
+class NamedValue : public Value {
   std::string name_;
   Value* val_;
-public:
-  NamedValue(const std::string& name, Value* val)
-    : name_(name), val_(val) {}
+
+ public:
+  NamedValue(const std::string& name, Value* val) : name_(name), val_(val) {}
 
   virtual ~NamedValue() { delete val_; }
 

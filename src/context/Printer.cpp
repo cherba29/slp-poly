@@ -14,7 +14,7 @@ void Printer::process(const context::Sum& v) {
     if (v.isPos(i)) {
       if (i) this->os_ << " + ";
     } else {
-       this->os_ << " - ";
+      this->os_ << " - ";
     }
     v.getNode(i).accept(*this);
   }
@@ -27,23 +27,18 @@ void Printer::process(const context::Assignment& v) {
 }
 void Printer::process(const context::Determinant& v) {
   const context::Matrix& mtx = v.getMatrix();
-  os_ << "det(" << mtx.getName() << ")" << "# " << mtx.getNRows() << "x" << mtx.getNCols();
+  os_ << "det(" << mtx.getName() << ")"
+      << "# " << mtx.getNRows() << "x" << mtx.getNCols();
   mtx.accept(*this);
 }
 
-void Printer::process(const context::Function& /* v */) {
-}
+void Printer::process(const context::Function& /* v */) {}
 
-void Printer::process(const context::Id& v) {
-  os_ << v.getName();
-}
+void Printer::process(const context::Id& v) { os_ << v.getName(); }
 
-void Printer::process(const context::Integer& v) {
-  os_ << v.getInt();
-}
+void Printer::process(const context::Integer& v) { os_ << v.getInt(); }
 
-void Printer::process(const context::Matrix& /* v */) {
-}
+void Printer::process(const context::Matrix& /* v */) {}
 
 void Printer::process(const context::Product& v) {
   size_t nTerms = v.getNumberOfNodes();
@@ -60,8 +55,7 @@ void Printer::process(const context::Product& v) {
   }
 }
 
-void Printer::process(const context::NamedValue& /* v */) {
-}
+void Printer::process(const context::NamedValue& /* v */) {}
 
 void Printer::process(const context::Negation& v) {
   os_ << "-";
@@ -70,19 +64,15 @@ void Printer::process(const context::Negation& v) {
 
 void Printer::process(const context::Power& v) {
   v.getLeftValue().accept(*this);
-  os_<< "^" << v.getExponent();
+  os_ << "^" << v.getExponent();
 }
 
-void Printer::process(const context::RealNumber& /* v */) {
-}
+void Printer::process(const context::RealNumber& /* v */) {}
 
-void Printer::process(const context::String& /* v */) {
-}
+void Printer::process(const context::String& /* v */) {}
 
-void Printer::process(const context::Table& /* v */) {
-}
+void Printer::process(const context::Table& /* v */) {}
 
-void Printer::process(const context::ValueList& /* v */) {
-}
+void Printer::process(const context::ValueList& /* v */) {}
 
 }  // namespace context

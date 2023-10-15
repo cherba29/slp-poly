@@ -4,8 +4,8 @@
  *
  */
 
-#include "Interpolation.h"
 #include "FieldBenchmarks.h"
+#include "Interpolation.h"
 #include "math/field/CRT.h"
 #include "math/util/prime.h"
 #include "util/MultiIndexMap.h"
@@ -20,17 +20,16 @@ namespace run {
 
 typedef math::field::CRT<uint32_t> field;
 int Interpolation::runCRT32(
-         const boost::shared_ptr<context::InterpContext>& ctxtPtr,
-         util::MultiIndexMap* m) {
-
+    const boost::shared_ptr<context::InterpContext>& ctxtPtr,
+    util::MultiIndexMap* m) {
   const std::vector<uint64_t>& primes = interpProfile_->getFieldPrimes();
 
-  ASSERT0(primes.size()>0)(primes.size())
-    .msg("There must be at least one value for CRT32 option");
+  ASSERT0(primes.size() > 0)
+  (primes.size()).msg("There must be at least one value for CRT32 option");
 
   // conver to 32-bit vector
   std::vector<uint32_t> primes32;
-  for(unsigned int i = 0; i < primes.size(); ++i) {
+  for (unsigned int i = 0; i < primes.size(); ++i) {
     primes32.push_back(static_cast<uint32_t>(primes[i]));
   }
 
@@ -41,23 +40,18 @@ int Interpolation::runCRT32(
   return runWithField<field>(ctxtPtr, m);
 }
 
-
 int FieldBenchmarks::runCRT32(util::MultiIndexMap* m) {
+  uint32_t primes[] = {math::Prime<uint32_t>::A, math::Prime<uint32_t>::B,
+                       math::Prime<uint32_t>::C};
 
-  uint32_t primes[] = {
-    math::Prime<uint32_t>::A,
-    math::Prime<uint32_t>::B,
-    math::Prime<uint32_t>::C
-  };
-
-  math::field::CRT<uint32_t>::setPrimes(primes, sizeof(primes)/sizeof(primes[0]));
+  math::field::CRT<uint32_t>::setPrimes(primes,
+                                        sizeof(primes) / sizeof(primes[0]));
 
   LAPP_ << "Benchmarking with CRT32 : " << field::getName();
 
   return runWithField<field>(m);
 }
 
+}  // namespace run
 
-} // namespace run
-
-#endif // FIELD_CRT32
+#endif  // FIELD_CRT32

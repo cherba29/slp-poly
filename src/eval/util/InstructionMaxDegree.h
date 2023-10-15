@@ -9,8 +9,8 @@
 #include "util/SmartAssert.h"
 
 #include <algorithm>
-#include <ostream>
 #include <iomanip>
+#include <ostream>
 
 #define LOG_MODULE ::logging::LogModuleEnum::INSTRUCTIONMAXDEGREE
 
@@ -22,8 +22,9 @@ namespace eval {
 
 class Exponent {
   std::vector<unsigned int> v_;
-public:
-  Exponent (int n) : v_(n) { }
+
+ public:
+  Exponent(int n) : v_(n) {}
 
   void setDegree(int idx, int deg) { v_[idx] = deg; }
 
@@ -33,18 +34,16 @@ public:
 
   const unsigned int* getDegrees() const { return &v_[0]; }
 
-  void initZero() {
-    std::fill(v_.begin(),v_.end(),0);
-  }
+  void initZero() { std::fill(v_.begin(), v_.end(), 0); }
 
   static void add(Exponent& d, const Exponent& s1, const Exponent& s2) {
     std::vector<unsigned int>::const_iterator s1It = s1.v_.begin();
     std::vector<unsigned int>::const_iterator s1End = s1.v_.end();
     std::vector<unsigned int>::const_iterator s2It = s2.v_.begin();
-    ASSERT0(s1.v_.size() == s2.v_.size())(s1.v_.size())(s2.v_.size())
-      .msg("Cannot add exponents of different sizes");
-    ASSERT0(d.v_.size() <= s1.v_.size())(d.v_.size())(s1.v_.size())
-      .msg("Destination size is too large");
+    ASSERT0(s1.v_.size() == s2.v_.size())
+    (s1.v_.size())(s2.v_.size()).msg("Cannot add exponents of different sizes");
+    ASSERT0(d.v_.size() <= s1.v_.size())
+    (d.v_.size())(s1.v_.size()).msg("Destination size is too large");
     d.v_.resize(s1.v_.size());
     std::vector<unsigned int>::iterator dIt = d.v_.begin();
     for (; s1It != s1End; ++s1It, ++s2It, ++dIt) *dIt = *s1It + *s2It;
@@ -54,10 +53,10 @@ public:
     std::vector<unsigned int>::const_iterator s1It = s1.v_.begin();
     std::vector<unsigned int>::const_iterator s1End = s1.v_.end();
     std::vector<unsigned int>::const_iterator s2It = s2.v_.begin();
-    ASSERT0(s1.v_.size() == s2.v_.size())(s1.v_.size())(s2.v_.size())
-      .msg("Cannot add exponents of different sizes");
-    ASSERT0(d.v_.size() <= s1.v_.size())(d.v_.size())(s1.v_.size())
-      .msg("Destination size is too large");
+    ASSERT0(s1.v_.size() == s2.v_.size())
+    (s1.v_.size())(s2.v_.size()).msg("Cannot add exponents of different sizes");
+    ASSERT0(d.v_.size() <= s1.v_.size())
+    (d.v_.size())(s1.v_.size()).msg("Destination size is too large");
     d.v_.resize(s1.v_.size());
     std::vector<unsigned int>::iterator dIt = d.v_.begin();
     for (; s1It != s1End; ++s1It, ++s2It, ++dIt) *dIt = *s1It - *s2It;
@@ -66,8 +65,8 @@ public:
   static void mul(Exponent& d, const Exponent& s1, unsigned int e) {
     std::vector<unsigned int>::const_iterator s1It = s1.v_.begin();
     std::vector<unsigned int>::const_iterator s1End = s1.v_.end();
-    ASSERT0(d.v_.size() <= s1.v_.size())(d.v_.size())(s1.v_.size())
-      .msg("Destination size is too large");
+    ASSERT0(d.v_.size() <= s1.v_.size())
+    (d.v_.size())(s1.v_.size()).msg("Destination size is too large");
     d.v_.resize(s1.v_.size());
     std::vector<unsigned int>::iterator dIt = d.v_.begin();
     for (; s1It != s1End; ++s1It, ++dIt) *dIt = *s1It * e;
@@ -77,17 +76,17 @@ public:
     std::vector<unsigned int>::const_iterator s1It = s1.v_.begin();
     std::vector<unsigned int>::const_iterator s1End = s1.v_.end();
     std::vector<unsigned int>::const_iterator s2It = s2.v_.begin();
-    ASSERT0(s1.v_.size() == s2.v_.size())(s1.v_.size())(s2.v_.size())
-      .msg("Cannot add exponents of different sizes");
-    ASSERT0(d.v_.size() <= s1.v_.size())(d.v_.size())(s1.v_.size())
-      .msg("Destination size is too large");
+    ASSERT0(s1.v_.size() == s2.v_.size())
+    (s1.v_.size())(s2.v_.size()).msg("Cannot add exponents of different sizes");
+    ASSERT0(d.v_.size() <= s1.v_.size())
+    (d.v_.size())(s1.v_.size()).msg("Destination size is too large");
     d.v_.resize(s1.v_.size());
     std::vector<unsigned int>::iterator dIt = d.v_.begin();
     for (; s1It != s1End; ++s1It, ++s2It, ++dIt) *dIt = std::max(*s1It, *s2It);
   }
 };
 
-inline std::ostream& operator << (std::ostream& os, const Exponent& e) {
+inline std::ostream& operator<<(std::ostream& os, const Exponent& e) {
   size_t n = e.getSize();
   os << "[";
   for (size_t i = 0; i < n; ++i) {
@@ -104,27 +103,32 @@ class InstructionMaxDegree {
   unsigned int resultLoc_;
   unsigned int instructionCounter_;
   Exponent& getExponent(unsigned int idx) {
-    //if (idx >= locDegrees_.size()) { // Cant be resizing and returning references
-    //  locDegrees_.resize(idx+1, Exponent(nVars_));
-    //}
+    // if (idx >= locDegrees_.size()) { // Cant be resizing and returning
+    // references
+    //   locDegrees_.resize(idx+1, Exponent(nVars_));
+    // }
     return locDegrees_[idx];
   }
   // Prevent copying and assignment
   InstructionMaxDegree& operator=(InstructionMaxDegree& src);
   InstructionMaxDegree(const InstructionMaxDegree& orig);
-public:
+
+ public:
   InstructionMaxDegree(int nVars, int memLocs)
-     : nVars_(nVars), locDegrees_(memLocs, Exponent(nVars_)), instructionCounter_(0)  {
-       ASSERT0(nVars <= memLocs)(nVars)(memLocs)
-         .msg("Number of memory locations must be larger than number of variables");
-       // Assuming that location i is of degree 1 in variable i, i = 0..nVars-1
-       for (int i = 0; i < nVars_; i++) {
-          Exponent& degs = this->getExponent(i);
-          degs.setDegree(i, 1);
-       }
+      : nVars_(nVars),
+        locDegrees_(memLocs, Exponent(nVars_)),
+        instructionCounter_(0) {
+    ASSERT0(nVars <= memLocs)
+    (nVars)(memLocs).msg(
+        "Number of memory locations must be larger than number of variables");
+    // Assuming that location i is of degree 1 in variable i, i = 0..nVars-1
+    for (int i = 0; i < nVars_; i++) {
+      Exponent& degs = this->getExponent(i);
+      degs.setDegree(i, 1);
+    }
   }
 
-  ~InstructionMaxDegree() {  }
+  ~InstructionMaxDegree() {}
 
   template <typename F>
   void operator()(const eval::Instruction<F>& instr) {
@@ -139,8 +143,8 @@ public:
         Exponent::max(destDegs, src1Degs, src2Degs);
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
               << destDegs << "(" << instr.getDestination() << ") <-- "
-              << src1Degs << "(" << instr.getSource1() << ") "
-              << src2Degs << "(" << instr.getSource2() << ") " ;
+              << src1Degs << "(" << instr.getSource1() << ") " << src2Degs
+              << "(" << instr.getSource2() << ") ";
 
       } break;
       case InstructionEnum::SUBFROM:
@@ -149,7 +153,7 @@ public:
         Exponent::max(destDegs, destDegs, src1Degs);
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
               << destDegs << "(" << instr.getDestination() << ") <-- "
-              << src1Degs << "(" << instr.getSource1() << ") " ;
+              << src1Degs << "(" << instr.getSource1() << ") ";
 
       } break;
 
@@ -159,8 +163,8 @@ public:
         Exponent::add(destDegs, src1Degs, src2Degs);
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
               << destDegs << "(" << instr.getDestination() << ") <-- "
-              << src1Degs << "(" << instr.getSource1() << ") "
-              << src2Degs << "(" << instr.getSource2() << ") " ;
+              << src1Degs << "(" << instr.getSource1() << ") " << src2Degs
+              << "(" << instr.getSource2() << ") ";
 
         break;
       }
@@ -180,8 +184,8 @@ public:
         Exponent::sub(destDegs, src1Degs, src2Degs);
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
               << destDegs << "(" << instr.getDestination() << ") <-- "
-              << src1Degs << "(" << instr.getSource1() << ") "
-              << src2Degs << "(" << instr.getSource2() << ") " ;
+              << src1Degs << "(" << instr.getSource1() << ") " << src2Degs
+              << "(" << instr.getSource2() << ") ";
 
         break;
       }
@@ -202,7 +206,7 @@ public:
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
               << destDegs << "(" << instr.getDestination() << ") <-- "
               << src1Degs << "(" << instr.getSource1() << ") "
-              << "(" << instr.getSource2() << ") " ;
+              << "(" << instr.getSource2() << ") ";
         break;
       }
       case InstructionEnum::NEG:
@@ -214,14 +218,14 @@ public:
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
               << destDegs << "(" << instr.getDestination() << ") <-- "
               << "(" << instr.getSource1() << ") "
-              << "(" << instr.getSource2() << ") " ;
+              << "(" << instr.getSource2() << ") ";
 
         break;
       }
       case InstructionEnum::SETM: {
         int size = instr.getSource1();
         for (int i = 0; i < size; ++i) {
-          getExponent(dest+i).initZero();
+          getExponent(dest + i).initZero();
         }
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
               << destDegs << "(" << instr.getDestination() << ") " << size;
@@ -230,7 +234,7 @@ public:
       case InstructionEnum::SET: {
         destDegs.initZero();
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
-              << destDegs << "(" << instr.getDestination() << ") " ;
+              << destDegs << "(" << instr.getDestination() << ") ";
 
         break;
       }
@@ -242,21 +246,22 @@ public:
         for (int i = 0; i < size; i++) {  // For each row
           maxExp.initZero();
           for (int j = 0; j < size; j++) {
-            const Exponent& cellDegs = getExponent(firstLoc+i*size+j);
-            Exponent::max(maxExp,maxExp,cellDegs);
+            const Exponent& cellDegs = getExponent(firstLoc + i * size + j);
+            Exponent::max(maxExp, maxExp, cellDegs);
           }
           Exponent::add(destDegs, destDegs, maxExp);
         }
         LDBG_ << instructionCounter_ << " " << instr.getType().toString() << " "
               << destDegs << "(" << instr.getDestination() << ") <-- "
               << "(" << instr.getSource1() << ") "
-              << "(" << instr.getSource2() << ") " ;
+              << "(" << instr.getSource2() << ") ";
         break;
       }
 
       default: {
-        ASSERT0(false)(instructionCounter_)(instr.getType().toString())
-          .error("Unknown instruction");
+        ASSERT0(false)
+        (instructionCounter_)(instr.getType().toString())
+            .error("Unknown instruction");
         break;
       }
     }
@@ -270,7 +275,7 @@ public:
   }
 };
 
-} // namespace eval
+}  // namespace eval
 
 #undef LOG_MODULE
 #endif  // NTRP_EVAL_INSTRUCTION_MAXDEGREE_H

@@ -10,20 +10,17 @@
  * $Id$
  */
 
-
 #include "math/fft/algorithm.h"
 #include "util/SmartAssert.h"
 
 namespace math {
 namespace vandermonde {
 
-template<class F>
-FFTSolver<F>::FFTSolver(
-    unsigned int size,
-    const F* entries)
-    : size_(size), logsize_(math::intlog(size_)) { // size_ < 2^logsize_
+template <class F>
+FFTSolver<F>::FFTSolver(unsigned int size, const F* entries)
+    : size_(size), logsize_(math::intlog(size_)) {  // size_ < 2^logsize_
 
-  ASSERT0(size>0).msg("FFTVandermonde<F> cant initialize with zero size");
+  ASSERT0(size > 0).msg("FFTVandermonde<F> cant initialize with zero size");
 
   unsigned int i;
 
@@ -52,8 +49,8 @@ FFTSolver<F>::FFTSolver(
 
     for (unsigned int k = 2, len = 2; k <= logsize_; ++k, len <<= 1) {
       subprods_[k] = new F[size_];
-      math::fft::rootsToPolyStage<F>(
-          size_, len, subprods_[k - 1], subprods_[k]);
+      math::fft::rootsToPolyStage<F>(size_, len, subprods_[k - 1],
+                                     subprods_[k]);
     }
   }
   // subprods[logsize] - has prod_i (x-entries[i])
@@ -64,7 +61,7 @@ FFTSolver<F>::FFTSolver(
 
   // Compute B'(z)
   boost::scoped_array<F> deriv(new F[size_]);
-  for (i = 0; i < size_-1; ++i) {
+  for (i = 0; i < size_ - 1; ++i) {
     deriv[i] = subprods_[logsize_][i + 1] * F(i + 1);
   }
   deriv[size_ - 1].setTo(size_);
@@ -72,9 +69,10 @@ FFTSolver<F>::FFTSolver(
   scalars_ = new F[size_];
   this->evaluate(deriv.get(), scalars_);
 
-  for (i = 0; i < size_-1; ++i) {
-    ASSERT0(scalars_[i].hasInverse())(i)(scalars_[i])(size_ - 1)
-      .msg("FFTVandermonde.solveTranspose element has no inverse ");
+  for (i = 0; i < size_ - 1; ++i) {
+    ASSERT0(scalars_[i].hasInverse())
+    (i)(scalars_[i])(size_ - 1).msg(
+        "FFTVandermonde.solveTranspose element has no inverse ");
   }
 }
 
@@ -87,21 +85,19 @@ FFTSolver<F>::~FFTSolver() {
   delete[] scalars_;
 }
 
-
 template <typename F>
 void FFTSolver<F>::solveTranspose(const F* values, F* result) {
-
-  F* right = new F[2 * size_+ 1];
+  F* right = new F[2 * size_ + 1];
   F* prod = new F[2 * size_ + 1];
 
   unsigned int i;
   for (i = 0; i < size_; i++) {
     prod[i] = subprods_[logsize_][i];
-    right[size_-i] = values[i];
+    right[size_ - i] = values[i];
   }
   prod[size_].template setTo<1>();
   right[0].template setTo<0>();
-  for (++i; i <= (size_<<1); ++i) {
+  for (++i; i <= (size_ << 1); ++i) {
     prod[i].template setTo<0>();
     right[i].template setTo<0>();
   }
@@ -129,10 +125,11 @@ void FFTSolver<F>::solveTranspose(const F* values, F* result) {
 
 template <typename F>
 void FFTSolver<F>::evaluate(const F* coeffs, F* result) {
+  for (unsigned int i = 0; i < size_; i++) {
+    result[i] = coeffs[i];
+  }
 
-  for (unsigned int i = 0; i < size_; i++) { result[i] = coeffs[i]; }
-
-  F *inters = new F[size_];
+  F* inters = new F[size_];
 
   for (unsigned int k = logsize_; k > 1; k--) {
     unsigned int len = 1 << (k - 1);
@@ -149,7 +146,7 @@ void FFTSolver<F>::evaluate(const F* coeffs, F* result) {
       }
       curDiv[deg].template setTo<1>();
 
-      math::fft::polyDivMod<F>(len+deg, result+i, deg+1, curDiv, curRem);
+      math::fft::polyDivMod<F>(len + deg, result + i, deg + 1, curDiv, curRem);
 
       for (unsigned int j = 0; j < deg; j++) {
         inters[i + len + j] = curRem[j];
@@ -159,10 +156,10 @@ void FFTSolver<F>::evaluate(const F* coeffs, F* result) {
       }
       curDiv[len].template setTo<1>();
 
-      math::fft::polyDivMod<F>(len+deg, result+i, len+1, curDiv, curRem);
+      math::fft::polyDivMod<F>(len + deg, result + i, len + 1, curDiv, curRem);
 
       for (unsigned int j = 0; j < len; j++) {
-        inters[i+j] = curRem[j];
+        inters[i + j] = curRem[j];
       }
     }
     delete[] curDiv;
@@ -173,7 +170,7 @@ void FFTSolver<F>::evaluate(const F* coeffs, F* result) {
   }
   delete[] inters;
   F xCoeff;
-  for (unsigned int i = 0; i < size_-1; i += 2) {
+  for (unsigned int i = 0; i < size_ - 1; i += 2) {
     xCoeff = result[i + 1];
     result[i + 1] = result[i] - xCoeff * subprods_[0][i + 1];
     result[i] -= xCoeff * subprods_[0][i];

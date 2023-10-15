@@ -7,8 +7,8 @@
 
 #include <cmath>
 #include <ctime>
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace util {
 /**
@@ -25,17 +25,17 @@ std::string getCurrentTimeString();
  * @brief A basic stopwatch.
  */
 class Timera {
-  clock_t _start;  /**< Start of the time being measured     */
+  clock_t _start; /**< Start of the time being measured     */
   double _lapse;  /**< Most recently measured time interval */
 
-public:
+ public:
   /**
    * @brief Constructs a timer and starts it
    */
   Timera() {
-    _start = clock(); // Returns the number of clock ticks elapsed 
-                      // since the program was launched.
-	  _lapse = 0.0;
+    _start = clock();  // Returns the number of clock ticks elapsed
+                       // since the program was launched.
+    _lapse = 0.0;
   }
   /**
    * @brief Sets _lapse to seconds elapsed since the last call to this method
@@ -43,14 +43,14 @@ public:
    */
   void measure() {
     clock_t finish = clock();
-	  _lapse = 1000.0 * (finish - _start) / CLOCKS_PER_SEC;
-	  _start = finish;
+    _lapse = 1000.0 * (finish - _start) / CLOCKS_PER_SEC;
+    _start = finish;
   }
 
   /**
    * @brief Returns last value measured.
    */
-  double lapse() const { 	return _lapse; }
+  double lapse() const { return _lapse; }
 };
 
 }  // namespace util

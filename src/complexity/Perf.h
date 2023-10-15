@@ -20,18 +20,17 @@
  */
 
 #include "Tracker.h"
-
 #include "util/log.h"
 
-#include <boost/timer.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
+#include <boost/shared_ptr.hpp>
+#include <boost/timer.hpp>
 
 #define LOG_MODULE ::logging::LogModuleEnum::COMPLEXITY
 
 namespace complexity {
 
-typedef boost::function<long double (long double size)> TestFunction;
+typedef boost::function<long double(long double size)> TestFunction;
 
 /**
  * @brief Performance predictor and gatherer
@@ -41,7 +40,8 @@ typedef boost::function<long double (long double size)> TestFunction;
  * @code
  * {
  *   Perf t("MainAlg",n,50);
- *   std::cout << "Predicted time for the algorithm is " << t.predicted() << std::endl;
+ *   std::cout << "Predicted time for the algorithm is " << t.predicted() <<
+ * std::endl;
  *
  *   // Invoke Algorithm routine 50 times
  *
@@ -50,8 +50,9 @@ typedef boost::function<long double (long double size)> TestFunction;
  * @endcode
  */
 class Perf {
-  typedef void (Perf::*bool_type)() const;  // private boolean type as ptr to mem fun
-public:
+  typedef void (
+      Perf::*bool_type)() const;  // private boolean type as ptr to mem fun
+ public:
   /**
    * @brief Constructor
    */
@@ -73,7 +74,8 @@ public:
    */
   double current() const;
 
-  static int registerAlg(const std::string& alg, boost::shared_ptr<TrackWithEqn> eqn);
+  static int registerAlg(const std::string& alg,
+                         boost::shared_ptr<TrackWithEqn> eqn);
 
   template <typename EQN>
   static int registerAlg(const std::string& alg);
@@ -88,10 +90,10 @@ public:
    * @brief Return true if this enum is set to some valid value.
    */
   operator bool_type() const {
-     return tracker_ ? & Perf::this_type_does_not_support_comparisons : 0;
+    return tracker_ ? &Perf::this_type_does_not_support_comparisons : 0;
   }
 
-private:
+ private:
   boost::shared_ptr<TrackWithEqn> tracker_;
   double size_;
   int nTimes_;
@@ -108,10 +110,9 @@ int Perf::registerAlg(const std::string& alg) {
   }
   boost::shared_ptr<TrackWithEqn> tracker(new Tracker<EQN>());
 
-  Perf::registerAlg(alg,tracker);
+  Perf::registerAlg(alg, tracker);
   return 0;
 }
-
 
 }  // namespace complexity
 

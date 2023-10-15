@@ -21,7 +21,7 @@ namespace field {
 
 template <typename UIntType, UIntType MOD1, UIntType MOD2>
 class Field_uint2x {
-public:
+ public:
   typedef typename TypeInfo<UIntType>::signed_type sbase_type;
   typedef typename TypeInfo<UIntType>::unsigned_type ubase_type;
 
@@ -29,7 +29,7 @@ public:
   /**
    * @brief Default constructor, constructs without initialization
    */
-  __forceinline Field_uint2x() { }
+  __forceinline Field_uint2x() {}
 
   /**
    * @brief Initialize field from an unsigned integer,
@@ -61,7 +61,8 @@ public:
    */
   template <sbase_type VAL>
   __forceinline void setTo() {
-    val1_ = mod<VAL,MOD1>::VALUE; val2_ = mod<VAL,MOD2>::VALUE;
+    val1_ = mod<VAL, MOD1>::VALUE;
+    val2_ = mod<VAL, MOD2>::VALUE;
   }
 
   /**
@@ -86,20 +87,18 @@ public:
   /**
    * @brief Returns true if this instance equivalent to given integer.
    */
-  template <sbase_type VAL> __forceinline
-  bool is() const {
-    return val1_ == mod<VAL,MOD1>::VALUE && val2_ == mod<VAL,MOD2>::VALUE;
+  template <sbase_type VAL>
+  __forceinline bool is() const {
+    return val1_ == mod<VAL, MOD1>::VALUE && val2_ == mod<VAL, MOD2>::VALUE;
   }
 
   /**
    * @brief Returns true if this instance equivalent to given integer.
    */
-  __forceinline
-  bool is(sbase_type val) const {
-    return (val >= 0)
-        ? ((val1_ == val % MOD1) && (val2_ == val % MOD2))
-        : ((val1_ == (MOD1 - ((-val) % MOD1)))
-            && (val2_ == (MOD2 - ((-val) % MOD2))));
+  __forceinline bool is(sbase_type val) const {
+    return (val >= 0) ? ((val1_ == val % MOD1) && (val2_ == val % MOD2))
+                      : ((val1_ == (MOD1 - ((-val) % MOD1))) &&
+                         (val2_ == (MOD2 - ((-val) % MOD2))));
   }
 
   /**
@@ -108,9 +107,9 @@ public:
    * @see isNegative()
    */
   __forceinline bool isPositive() const {
-    std::pair<ubase_type,ubase_type> rads = mixedRadix();
+    std::pair<ubase_type, ubase_type> rads = mixedRadix();
     return (rads.first < MOD1 - rads.first);
-   }
+  }
 
   /**
    * @brief Returns true if value is larger than size()/2
@@ -118,7 +117,7 @@ public:
    * @see isPositive()
    */
   __forceinline bool isNegative() const {
-    std::pair<ubase_type,ubase_type> rads = mixedRadix();
+    std::pair<ubase_type, ubase_type> rads = mixedRadix();
     return (rads.first >= MOD1 - rads.first);
   }
 
@@ -127,7 +126,7 @@ public:
    * For a field only 0 does not have it.
    * For a domain many non-zero elements will have no inverse.
    */
-  __forceinline bool hasInverse() const {	return val1_ && val2_; }
+  __forceinline bool hasInverse() const { return val1_ && val2_; }
 
   //### Modifiers ##############################################################
 
@@ -137,8 +136,8 @@ public:
    * @see operator-=(Field)
    */
   __forceinline Field_uint2x& negate() {
-    if (val1_)	val1_ = MOD1 - val1_;
-    if (val2_)	val2_ = MOD2 - val2_;
+    if (val1_) val1_ = MOD1 - val1_;
+    if (val2_) val2_ = MOD2 - val2_;
     return *this;
   }
 
@@ -146,8 +145,12 @@ public:
    * @brief Swap values of two fields elements
    */
   __forceinline void swap(Field_uint2x& f) {
-    ubase_type tmp = val1_; val1_ = f.val1_; f.val1_ = tmp;
-    tmp = val2_; val2_ = f.val2_; f.val2_ = tmp;
+    ubase_type tmp = val1_;
+    val1_ = f.val1_;
+    f.val1_ = tmp;
+    tmp = val2_;
+    val2_ = f.val2_;
+    f.val2_ = tmp;
   }
 
   /**
@@ -286,39 +289,39 @@ public:
 
   /** Maximum string representation for any element of the field */
   static int getMaxStringRepLength() {
-    return sizeof(ubase_type)*2*5;
-      /* 5 dec digits per byte with +/- with null terminator */
+    return sizeof(ubase_type) * 2 * 5;
+    /* 5 dec digits per byte with +/- with null terminator */
   }
-  static int getMaxDebugStringRepLength() { return sizeof(ubase_type)*2*5; }
+  static int getMaxDebugStringRepLength() { return sizeof(ubase_type) * 2 * 5; }
 
   /**
    * @brief Returns the largest number this class can represent
    */
-  static long double getSize() { return static_cast<long double>(MOD1)*MOD2; }
+  static long double getSize() { return static_cast<long double>(MOD1) * MOD2; }
 
   /**
    * @brief Initializes the class's random number generator.
    */
-  //static void randomInit(unsigned int seed);
+  // static void randomInit(unsigned int seed);
 
-  __forceinline static
-  void add(Field_uint2x* dest, const Field_uint2x& src1, const Field_uint2x& src2);
+  __forceinline static void add(Field_uint2x* dest, const Field_uint2x& src1,
+                                const Field_uint2x& src2);
 
-  __forceinline static
-  void subtract(Field_uint2x* dest, const Field_uint2x& src1, const Field_uint2x& src2);
+  __forceinline static void subtract(Field_uint2x* dest,
+                                     const Field_uint2x& src1,
+                                     const Field_uint2x& src2);
 
-  __forceinline static
-  void neg(Field_uint2x* dest, const Field_uint2x& src);
+  __forceinline static void neg(Field_uint2x* dest, const Field_uint2x& src);
 
-  __forceinline static
-  void multiply(Field_uint2x* dest, const Field_uint2x& src1, const Field_uint2x& src2);
+  __forceinline static void multiply(Field_uint2x* dest,
+                                     const Field_uint2x& src1,
+                                     const Field_uint2x& src2);
 
-  __forceinline static
-  void divide(Field_uint2x* dest,
-              const Field_uint2x& src1, const Field_uint2x& src2);
+  __forceinline static void divide(Field_uint2x* dest, const Field_uint2x& src1,
+                                   const Field_uint2x& src2);
 
-  __forceinline static
-  void pow(Field_uint2x* dest, const Field_uint2x& src, unsigned int p);
+  __forceinline static void pow(Field_uint2x* dest, const Field_uint2x& src,
+                                unsigned int p);
 
   __forceinline static Field_uint2x* alloc(unsigned int size);
   __forceinline static void dealloc(Field_uint2x*);
@@ -327,8 +330,8 @@ public:
   __forceinline static Field_uint2x* allocSq2p(unsigned int size);
 
   __forceinline static const Field_uint2x* getPrimRoots() {
-      if (!initialized) init();
-      return primRoots;
+    if (!initialized) init();
+    return primRoots;
   }
   __forceinline static const Field_uint2x* getPrimRootInvs() {
     if (!initialized) init();
@@ -338,47 +341,46 @@ public:
   __forceinline static const char* getName() {
     const int BUF_SIZE = 80;
     static char buff[BUF_SIZE] = "Field_uint2x32XX_";
-    buff[12] = '0'+((sizeof(ubase_type)*8)/10)%10;
-    buff[13] = '0'+(sizeof(ubase_type)*8)%10;
+    buff[12] = '0' + ((sizeof(ubase_type) * 8) / 10) % 10;
+    buff[13] = '0' + (sizeof(ubase_type) * 8) % 10;
     ubase_type num = MOD1;
-    int i = BUF_SIZE-2;
-    while(num > 0) {
-      buff[i--] = '0'+(num%10);
+    int i = BUF_SIZE - 2;
+    while (num > 0) {
+      buff[i--] = '0' + (num % 10);
       num /= 10;
     }
-    buff[i--]='_';
+    buff[i--] = '_';
     num = MOD2;
-    while(num > 0) {
-      buff[i--] = '0'+(num%10);
+    while (num > 0) {
+      buff[i--] = '0' + (num % 10);
       num /= 10;
     }
 
     int j;
-    for (j = 15,i++; i < BUF_SIZE-1; i++,j++) {
+    for (j = 15, i++; i < BUF_SIZE - 1; i++, j++) {
       buff[j] = buff[i];
     }
-    //buff[j++] = ']';
+    // buff[j++] = ']';
     buff[j] = 0;
     return buff;
   }
 
-  __forceinline static const char* getId() {
-    return getName();
-  }
+  __forceinline static const char* getId() { return getName(); }
 
-
-private:
+ private:
   /** Values above POS are considered negative, and below positive */
   static const ubase_type POS1 = (MOD1 - 1) / 2;
   static const ubase_type POS2 = (MOD2 - 1) / 2;
 
-//  static base_type modulus1; /**< nonmodifyable but cannot be declared const,
-//                                  storing prime in memory location,
-//                                  needed for some asm instructions */
+  //  static base_type modulus1; /**< nonmodifyable but cannot be declared
+  //  const,
+  //                                  storing prime in memory location,
+  //                                  needed for some asm instructions */
   typedef fourier_order<MOD1> fourier1;
   typedef fourier_order<MOD2> fourier2;
-  static Field_uint2x primRoots[min<fourier1::ORDER,fourier2::ORDER>::value];
-  static Field_uint2x primRootInvs[min<fourier1::ORDER,fourier2::ORDER>::value];
+  static Field_uint2x primRoots[min<fourier1::ORDER, fourier2::ORDER>::value];
+  static Field_uint2x
+      primRootInvs[min<fourier1::ORDER, fourier2::ORDER>::value];
 
   static bool initialized;
   static bool init();
@@ -386,22 +388,21 @@ private:
   ubase_type val1_; /**< actual value in the field */
   ubase_type val2_; /**< actual value in the field */
 
-  std::pair<ubase_type,ubase_type> mixedRadix() const {
-    std::pair<ubase_type,ubase_type> rads;
+  std::pair<ubase_type, ubase_type> mixedRadix() const {
+    std::pair<ubase_type, ubase_type> rads;
     rads.first = val1_;
     if (val2_ >= rads.first)
       rads.second = val2_ - rads.first;
     else
       rads.second = MOD2 - (rads.first - val2_);
-   // @todo: Precompute inverse
-    rads.second = ModOp<ubase_type>::mul(rads.second, 
-        ModOp<ubase_type>::inv(MOD1 % MOD2, MOD2), MOD2);
+    // @todo: Precompute inverse
+    rads.second = ModOp<ubase_type>::mul(
+        rads.second, ModOp<ubase_type>::inv(MOD1 % MOD2, MOD2), MOD2);
     return rads;
   }
-// mixmuls[1] = inv(MOD1 % MOD2, MOD2)
-// rads[0] = crt[0];
-// rads[1] = ((crt[1] - crt[0])*mixmul[1]) % MOD2
-
+  // mixmuls[1] = inv(MOD1 % MOD2, MOD2)
+  // rads[0] = crt[0];
+  // rads[1] = ((crt[1] - crt[0])*mixmul[1]) % MOD2
 };
 }  // namespace field
 }  // namespace math

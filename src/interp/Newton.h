@@ -25,7 +25,7 @@ namespace interp {
  *            result will be such which satisfies poly = sum f[i]*x^i
  */
 
-template<typename F>
+template <typename F>
 void newton(unsigned int maxdeg, const F* x, const F* y, F* f) {
   F qVal;
   F fVal;
@@ -62,10 +62,9 @@ void newton(unsigned int maxdeg, const F* x, const F* y, F* f) {
 }
 
 template <typename F, typename E>
-boost::shared_ptr<algebra::Polynomial<F> >
-newtonInterpolateUnivariateEvaluator(
+boost::shared_ptr<algebra::Polynomial<F> > newtonInterpolateUnivariateEvaluator(
     unsigned int maxdeg, const std::string& varName, E& evaluator) {
-  unsigned int nTerms = maxdeg+1;
+  unsigned int nTerms = maxdeg + 1;
   // Use stack allocation for these arrays.
 #if _MSC_VER || defined __clang__
   F* xPoints = static_cast<F*>(alloca(sizeof(F) * nTerms));
@@ -92,9 +91,9 @@ newtonInterpolateUnivariateEvaluator(
   // Univariate polynomial
   std::vector<std::string> varNames(1, varName);
 
-  boost::shared_ptr<algebra::Polynomial<F> > ppol
-    = boost::shared_ptr<algebra::Polynomial<F> >(
-        new algebra::Polynomial<F>(varNames, nNonZeroTerms));
+  boost::shared_ptr<algebra::Polynomial<F> > ppol =
+      boost::shared_ptr<algebra::Polynomial<F> >(
+          new algebra::Polynomial<F>(varNames, nNonZeroTerms));
 
   for (unsigned int i = 0, t = 0; i < nTerms; ++i) {
     if (!coeffs[i].template is<0>()) {

@@ -5,8 +5,8 @@
  * @file Matrix.h Definition of parsed assignment class
  */
 
-#include "Value.h"
 #include "Integer.h"
+#include "Value.h"
 
 #include <map>
 
@@ -18,11 +18,11 @@ class Matrix : public Value {
   int maxRow_;
   int minCol_;
   int maxCol_;
-  typedef std::pair<int,int> Coord;
+  typedef std::pair<int, int> Coord;
   std::map<Coord, boost::shared_ptr<Value> > entries_;
   const Integer zero_;
-public:
 
+ public:
   Matrix() : minRow_(0), maxRow_(0), minCol_(0), maxCol_(0), zero_("0") {}
 
   void setSize(int minRow, int maxRow, int minCol, int maxCol) {
@@ -37,7 +37,7 @@ public:
   const std::string& getName() const { return name_; }
 
   void setEntry(int i, int j, Value* val) {
-    entries_.insert(std::pair<Coord,boost::shared_ptr<Value> >(
+    entries_.insert(std::pair<Coord, boost::shared_ptr<Value> >(
         Coord(i, j), boost::shared_ptr<Value>(val)));
   }
 
@@ -45,7 +45,7 @@ public:
    *  Return true if i,j th entry was set before, false otherwise.
    */
   bool isEntrySet(int i, int j) {
-    return entries_.find(Coord(minRow_+i,minCol_+j)) != entries_.end();
+    return entries_.find(Coord(minRow_ + i, minCol_ + j)) != entries_.end();
   }
 
   /**
@@ -53,8 +53,8 @@ public:
    * If no value was set before, Integer(0) is returned.
    */
   const Value& getEntry(int i, int j) const {
-    std::map<Coord, boost::shared_ptr<Value> >::const_iterator
-      it = entries_.find(Coord(minRow_+i,minCol_+j));
+    std::map<Coord, boost::shared_ptr<Value> >::const_iterator it =
+        entries_.find(Coord(minRow_ + i, minCol_ + j));
     if (it != entries_.end()) {
       return *(it->second);
     } else {
@@ -65,16 +65,16 @@ public:
   /**
    * Return number of rows used by this matrix.
    */
-  int getNRows() const { return maxRow_-minRow_+1; }
+  int getNRows() const { return maxRow_ - minRow_ + 1; }
 
   /**
    * Return number of columns used by this matrix.
    */
-  int getNCols() const { return maxCol_-minCol_+1; }
+  int getNCols() const { return maxCol_ - minCol_ + 1; }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
 };
 
 }  // namespace context
 
-#endif // NTRP_CONTEXT_MATRIX_H
+#endif  // NTRP_CONTEXT_MATRIX_H

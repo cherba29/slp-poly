@@ -6,13 +6,11 @@
  * @brief Implementation of multiindex class
  */
 
-
 #include <map>
 //#include <vector>
-#include <string>
-#include <sstream>
-
 #include <boost/variant.hpp>
+#include <sstream>
+#include <string>
 
 namespace util {
 
@@ -35,25 +33,27 @@ class MultiIndexMap {
   typedef std::map<int, MultiIndexMap> Mil;
   enum Choice { STRING, LIST, MAP };
 
-  boost::variant<
-    std::string,
-    boost::recursive_wrapper<Mil>, // List
-    boost::recursive_wrapper<Mim>  // Map
-  > value_;
+  boost::variant<std::string,
+                 boost::recursive_wrapper<Mil>,  // List
+                 boost::recursive_wrapper<Mim>   // Map
+                 >
+      value_;
 
   static MultiIndexMap error_;
 
   friend class stream_value;
 
-public:
-
+ public:
   const MultiIndexMap& operator[](const std::string& idx) const;
   const MultiIndexMap& operator[](int idx) const;
 
   MultiIndexMap& operator[](const std::string& idx);
   MultiIndexMap& operator[](int idx);
 
-  MultiIndexMap& operator=(const std::string& val) { this->value_ = val; return *this; }
+  MultiIndexMap& operator=(const std::string& val) {
+    this->value_ = val;
+    return *this;
+  }
   MultiIndexMap& operator=(const MultiIndexMap& val) {
     this->value_ = val.value_;
     return *this;

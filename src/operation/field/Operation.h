@@ -12,31 +12,24 @@
  */
 template <typename Operation>
 class OperationCount {
-public:
-  OperationCount() {
-    reset();
-  }
+ public:
+  OperationCount() { reset(); }
   void reset() {
-    for (int i = 0; i < static_cast<int> (Operation::NUMOPS); ++i) {
+    for (int i = 0; i < static_cast<int>(Operation::NUMOPS); ++i) {
       ops_[i] = 0;
     }
   }
-  void set(const Operation& op, unsigned int val) {
-    ops_[op] = val;
-  }
-  unsigned int get(const Operation& op) const {
-    return ops_[op];
-  }
-  void add(const Operation& op, unsigned int val) {
-    ops_[op] += val;
-  }
+  void set(const Operation& op, unsigned int val) { ops_[op] = val; }
+  unsigned int get(const Operation& op) const { return ops_[op]; }
+  void add(const Operation& op, unsigned int val) { ops_[op] += val; }
   OperationCount<Operation>& operator+=(const OperationCount<Operation>& fops) {
     for (int i = 0; i < static_cast<int>(Operation::NUMOPS); ++i) {
       ops_[i] += fops.ops_[i];
     }
-	return *this;
+    return *this;
   }
-private:
+
+ private:
   unsigned int ops_[Operation::NUMOPS];
 };
 

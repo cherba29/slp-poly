@@ -3,35 +3,33 @@
  */
 
 #include "runprofile/RunProfile.h"
+
 #include "runprofile/InterpProfile.h"
 
 #include <iomanip>
 #include <sstream>
 
-
 namespace runprofile {
 
-RunProfile::RunProfile()
-    : action_(ActionEnum::UNKNOWN), overwrite_(false) {
+RunProfile::RunProfile() : action_(ActionEnum::UNKNOWN), overwrite_(false) {
   for (int i = 0; i < logging::LogModuleEnum::NUM_ENUMS; ++i) {
     logLevel_[i] = logging::LogLevelEnum::WARNING;
   }
   logLevel_[logging::LogModuleEnum::APPLICATION] = logging::LogLevelEnum::INFO;
 }
 
-RunProfile::~RunProfile() {
-}
+RunProfile::~RunProfile() {}
 
 void RunProfile::setInterpProfile(boost::shared_ptr<InterpProfile>& iprof) {
   interpProfile_ = iprof;
 }
 
-std::ostream& operator << (std::ostream& os, const RunProfile& profile) {
+std::ostream& operator<<(std::ostream& os, const RunProfile& profile) {
   os << " Log levels " << std::endl;
   for (int i = 0; i < logging::LogModuleEnum::NUM_ENUMS; i++) {
     logging::LogModuleEnum module(i);
     os << std::setw(20) << std::right << module << ": "
-       <<  profile.getLogLevel(module) << std::endl;
+       << profile.getLogLevel(module) << std::endl;
   }
 
   if (profile.getTraceFileName()) {
@@ -46,11 +44,11 @@ std::ostream& operator << (std::ostream& os, const RunProfile& profile) {
   }
   os << "     Input file name: " << profile.getInputFileName() << std::endl;
   os << "    Output file name: " << profile.getOutputFileName() << std::endl;
-  os << "           Overwrite: "
-     << ((profile.isOverwrite()) ? "Yes" : "No") << std::endl;
+  os << "           Overwrite: " << ((profile.isOverwrite()) ? "Yes" : "No")
+     << std::endl;
 
-  const boost::shared_ptr<InterpProfile const>& iprof
-      = profile.getInterpProfile();
+  const boost::shared_ptr<InterpProfile const>& iprof =
+      profile.getInterpProfile();
 
   if (iprof) {
     if (0
@@ -66,7 +64,7 @@ std::ostream& operator << (std::ostream& os, const RunProfile& profile) {
 #ifdef FIELD_CRT64
         || iprof->getFieldOption() == FieldOptionEnum::CRT64
 #endif
-        ) {
+    ) {
       std::ostringstream oss;
       const std::vector<uint64_t>& primes = iprof->getFieldPrimes();
       for (unsigned int i = 0; i < primes.size(); ++i) {
@@ -76,18 +74,26 @@ std::ostream& operator << (std::ostream& os, const RunProfile& profile) {
       os << "               Field: " << iprof->getFieldOption().toString()
          << " " << oss.str() << std::endl;
     } else {
-      os << "               Field: " << iprof->getFieldOption().toString() << std::endl;
+      os << "               Field: " << iprof->getFieldOption().toString()
+         << std::endl;
     }
     if (iprof->getRandomSeed())
       os << "         Random seed: " << *(iprof->getRandomSeed()) << std::endl;
     else
       os << "         Random seed: not set" << std::endl;
-    os << "        Verify stage: " << iprof->getVerifyStage() << std::endl;;
-    os << "        Verify final: " << iprof->getVerifyFinal() << std::endl;;
-    os << "               Order: " << iprof->getVarOrder() << std::endl;;
-    os << "      Univariate Alg: " << iprof->getUnivInterpAlg() << std::endl;;
-    os << "     Vandermonde Alg: " << iprof->getVandermondeSolver() << std::endl;;
-    os << "             Pruning: " << iprof->getPrunningChoice() << std::endl;;
+    os << "        Verify stage: " << iprof->getVerifyStage() << std::endl;
+    ;
+    os << "        Verify final: " << iprof->getVerifyFinal() << std::endl;
+    ;
+    os << "               Order: " << iprof->getVarOrder() << std::endl;
+    ;
+    os << "      Univariate Alg: " << iprof->getUnivInterpAlg() << std::endl;
+    ;
+    os << "     Vandermonde Alg: " << iprof->getVandermondeSolver()
+       << std::endl;
+    ;
+    os << "             Pruning: " << iprof->getPrunningChoice() << std::endl;
+    ;
     if (iprof->getSaveFileName()) {
       os << "           Save file: " << *(iprof->getSaveFileName());
     } else {

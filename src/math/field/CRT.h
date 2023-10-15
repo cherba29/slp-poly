@@ -29,7 +29,7 @@ namespace field {
 
 template <typename UIntType>
 class CRT {
-public:
+ public:
   typedef typename TypeInfo<UIntType>::signed_type sbase_type;
   typedef typename TypeInfo<UIntType>::unsigned_type ubase_type;
 
@@ -44,7 +44,7 @@ public:
    *  @param v unsigned integer which can be larger than modulus
    *  @see setTo
    */
-//  CRT(base_type val);
+  //  CRT(base_type val);
 
   /**
    * @brief initalize field from signed integer.
@@ -66,8 +66,8 @@ public:
    * @brief Set to statically know constant value.
    * @see operator=(int)
    */
-  template <sbase_type VAL> __forceinline
-  void setTo() {
+  template <sbase_type VAL>
+  __forceinline void setTo() {
     if (VAL < 0) {
       for (unsigned int i = 0; i < nPrimes_; ++i) {
         vals_[i] = primes_[i] - ((-VAL) % primes_[i]);
@@ -100,8 +100,8 @@ public:
   /**
    * @brief Returns true if this instance equivalent to given integer.
    */
-  template <int VAL> __forceinline
-  bool is() const;
+  template <int VAL>
+  __forceinline bool is() const;
 
   /**
    * @brief Returns true if this instance equivalent to given integer.
@@ -134,14 +134,12 @@ public:
    * @see operator-()
    * @see operator-=(Field)
    */
-  __forceinline
-   void negate();
+  __forceinline void negate();
 
   /**
    * @brief Swap values of two elements
    */
-  __forceinline
-  CRT& swap(CRT& f);
+  __forceinline CRT& swap(CRT& f);
 
   /**
    * @brief set field element to its multiplicative inverse
@@ -173,8 +171,11 @@ public:
    * @brief Returns the multiplicative inverse of f
    * @see inverse()
    */
-  __forceinline
-  CRT getInverse() const { CRT A(*this); A.invert(); return A;  }
+  __forceinline CRT getInverse() const {
+    CRT A(*this);
+    A.invert();
+    return A;
+  }
 
   /**
    * @brief Raise this instance to given power.
@@ -195,10 +196,10 @@ public:
 
   int toDebugString(char* buffer) const;
 
- 	/**
-	 * @brief Replaces the current instance with right
-	 */
-	CRT& operator=(const CRT& right);
+  /**
+   * @brief Replaces the current instance with right
+   */
+  CRT& operator=(const CRT& right);
 
   /**
    * @brief Returns the additive inverse of this instance
@@ -229,43 +230,40 @@ public:
   /**
    * @brief Divides this instance by right
    */
-  CRT& operator/=(const CRT& right) {	return operator*=(right.getInverse()); }
+  CRT& operator/=(const CRT& right) { return operator*=(right.getInverse()); }
 
- /**
+  /**
    * @brief Adds this instance with given argument and returns new instance.
    * @return new instance which is sum of this and given
    * @see add
    * @see operator+=
    */
   template <typename U>
-  friend __forceinline
-  CRT<U> operator+(const CRT<U>& left, const CRT<U>& right);
-
+  friend __forceinline CRT<U> operator+(const CRT<U>& left,
+                                        const CRT<U>& right);
 
   /**
    * @brief Subtract value from this instance returning the difference
    * @see subtract
    */
   template <typename U>
-  friend __forceinline
-  CRT<U> operator-(const CRT<U>& left, const CRT<U>& right);
-
+  friend __forceinline CRT<U> operator-(const CRT<U>& left,
+                                        const CRT<U>& right);
 
   /**
    * @brief Returns (left * right) % each modulus.
    */
   template <typename U>
-  friend __forceinline
-  CRT<U> operator*(const CRT<U>& left, const CRT<U>& right);
-
+  friend __forceinline CRT<U> operator*(const CRT<U>& left,
+                                        const CRT<U>& right);
 
   /**
    * @brief Returns new instance which is division of this by given instance.
    * @see divide
    */
   template <typename U>
-  friend __forceinline CRT<U> operator/(const CRT<U>& left, const CRT<U>& right);
-
+  friend __forceinline CRT<U> operator/(const CRT<U>& left,
+                                        const CRT<U>& right);
 
   /**
    * @brief Returns true iff this instance and right are equal.
@@ -275,7 +273,6 @@ public:
   template <typename U>
   friend __forceinline bool operator==(const CRT<U>& left, const CRT<U>& right);
 
-
   /**
    * @brief Returns true iff this instance and right are not equal.
    * @see operator==
@@ -283,12 +280,10 @@ public:
   template <typename U>
   friend __forceinline bool operator!=(const CRT<U>& left, const CRT<U>& right);
 
-
-
   /** Maximum string representation for any element of the field */
   static int getMaxStringRepLength() {
     return nPrimes_ * sizeof(ubase_type) * 5;
-      /* 5 dec digits per byte with +/- with null terminator */
+    /* 5 dec digits per byte with +/- with null terminator */
   }
 
   static int getMaxDebugStringRepLength() {
@@ -305,69 +300,61 @@ public:
    */
   static void randomInit(unsigned int seed);
 
-  __forceinline
-  static void add(CRT* dest, const CRT& src1, const CRT& src2);
+  __forceinline static void add(CRT* dest, const CRT& src1, const CRT& src2);
 
-  __forceinline
-  static void subtract(CRT* dest, const CRT& src1, const CRT& src2);
+  __forceinline static void subtract(CRT* dest, const CRT& src1,
+                                     const CRT& src2);
 
-  __forceinline
-  static void neg(CRT* dest, const CRT& src);
+  __forceinline static void neg(CRT* dest, const CRT& src);
 
-  __forceinline
-  static void multiply(CRT* dest, const CRT& src1, const CRT& src2);
+  __forceinline static void multiply(CRT* dest, const CRT& src1,
+                                     const CRT& src2);
 
-  __forceinline
-  static void divide(CRT* dest, const CRT& src1, const CRT& src2);
+  __forceinline static void divide(CRT* dest, const CRT& src1, const CRT& src2);
 
-  __forceinline
-  static void pow(CRT* dest, const CRT& src, unsigned int p);
+  __forceinline static void pow(CRT* dest, const CRT& src, unsigned int p);
 
   static CRT* alloc(unsigned int size);
 
   static void dealloc(CRT* buff);
 
-  __forceinline
-  static CRT* allocSq(unsigned int size);
+  __forceinline static CRT* allocSq(unsigned int size);
 
-  __forceinline
-  static CRT* allocSq2p(unsigned int size);
+  __forceinline static CRT* allocSq2p(unsigned int size);
 
-  __forceinline
-  static const CRT* getPrimRoots() { return primRoots.get(); }
+  __forceinline static const CRT* getPrimRoots() { return primRoots.get(); }
 
-  __forceinline
-  static const CRT* getPrimRootInvs() { return primRootInvs.get(); }
+  __forceinline static const CRT* getPrimRootInvs() {
+    return primRootInvs.get();
+  }
 
-  __forceinline
-  static const char* getName() {
+  __forceinline static const char* getName() {
     const int BUF_SIZE = 80;
     static char buff[BUF_SIZE] = "CRTXX_X_";
     buff[3] = '0' + ((sizeof(ubase_type) * 8) / 10) % 10;
     buff[4] = '0' + (sizeof(ubase_type) * 8) % 10;
     buff[6] = '0' + nPrimes_;
-    int i = BUF_SIZE-2;  // place it at the end
+    int i = BUF_SIZE - 2;  // place it at the end
     int j;
-    int lastPrimeIdx = nPrimes_-1;
-    for (j = lastPrimeIdx; j >=0; --j) {
+    int lastPrimeIdx = nPrimes_ - 1;
+    for (j = lastPrimeIdx; j >= 0; --j) {
       if (j < lastPrimeIdx) buff[i--] = '_';
       ubase_type num = primes_[j];
-      while(num > 0) {
+      while (num > 0) {
         buff[i--] = '0' + (num % 10);
         num /= 10;
       }
     }
     // move over
-    for (j = 8, i++; i < BUF_SIZE-1; ++i,++j) {
+    for (j = 8, i++; i < BUF_SIZE - 1; ++i, ++j) {
       buff[j] = buff[i];
     }
-    //buff[j++] = ']';
+    // buff[j++] = ']';
     buff[j] = 0;
     return buff;
   }
 
-  __forceinline
-  static const char* getId() { return getName(); }
+  __forceinline static const char* getId() { return getName(); }
 
   /**
    * @brief Replaces _primes with the contents of the argument.
@@ -376,9 +363,9 @@ public:
   static void setPrimes(const ubase_type* primes, int n);
   static void reset();
 
-private:
+ private:
   static unsigned int nPrimes_; /**< the number of prime moduli */
-  static ubase_type* primes_;     /**< the prime moduli */
+  static ubase_type* primes_;   /**< the prime moduli */
   /** mixmuls_[i] == product(primes_[j] | j <- 0..i) % primes_[i+1] */
   static ubase_type* mixmuls_;
 
@@ -390,32 +377,32 @@ private:
    *        D. E. Knuth, _Seminumerical Algorithms_, 4.3.2, ex 7 (p. 293)
    */
   ubase_type* mixedRadix() const;
-  ubase_type* vals_;              /**< _vals[i] == number % _primes[i] */
+  ubase_type* vals_; /**< _vals[i] == number % _primes[i] */
 };
 
 /**
  * @brief Returns (left + right) % each modulus
  */
-template <typename U> __forceinline
-CRT<U> operator+(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline CRT<U> operator+(const CRT<U>& left, const CRT<U>& right);
 
 /**
  * @brief Returns (left - right) % each modulus.
  */
-template <typename U> __forceinline
-CRT<U> operator-(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline CRT<U> operator-(const CRT<U>& left, const CRT<U>& right);
 
 /**
  * @brief Returns (left * right) % each modulus.
  */
-template <typename U> __forceinline
-CRT<U> operator*(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline CRT<U> operator*(const CRT<U>& left, const CRT<U>& right);
 
 /**
  * @brief Returns (left / right) % each modulus.
  */
-template <typename U> __forceinline
-CRT<U> operator/(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline CRT<U> operator/(const CRT<U>& left, const CRT<U>& right);
 
 /**
  * @brief Returns true iff this instance and right are equal.
@@ -423,71 +410,70 @@ CRT<U> operator/(const CRT<U>& left, const CRT<U>& right);
  * @see equals
  * @see operator!=
  */
-template <typename U> __forceinline
-bool operator==(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline bool operator==(const CRT<U>& left, const CRT<U>& right);
 
 /**
  * @brief Returns true iff this instance and right are not equal.
  * @see operator==
  * @see equals
  */
-template <typename U> __forceinline
-bool operator!=(const CRT<U>& left, const CRT<U>& right) {
-  return !(operator==(left,right));
+template <typename U>
+__forceinline bool operator!=(const CRT<U>& left, const CRT<U>& right) {
+  return !(operator==(left, right));
 }
-
 
 /**
  * @brief Returns isNegative(left-right).
  */
-template <typename U> __forceinline
-bool operator<(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline bool operator<(const CRT<U>& left, const CRT<U>& right);
 
 /**
  * @brief Returns !isNegative(right-left).
  */
-template <typename U> __forceinline
-bool operator<=(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline bool operator<=(const CRT<U>& left, const CRT<U>& right);
 
 /**
  * @brief Returns isNegative(right-left).
  */
-template <typename U> __forceinline
-bool operator>(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline bool operator>(const CRT<U>& left, const CRT<U>& right);
 
 /**
  * @brief Returns !isNegative(left-right).
  */
-template <typename U> __forceinline
-bool operator>=(const CRT<U>& left, const CRT<U>& right);
+template <typename U>
+__forceinline bool operator>=(const CRT<U>& left, const CRT<U>& right);
 
 //! Returns !isNegative(left-right)
-template <typename U> __forceinline
-bool operator>=(const CRT<U>& left, const CRT<U>& right) {
+template <typename U>
+__forceinline bool operator>=(const CRT<U>& left, const CRT<U>& right) {
   return !(left - right).isNegative();
 }
 
 //! Returns isNegative(left-right)
-template <typename U> __forceinline
-bool operator<(const CRT<U>& left, const CRT<U>& right) {
+template <typename U>
+__forceinline bool operator<(const CRT<U>& left, const CRT<U>& right) {
   return (left - right).isNegative();
 }
 
 //! Returns !isNegative(right-left)
-template <typename U> __forceinline
-bool operator<=(const CRT<U>& left, const CRT<U>& right) {
+template <typename U>
+__forceinline bool operator<=(const CRT<U>& left, const CRT<U>& right) {
   return !(right - left).isNegative();
 }
 
 //! Returns isNegative(right-left)
-template <typename U> __forceinline
-bool operator>(const CRT<U>& left, const CRT<U>& right) {
+template <typename U>
+__forceinline bool operator>(const CRT<U>& left, const CRT<U>& right) {
   return (right - left).isNegative();
 }
 
 //! Returns (left / right) % each modulus
-template <typename U> __forceinline
-CRT<U> operator/(const CRT<U>& left, const CRT<U>& right) {
+template <typename U>
+__forceinline CRT<U> operator/(const CRT<U>& left, const CRT<U>& right) {
   CRT<U> result = left;
   return result /= right;
 }
@@ -495,45 +481,45 @@ CRT<U> operator/(const CRT<U>& left, const CRT<U>& right) {
 /**
  * @brief Reads f (in decimal form) from is
  */
-//std::istream& operator>>(std::istream& is, PrimeField& f);
+// std::istream& operator>>(std::istream& is, PrimeField& f);
 
 /**
  * @brief Writes f's decimal form to os
  */
-//std::ostream& operator<<(std::ostream& os, const PrimeField& f);
+// std::ostream& operator<<(std::ostream& os, const PrimeField& f);
 
-	/**
-	 * @brief Constructs an instance from the decimal form of a number.
-	 */
+/**
+ * @brief Constructs an instance from the decimal form of a number.
+ */
 //	CRT32(const std::string& digits);
 
-	/**
-	 * @brief Initializes the class's static members.
-	 */
-  /*
-	static void init() {
-		if (!_nPrimes) {
-		  _nPrimes = 1;
-		  _primes = new uint32_t[_nPrimes];
-		  _primes[0] = (uint32_t) 0xFFF00001; // 4293918721;
-		  _mixmuls = new uint32_t[_nPrimes - 1];
-		}
-	} */
+/**
+ * @brief Initializes the class's static members.
+ */
+/*
+      static void init() {
+              if (!_nPrimes) {
+                _nPrimes = 1;
+                _primes = new uint32_t[_nPrimes];
+                _primes[0] = (uint32_t) 0xFFF00001; // 4293918721;
+                _mixmuls = new uint32_t[_nPrimes - 1];
+              }
+      } */
 
-	/**
-	 * @brief Deallocates _primes
-	 */
-  /*
-	static void clearPrimes() {
-		delete[] _primes;
-		delete[] _mixmuls;
-	}
-  */
-	/**
-	 * Writes _primes to os
-	 *  this static member should not be part of this class
-	 */
-	//static void showPrimes(std::ostream& os);
+/**
+ * @brief Deallocates _primes
+ */
+/*
+      static void clearPrimes() {
+              delete[] _primes;
+              delete[] _mixmuls;
+      }
+*/
+/**
+ * Writes _primes to os
+ *  this static member should not be part of this class
+ */
+// static void showPrimes(std::ostream& os);
 
 }  // namespace field
 }  // namespace math

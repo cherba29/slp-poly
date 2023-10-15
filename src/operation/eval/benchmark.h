@@ -1,10 +1,9 @@
 #ifndef NTRP_OPERATION_BENCHMARK_H_
 #define NTRP_OPERATION_BENCHMARK_H_
 
-#include "eval/Evaluator.h"
-
 #include "complexity/Equation.h"
 #include "complexity/Tracker.h"
+#include "eval/Evaluator.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/timer.hpp>
@@ -15,9 +14,10 @@ namespace eval {
 template <typename F>
 class Evaluator {
   ::eval::Evaluator<F>& bbeval_;
-public:
+
+ public:
   typedef complexity::LinearEquation ComplexityEquation;
-  
+
   Evaluator(::eval::Evaluator<F>& bbeval) : bbeval_(bbeval) {}
 
   long double operator()(long double size) {

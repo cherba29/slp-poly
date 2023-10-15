@@ -1,16 +1,16 @@
 #ifndef NTRP_INTERP_VAND_SOLVER_FACTORY_H
-#error "Do not include this file. This is used internally by VandSolverFactory.h"
+#error \
+    "Do not include this file. This is used internally by VandSolverFactory.h"
 #endif
 
 /**
  * @file VandSolverFactory-impl.h
  */
 
-
 #include "complexity/AlgEnum.h"
 #include "complexity/PerfAlg.h"
-#include "math/vandermonde/QuadSolver.h"
 #include "math/vandermonde/FFTSolver.h"
+#include "math/vandermonde/QuadSolver.h"
 #include "util/log.h"
 
 #include <boost/log/attributes/named_scope.hpp>
@@ -23,7 +23,7 @@ namespace detail {
 
 int getQuadFFTDiff(long double* diff, long double size, int nSolve);
 
-} // namespace detail
+}  // namespace detail
 
 template <class F>
 VandSolverFactory<F>::VandSolverFactory(VandSolveTypeEnum choice)
@@ -35,17 +35,17 @@ VandSolverFactory<F>::VandSolverFactory(VandSolveTypeEnum choice)
 template <class F>
 boost::shared_ptr<math::vandermonde::Solver<F> >
 VandSolverFactory<F>::newSolver(unsigned int size, const F* entries,
-		int nSolve) const {
+                                int nSolve) const {
   BOOST_LOG_FUNCTION();
   LTRC_ << __FUNCTION__ << " Size: " << size;
 
   typedef boost::shared_ptr<math::vandermonde::Solver<F> > SolverPtr;
-  typedef typename complexity::PerfAlg<
-    complexity::NLogN2Equation,
-    math::vandermonde::FFTSolver<F> > PerfFFTSolver;
-  typedef typename complexity::PerfAlg<
-    complexity::QuadEquation,
-    math::vandermonde::QuadSolver<F> > PerfQuadSolver;
+  typedef typename complexity::PerfAlg<complexity::NLogN2Equation,
+                                       math::vandermonde::FFTSolver<F> >
+      PerfFFTSolver;
+  typedef typename complexity::PerfAlg<complexity::QuadEquation,
+                                       math::vandermonde::QuadSolver<F> >
+      PerfQuadSolver;
 
   switch (choice_.getId()) {
     case VandSolveTypeEnum::QUAD: {
@@ -59,10 +59,9 @@ VandSolverFactory<F>::newSolver(unsigned int size, const F* entries,
           complexity::AlgEnum::VAL_OF_VAND_FFT_SOLVE, size, entries));
     }
     case VandSolveTypeEnum::BEST: {
-
       LTRC_ << "Building BEST Vandermonde of size: " << size;
       long double diff;
-      if (0 != detail::getQuadFFTDiff(&diff,size,nSolve)) {
+      if (0 != detail::getQuadFFTDiff(&diff, size, nSolve)) {
         return boost::shared_ptr<math::vandermonde::Solver<F> >();
       }
       if (diff > 0) {
@@ -85,7 +84,7 @@ VandSolverFactory<F>::newSolver(unsigned int size, const F* entries,
 
 template <class F>
 const char* VandSolverFactory<F>::getAlgName(unsigned int size,
-		int nSolve) const {
+                                             int nSolve) const {
   switch (choice_.getId()) {
     case VandSolveTypeEnum::QUAD: {
       return complexity::AlgEnum::VAL_OF_VAND_QUAD_SOLVE;
@@ -95,7 +94,7 @@ const char* VandSolverFactory<F>::getAlgName(unsigned int size,
     }
     case VandSolveTypeEnum::BEST: {
       long double diff;
-      if (0 != detail::getQuadFFTDiff(&diff,size,nSolve)) {
+      if (0 != detail::getQuadFFTDiff(&diff, size, nSolve)) {
         return NULL;
       }
       if (diff < 0) {

@@ -27,7 +27,7 @@ namespace field {
 
 template <typename UIntType, UIntType MOD>
 class Field_uint {
-public:
+ public:
   typedef typename TypeInfo<UIntType>::signed_type sbase_type;
   typedef typename TypeInfo<UIntType>::unsigned_type ubase_type;
 
@@ -35,7 +35,7 @@ public:
   /**
    * @brief Default constructor, constructs without initialization
    */
-  __forceinline Field_uint() { }
+  __forceinline Field_uint() {}
 
   /**
    * @brief Initialize field from an unsigned integer,
@@ -65,8 +65,10 @@ public:
    * @brief Set to statically know constant value.
    * @see operator=(int)
    */
-  template <sbase_type VAL> __forceinline
-  void setTo() { val_ = mod<VAL,MOD>::VALUE; }
+  template <sbase_type VAL>
+  __forceinline void setTo() {
+    val_ = mod<VAL, MOD>::VALUE;
+  }
 
   /**
    * @brief Set field to dynamic integer value
@@ -90,15 +92,16 @@ public:
   /**
    * @brief Returns true if this instance equivalent to given integer.
    */
-  template <int VAL> __forceinline
-  bool is() const { return val_ == mod<VAL,MOD>::VALUE; }
+  template <int VAL>
+  __forceinline bool is() const {
+    return val_ == mod<VAL, MOD>::VALUE;
+  }
 
   /**
    * @brief Returns true if this instance equivalent to given integer.
    */
-  __forceinline
-  bool is(sbase_type val) const {
-    return (val>=0) ? (val_==val % MOD) : (val_ == (MOD - ((-val) % MOD)));
+  __forceinline bool is(sbase_type val) const {
+    return (val >= 0) ? (val_ == val % MOD) : (val_ == (MOD - ((-val) % MOD)));
   }
 
   /**
@@ -106,8 +109,7 @@ public:
    * @see size()
    * @see isNegative()
    */
-  __forceinline
-  bool isPositive() const { return val_ <= POS; }
+  __forceinline bool isPositive() const { return val_ <= POS; }
 
   /**
    * @brief Returns true if value is larger than size()/2
@@ -121,7 +123,7 @@ public:
    * For a field only 0 does not have it.
    * For a domain many non-zero elements will have no inverse.
    */
-  __forceinline bool hasInverse() const {	return !is<0>(); }
+  __forceinline bool hasInverse() const { return !is<0>(); }
 
   //### Modifiers ##############################################################
 
@@ -130,7 +132,10 @@ public:
    * @see operator-()
    * @see operator-=(Field)
    */
-  __forceinline Field_uint& negate() { if (val_)	val_ = MOD - val_; return *this; }
+  __forceinline Field_uint& negate() {
+    if (val_) val_ = MOD - val_;
+    return *this;
+  }
 
   /**
    * @brief Swap values of two fields elements
@@ -241,34 +246,34 @@ public:
    * @see add
    * @see operator+=
    */
-//  template <typename U, U M>
-//  friend Field_uint<U,M> operator+(const Field_uint<U,M>& left,
-//                                   const Field_uint<U,M>& right);
+  //  template <typename U, U M>
+  //  friend Field_uint<U,M> operator+(const Field_uint<U,M>& left,
+  //                                   const Field_uint<U,M>& right);
 
   Field_uint operator+(const Field_uint& right) const;
   /**
    * @brief Subtract value from this instance returning the difference
    * @see subtract
    */
-//  template <typename U, U M>
-//  friend Field_uint<U,M> operator-(const Field_uint<U,M>& left,
-//                                   const Field_uint<U,M>& right);
+  //  template <typename U, U M>
+  //  friend Field_uint<U,M> operator-(const Field_uint<U,M>& left,
+  //                                   const Field_uint<U,M>& right);
   Field_uint operator-(const Field_uint& right) const;
   /**
    * @brief Returns (left * right) % modulus.
    */
-  //template <typename U, U M>
-  //friend Field_uint<U,M> operator*(const Field_uint<U,M>& left,
-  //                                 const Field_uint<U,M>& right);
+  // template <typename U, U M>
+  // friend Field_uint<U,M> operator*(const Field_uint<U,M>& left,
+  //                                  const Field_uint<U,M>& right);
   Field_uint operator*(const Field_uint& right) const;
 
   /**
    * @brief Returns new instance which is division of this by given instance.
    * @see divide
    */
-  //template <typename U, U M>
-  //friend Field_uint<U,M> operator/(const Field_uint<U,M>& left,
-  //                                 const Field_uint<U,M>& right);
+  // template <typename U, U M>
+  // friend Field_uint<U,M> operator/(const Field_uint<U,M>& left,
+  //                                  const Field_uint<U,M>& right);
   Field_uint operator/(const Field_uint& right) const;
 
   /**
@@ -276,28 +281,28 @@ public:
    *        Identical to equals member function
    * @see operator!=
    */
-  //template <typename U, U M>
-  //friend bool operator==(const Field_uint<U,M>& left,
-  //                       const Field_uint<U,M>& right);
+  // template <typename U, U M>
+  // friend bool operator==(const Field_uint<U,M>& left,
+  //                        const Field_uint<U,M>& right);
   bool operator==(const Field_uint& right) const;
 
   /**
    * @brief Returns true iff this instance and right are not equal.
    * @see operator==
    */
-  //template <typename U, U M>
-  //friend bool operator!=(const Field_uint<U,M>& left,
-  //                       const Field_uint<U,M>& right);
+  // template <typename U, U M>
+  // friend bool operator!=(const Field_uint<U,M>& left,
+  //                        const Field_uint<U,M>& right);
   bool operator!=(const Field_uint& right) const;
 
   //#### Static members ########################################################
 
   /** Maximum string representation for any element of the field */
   static int getMaxStringRepLength() {
-    return sizeof(ubase_type)*5;
-      /* 5 dec digits per byte with +/- with null terminator */
+    return sizeof(ubase_type) * 5;
+    /* 5 dec digits per byte with +/- with null terminator */
   }
-  static int getMaxDebugStringRepLength() { return sizeof(ubase_type)*5; }
+  static int getMaxDebugStringRepLength() { return sizeof(ubase_type) * 5; }
 
   /**
    * @brief Returns the largest number this class can represent
@@ -309,81 +314,63 @@ public:
    */
   static void randomInit(unsigned int seed);
 
-  __forceinline static
-  void add(Field_uint* dest,
-           const Field_uint& src1, const Field_uint& src2);
+  __forceinline static void add(Field_uint* dest, const Field_uint& src1,
+                                const Field_uint& src2);
 
-  __forceinline static
-  void add(Field_uint* dest,
-           const Field_uint* src1, const Field_uint* src2, int n);
+  __forceinline static void add(Field_uint* dest, const Field_uint* src1,
+                                const Field_uint* src2, int n);
 
-  __forceinline static
-  void add(Field_uint* dest,
-           const Field_uint* src1, const Field_uint& src2, int n);
+  __forceinline static void add(Field_uint* dest, const Field_uint* src1,
+                                const Field_uint& src2, int n);
 
-    __forceinline static
-  void add(Field_uint* dest,
-           const Field_uint* src1, int n);
+  __forceinline static void add(Field_uint* dest, const Field_uint* src1,
+                                int n);
 
-  __forceinline static
-  void subtract(Field_uint* dest,
-                const Field_uint& src1, const Field_uint& src2);
+  __forceinline static void subtract(Field_uint* dest, const Field_uint& src1,
+                                     const Field_uint& src2);
 
-    __forceinline static
-  void subtract(Field_uint* dest,
-                const Field_uint* src1, const Field_uint& src2, int n);
+  __forceinline static void subtract(Field_uint* dest, const Field_uint* src1,
+                                     const Field_uint& src2, int n);
 
-  __forceinline static
-  void subtract(Field_uint* dest,
-                const Field_uint* src1, const Field_uint* src2, int n);
+  __forceinline static void subtract(Field_uint* dest, const Field_uint* src1,
+                                     const Field_uint* src2, int n);
 
-  __forceinline static
-  void subtract(Field_uint* dest,
-                const Field_uint* src1, int n);
+  __forceinline static void subtract(Field_uint* dest, const Field_uint* src1,
+                                     int n);
 
-  __forceinline static
-  void neg(Field_uint* dest, const Field_uint& src);
+  __forceinline static void neg(Field_uint* dest, const Field_uint& src);
 
-  __forceinline static
-  void neg(Field_uint* dest, const Field_uint* src, int n);
+  __forceinline static void neg(Field_uint* dest, const Field_uint* src, int n);
 
-  __forceinline static
-  void multiply(Field_uint* dest,
-                const Field_uint& src1, const Field_uint& src2);
+  __forceinline static void multiply(Field_uint* dest, const Field_uint& src1,
+                                     const Field_uint& src2);
 
-  __forceinline static
-  void multiply(Field_uint* dest,
-                const Field_uint* src1, const Field_uint* src2, int n);
+  __forceinline static void multiply(Field_uint* dest, const Field_uint* src1,
+                                     const Field_uint* src2, int n);
 
-  __forceinline static
-  void multiply(Field_uint* dest,
-                const Field_uint* src1, const Field_uint& src2, int n);
+  __forceinline static void multiply(Field_uint* dest, const Field_uint* src1,
+                                     const Field_uint& src2, int n);
 
-  __forceinline static
-  void multiply(Field_uint* dest,
-                const Field_uint* src1, int n);
+  __forceinline static void multiply(Field_uint* dest, const Field_uint* src1,
+                                     int n);
 
-  __forceinline static
-  void divide(Field_uint* dest,
-              const Field_uint& src1, const Field_uint& src2);
+  __forceinline static void divide(Field_uint* dest, const Field_uint& src1,
+                                   const Field_uint& src2);
 
-  __forceinline static
-  void divide(Field_uint* dest,
-              const Field_uint* src1, int n);
+  __forceinline static void divide(Field_uint* dest, const Field_uint* src1,
+                                   int n);
 
-  __forceinline static
-  void divide(Field_uint* dest,
-              const Field_uint* src1, const Field_uint* src2, int n);
+  __forceinline static void divide(Field_uint* dest, const Field_uint* src1,
+                                   const Field_uint* src2, int n);
 
-  __forceinline static
-  void divide(Field_uint* dest,
-              const Field_uint* src1, const Field_uint& src2, int n);
+  __forceinline static void divide(Field_uint* dest, const Field_uint* src1,
+                                   const Field_uint& src2, int n);
 
-  __forceinline static
-  void pow(Field_uint* dest, const Field_uint& src, unsigned int p);
+  __forceinline static void pow(Field_uint* dest, const Field_uint& src,
+                                unsigned int p);
 
-  __forceinline static
-  void pow(Field_uint* dest, const Field_uint* src, unsigned int p, int n);
+  __forceinline static void pow(Field_uint* dest, const Field_uint* src,
+                                unsigned int p, int n);
 
   __forceinline static Field_uint* alloc(unsigned int size);
   __forceinline static void dealloc(Field_uint*);
@@ -392,28 +379,28 @@ public:
   __forceinline static Field_uint* allocSq2p(unsigned int size);
 
   __forceinline static const Field_uint* getPrimRoots() {
-      if (!initialized) init();
-      return primRoots;
+    if (!initialized) init();
+    return primRoots;
   }
   __forceinline static const Field_uint* getPrimRootInvs() {
     if (!initialized) init();
     return primRootInvs;
   }
 
-
   __forceinline static const char* getName() {
     static bool nameSet = false;
     static char buff[] = "Field_uintXX_XXXXXXXXXXXXXXXXXXXXXXX";
     if (!nameSet) {
-      buff[10] = '0' + ((sizeof(ubase_type) *8) / 10) % 10;
-      buff[11] = '0' + (sizeof(ubase_type) *8) % 10;
+      buff[10] = '0' + ((sizeof(ubase_type) * 8) / 10) % 10;
+      buff[11] = '0' + (sizeof(ubase_type) * 8) % 10;
       UIntType mod = MOD;
       int i;
       for (i = 13; mod; ++i) {
         buff[i] = '0' + (mod % 10);
         mod /= 10;
       }
-      buff[i] = '\0'; --i;
+      buff[i] = '\0';
+      --i;
       for (int start = 13; start < i; ++start, --i) {
         std::swap(buff[start], buff[i]);
       }
@@ -422,16 +409,14 @@ public:
     return buff;
   }
 
-  __forceinline static const char* getId() {
-    return getName();
-  }
+  __forceinline static const char* getId() { return getName(); }
 
-
-private:
+ private:
   /** Values above POS are considered negative, and below positive */
   static const ubase_type POS = (MOD - 1) / 2;
 
-  // Only 2^nth roots are listed. Total number is bounded by log of the size of the Field
+  // Only 2^nth roots are listed. Total number is bounded by log of the size of
+  // the Field
   static Field_uint primRoots[sizeof(sbase_type) * 8];
   static Field_uint primRootInvs[sizeof(sbase_type) * 8];
 

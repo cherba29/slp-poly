@@ -5,7 +5,7 @@
  * @file Value.h Definition of parsed context::Value class
  */
 
-namespace context{
+namespace context {
 
 class Processor;
 
@@ -14,12 +14,12 @@ class Processor;
  *        deriving class would implement accept as { proc.process(*this); }
  * @sa Processor
  */
-class Value   {
-public:
-  virtual void accept(Processor& proc) const  = 0;
+class Value {
+ public:
+  virtual void accept(Processor& proc) const = 0;
   virtual ~Value();
 };
 
-}  // namespace constext
+}  // namespace context
 
 #endif  // NTRP_CONTEXT_VALUE_H

@@ -5,10 +5,10 @@
  * @file CodeAnnotation.h Definition of eval::CodeAnnotation class
  */
 
+#include "util/log.h"
+
 #include <string>
 #include <vector>
-
-#include "util/log.h"
 
 namespace eval {
 
@@ -18,8 +18,9 @@ class CodeAnnotation {
   std::vector<std::string> dataNames_;
   std::vector<std::string> codeAnnotation_;
   const std::string NOTSET_;
-public:
-  CodeAnnotation() : NOTSET_("") { }
+
+ public:
+  CodeAnnotation() : NOTSET_("") {}
   void setDataName(unsigned int idx, const std::string& name) {
     LTRC_ << "setDataName: " << idx << " " << name;
     if (dataNames_.size() < idx + 1) {
@@ -28,27 +29,31 @@ public:
     dataNames_[idx] = name;
   }
 
-	/**
-	 * @brief
-	 * Add annotation to instruction at given location.
-	 *
-	 * @param idx instruction index to annotate
-	 * @param desc description string for given location of instruction
-	 * @throws none
-	 *
-	 * Write detailed description for addAnnotation here.
-	 *
-	 * @see eval::Instruction | CodeAnnotation::getAnnotation
-	 */
+  /**
+   * @brief
+   * Add annotation to instruction at given location.
+   *
+   * @param idx instruction index to annotate
+   * @param desc description string for given location of instruction
+   * @throws none
+   *
+   * Write detailed description for addAnnotation here.
+   *
+   * @see eval::Instruction | CodeAnnotation::getAnnotation
+   */
   void setAnnotation(unsigned int idx, const std::string& desc) {
-    LTRC_ << "setAnnotation: " << idx << " " << desc.substr(0,80) << " ...";
-    if (codeAnnotation_.size() < idx+1) { codeAnnotation_.resize(idx+1); }
+    LTRC_ << "setAnnotation: " << idx << " " << desc.substr(0, 80) << " ...";
+    if (codeAnnotation_.size() < idx + 1) {
+      codeAnnotation_.resize(idx + 1);
+    }
     codeAnnotation_[idx] = desc;
   }
 
   void addAnnotation(unsigned int idx, const std::string& desc) {
-    LTRC_ << "addAnnotation " << idx << " " <<desc;
-    if (codeAnnotation_.size() < idx+1) { codeAnnotation_.resize(idx+1); }
+    LTRC_ << "addAnnotation " << idx << " " << desc;
+    if (codeAnnotation_.size() < idx + 1) {
+      codeAnnotation_.resize(idx + 1);
+    }
     codeAnnotation_[idx] += desc;
   }
 

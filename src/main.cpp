@@ -18,37 +18,33 @@
  * @file main.cpp Entry point for the application.
  */
 
-#include <fstream>
-#include <iostream>
-
 #include "ReturnValue.h"
-
 #include "context/maple/Driver.h"
 #include "platform/Platform.h"
 #include "run/FieldBenchmarks.h"
 #include "run/Interpolation.h"
-#include "runprofile/factory/CommandLine.h"
 #include "runprofile/RunProfile.h"
+#include "runprofile/factory/CommandLine.h"
 #include "runprofile/util.h"
 #include "util/MultiIndexMap.h"
 #include "util/Timer.h"
 
+#include <fstream>
+#include <iostream>
+
 #define LOG_MODULE ::logging::LogModuleEnum::MAIN
 #include "util/log.h"
 
-
 void showVersion(std::ostream& os) {
-  os << "  Version "
-     << Platform::getMajorVersion() << "."
-     << Platform::getMinorVersion() << "."
-     << Platform::getBugFixVersion()
-     << " built "  << Platform::getBuildTime()
-     << " Revision " << Platform::getCommitHash()
-     << " Committed on " << Platform::getCommitDateTime() << std::endl;
-  os << "    Compiled with " << Platform::getCompilerName()
-     << " version " << Platform::getCompilerVersion() << std::endl;
-  os << "  Report bugs, suggestions or comments to "
-     << Platform::getSite() << std::endl
+  os << "  Version " << Platform::getMajorVersion() << "."
+     << Platform::getMinorVersion() << "." << Platform::getBugFixVersion()
+     << " built " << Platform::getBuildTime() << " Revision "
+     << Platform::getCommitHash() << " Committed on "
+     << Platform::getCommitDateTime() << std::endl;
+  os << "    Compiled with " << Platform::getCompilerName() << " version "
+     << Platform::getCompilerVersion() << std::endl;
+  os << "  Report bugs, suggestions or comments to " << Platform::getSite()
+     << std::endl
      << std::endl;
 }
 
@@ -58,9 +54,9 @@ typedef enum {
   FILE_OPEN_ERROR = 2
 } OpenFileStatus;
 
-
-OpenFileStatus openFileForWritting(
-  std::ofstream* stream, const std::string& filename, bool newFile = true) {
+OpenFileStatus openFileForWritting(std::ofstream* stream,
+                                   const std::string& filename,
+                                   bool newFile = true) {
   if (newFile) {
     // Try to open the file
     std::ofstream ofile(filename.c_str(), std::ios::in);
@@ -77,17 +73,13 @@ OpenFileStatus openFileForWritting(
   return FILE_OPEN;
 }
 
-int runMachineInfo(
-    const runprofile::RunProfile& /* profile */,
-    util::MultiIndexMap* /* mmap */) {
-
+int runMachineInfo(const runprofile::RunProfile& /* profile */,
+                   util::MultiIndexMap* /* mmap */) {
   return 1;
 }
 
-
-int runBenchmark(
-    const runprofile::RunProfile& /* profile */, util::MultiIndexMap* mmap) {
-
+int runBenchmark(const runprofile::RunProfile& /* profile */,
+                 util::MultiIndexMap* mmap) {
   run::FieldBenchmarks fb;
 
   LAPP1_ << "Measuring speed of Field operations: ";
@@ -96,12 +88,10 @@ int runBenchmark(
   return 0;
 }
 
-
-int runInterpolation(
-    const runprofile::RunProfile& profile, util::MultiIndexMap* mmap) {
-
-  boost::shared_ptr<runprofile::InterpProfile const> iprof
-      = profile.getInterpProfile();
+int runInterpolation(const runprofile::RunProfile& profile,
+                     util::MultiIndexMap* mmap) {
+  boost::shared_ptr<runprofile::InterpProfile const> iprof =
+      profile.getInterpProfile();
 
   if (!iprof) {
     LERR_ << "No interpolation profile is defined.";
@@ -116,8 +106,8 @@ int runInterpolation(
   boost::shared_ptr<context::InterpContext> ctxtPtr(
       new context::InterpContext());
   maple::Driver parseDriver;
-  //parseDriver.setDebugScanner(true);
-  //parseDriver.setDebugParser(true);
+  // parseDriver.setDebugScanner(true);
+  // parseDriver.setDebugParser(true);
 
   boost::timer tm;
   if (!parseDriver.parse_file(profile.getInputFileName(), ctxtPtr)) {
@@ -129,14 +119,14 @@ int runInterpolation(
   LAPP1_ << "Done parsing. Got " << ctxtPtr->getNumberOfStatements()
          << " statements to execute.";
 
-  m["input"]["problem"]["numberofstatements"] = ctxtPtr->getNumberOfStatements();
+  m["input"]["problem"]["numberofstatements"] =
+      ctxtPtr->getNumberOfStatements();
 
-  LAPP1_ << "Total nVars "
-         << ctxtPtr->getNumberOfVariables()
+  LAPP1_ << "Total nVars " << ctxtPtr->getNumberOfVariables()
          << " variables to interpolate.";
 
   int nVars = ctxtPtr->getNumberOfVariables();
-  m["input"]["problem"]["variable"]["total"] = nVars ;
+  m["input"]["problem"]["variable"]["total"] = nVars;
   std::ostringstream varsStr;
   for (int i = 0; i < nVars; ++i) {
     const std::string varName = ctxtPtr->getVarName(i);
@@ -155,31 +145,26 @@ int runInterpolation(
   return 0;
 }
 
-
-ReturnValue saveData(
-    const util::MultiIndexMap& storage,
-    const std::string& filename,
-    bool shouldOverwrite) {
-
+ReturnValue saveData(const util::MultiIndexMap& storage,
+                     const std::string& filename, bool shouldOverwrite) {
   // Try to open file now before computation starts
   std::ofstream ofile;
-  OpenFileStatus status = openFileForWritting(&ofile,
-      filename, !shouldOverwrite);
+  OpenFileStatus status =
+      openFileForWritting(&ofile, filename, !shouldOverwrite);
 
-  switch(status) {
-    case FILE_OPEN: // ok
+  switch (status) {
+    case FILE_OPEN:  // ok
       break;
     case FILE_EXISTS:
-      LERR_ << "File '" << filename << "' already exist. "
+      LERR_ << "File '" << filename
+            << "' already exist. "
                "Will not overwrite unless -w option is used.";
       return ReturnValue::FILE_ALREADY_EXISTS;
     case FILE_OPEN_ERROR:
-      LERR_ << "Error opening file '" << filename
-            << "' for writing.";
+      LERR_ << "Error opening file '" << filename << "' for writing.";
       return ReturnValue::OUT_FILE_OPEN_ERROR;
     default:
-      LERR_ << "Unknown status opening file '" << filename
-            << "' for writing.";
+      LERR_ << "Unknown status opening file '" << filename << "' for writing.";
       return ReturnValue::UNKNOWN;
   }
 
@@ -191,48 +176,45 @@ ReturnValue saveData(
   return ReturnValue::SUCCESS;
 }
 
-
 int main(int argc, char* argv[]) {
   // Initialize default logging.
   // The sink can be reconfigured later depending on command line arguments.
   boost::shared_ptr<logging::sink_t> log_sink = logging::init();
 
-  std::cout << Platform::getApplicationName()
-            << " - " << Platform::getApplicationDescription();
-  std::cout << " Version " << Platform::getVersionStr()
-            << " Commit " << Platform::getCommitHash()
-            << std::endl << std::endl;
+  std::cout << Platform::getApplicationName() << " - "
+            << Platform::getApplicationDescription();
+  std::cout << " Version " << Platform::getVersionStr() << " Commit "
+            << Platform::getCommitHash() << std::endl
+            << std::endl;
 
   ReturnValue status = ReturnValue::UNKNOWN;
 
   // Parse command line arguments
   try {
-    std::unique_ptr<runprofile::RunProfile> profile
-        = runprofile::factory::CommandLine::getRunProfile(argc,argv);
+    std::unique_ptr<runprofile::RunProfile> profile =
+        runprofile::factory::CommandLine::getRunProfile(argc, argv);
 
     // Set logging level for each module
-    std::vector<
-      std::pair<logging::LogModuleEnum, logging::LogLevelEnum>
-    > moduleLogLevels;
+    std::vector<std::pair<logging::LogModuleEnum, logging::LogLevelEnum> >
+        moduleLogLevels;
     for (int i = 0; i < logging::LogModuleEnum::NUM_ENUMS; i++) {
-      moduleLogLevels.push_back(std::make_pair(
-        logging::LogModuleEnum(i),
-        profile->getLogLevel(logging::LogModuleEnum(i))
-      ));
+      moduleLogLevels.push_back(
+          std::make_pair(logging::LogModuleEnum(i),
+                         profile->getLogLevel(logging::LogModuleEnum(i))));
     }
     logging::setModuleLogLevels(log_sink, moduleLogLevels);
     logging::setLogTags(log_sink, profile->getLogTags());
 
     LAPP1_ << "Run profile:" << std::endl << *profile;
- 
+
     LAPP2_ << "Committed  on: " << Platform::getCommitDateTime();
-    //LAPP2_ << "Compiled   on: " << Platform::getCompileDate() << " "
-    //       << Platform::getCompileTime();
-    LAPP2_ << "Compiled with: " << Platform::getCompilerName()<< " "
+    // LAPP2_ << "Compiled   on: " << Platform::getCompileDate() << " "
+    //        << Platform::getCompileTime();
+    LAPP2_ << "Compiled with: " << Platform::getCompilerName() << " "
            << Platform::getCompilerVersion();
     LAPP2_ << "        flags: " << Platform::getCompilerFlags();
-    //LAPP2_ << " Report bugs : " << Platform::getBugReportName() << " "
-    //       << Platform::getBugReportEmail();
+    // LAPP2_ << " Report bugs : " << Platform::getBugReportName() << " "
+    //        << Platform::getBugReportEmail();
     LAPP2_ << " Project site: " << Platform::getSite();
 
     util::MultiIndexMap m;
@@ -264,16 +246,16 @@ int main(int argc, char* argv[]) {
         status = ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::BENCHMARK:
-        status = (0 != runBenchmark(*profile, &m))
-            ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
+        status = (0 != runBenchmark(*profile, &m)) ? ReturnValue::UNKNOWN
+                                                   : ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::MACHINE_INFO:
-        status = (0 != runMachineInfo(*profile, &m))
-            ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
+        status = (0 != runMachineInfo(*profile, &m)) ? ReturnValue::UNKNOWN
+                                                     : ReturnValue::SUCCESS;
         break;
       case runprofile::ActionEnum::INTERPOLATE:
-        status = (0 != runInterpolation(*profile, &m))
-            ? ReturnValue::UNKNOWN : ReturnValue::SUCCESS;
+        status = (0 != runInterpolation(*profile, &m)) ? ReturnValue::UNKNOWN
+                                                       : ReturnValue::SUCCESS;
         break;
       default:
         throw std::logic_error("Unknown/unimplemented action");

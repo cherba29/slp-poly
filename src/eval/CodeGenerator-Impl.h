@@ -24,12 +24,12 @@ class Operation<F, SUM> {
 public:
   static F identity() { return 0; }
   static bool isIdentity(const F& val) { return F.isZero(); }
-  static typename eval::Instruction<F>::Type getLongInstruction(bool isPositive) {
-    return isPositive?eval::Instruction<F>::Type::ADD
+  static typename eval::Instruction<F>::Type getLongInstruction(bool isPositive)
+{ return isPositive?eval::Instruction<F>::Type::ADD
                      :eval::Instruction<F>::Type::SUB;
   }
-  static typename eval::Instruction<F>::Type getAccumulateConstantInstruction() {
-    return eval::Instruction<F>::Type::ADDC;
+  static typename eval::Instruction<F>::Type getAccumulateConstantInstruction()
+{ return eval::Instruction<F>::Type::ADDC;
   }
   static void accumulate(F& sum, bool isPositive, F& val) {
     sum += isPositive?val:-val;
@@ -39,13 +39,12 @@ public:
 template <typename F, typename Op, typename T>
 class Processor {
 public:
-void operator()(CodeGenerator<F>& cg, T v, int& resultLocation_, F& resultValue_) {
-  int nTerms = v.getNumberOfNodes();
-  BOOST_SCOPED_LOG_CTX(LTRC_) << "Generating code for Sum " << nTerms << " terms...";
-  int sumLocation = -1; // undefined, location where this sum will be stored
-  int firstTermLocation = -1; // Location of first sum term
-  F sumValue = Op::identity();  // Accumulation of constants
-  eval::Instruction<F>::Type instrType;
+void operator()(CodeGenerator<F>& cg, T v, int& resultLocation_, F&
+resultValue_) { int nTerms = v.getNumberOfNodes(); BOOST_SCOPED_LOG_CTX(LTRC_)
+<< "Generating code for Sum " << nTerms << " terms..."; int sumLocation = -1; //
+undefined, location where this sum will be stored int firstTermLocation = -1; //
+Location of first sum term F sumValue = Op::identity();  // Accumulation of
+constants eval::Instruction<F>::Type instrType;
 
   for (int i = 0; i < nTerms; ++i) {
     v.getNode(i).accept(cg); // generate code for this term
@@ -86,13 +85,14 @@ void operator()(CodeGenerator<F>& cg, T v, int& resultLocation_, F& resultValue_
         instrType, sumLocation, this->resultLocation_, sumLocation));
     }
     LDBG_ << codePtr_->back();
-    // Release previous result location if it is temporary as it is no longer needed
-    if (this->alloc.isTemporaryLocation(this->resultLocation_)) {
+    // Release previous result location if it is temporary as it is no longer
+needed if (this->alloc.isTemporaryLocation(this->resultLocation_)) {
       this->alloc.releaseLocation(this->resultLocation_);
     }
   }
   // Once we passed though all sum terms, we have 3 cases
-  //  1. only contant(s) have been encountered (sumlocation < 0 && firstTermLocation < 0)
+  //  1. only contant(s) have been encountered (sumlocation < 0 &&
+firstTermLocation < 0)
   //     - nothing todo just propogate the constant
   //  2. there was only one non-constant with possibly a accumulated constant
   //     (sumlocation < 0 && firstTermLocation >=0)
@@ -114,18 +114,16 @@ void operator()(CodeGenerator<F>& cg, T v, int& resultLocation_, F& resultValue_
           annPtr_->setDataName(sumLocation, oss.str());
         }
         codePtr_->push_back(eval::Instruction<F>(
-          Op::getAccumulateConstantInstruction(), firstTermLocation, sumValue, sumLocation));
-        LDBG_ << codePtr_->back();
-      } else {
-        sumLocation = firstTermLocation;
+          Op::getAccumulateConstantInstruction(), firstTermLocation, sumValue,
+sumLocation)); LDBG_ << codePtr_->back(); } else { sumLocation =
+firstTermLocation;
       }
       this->resultLocation_ = sumLocation;
     }
-  } else { // case 3, nothing to do except perhaps add in accumulated constant if any
-    if (!sumValue.isZero()) {
-      codePtr_->push_back(eval::Instruction<F>(
-        Op::getAccumulateConstantInstruction(), sumLocation, sumValue, sumLocation));
-      LDBG_ << codePtr_->back();
+  } else { // case 3, nothing to do except perhaps add in accumulated constant
+if any if (!sumValue.isZero()) { codePtr_->push_back(eval::Instruction<F>(
+        Op::getAccumulateConstantInstruction(), sumLocation, sumValue,
+sumLocation)); LDBG_ << codePtr_->back();
     }
     resultLocation_ = sumLocation;
   }
@@ -150,31 +148,33 @@ void CodeGenerator<F>::process(const context::Sum& v) {
   int nTerms = v.getNumberOfNodes();
   BOOST_LOG_FUNCTION();
   LTRC_ << "Generating code for Sum " << nTerms << " terms...";
-  int sumLocation = -1; // undefined, location where this sum will be stored
-  int firstTermLocation = -1; // Location of first sum term
-  F sumValue(0);  // Accumulation of constants
+  int sumLocation = -1;  // undefined, location where this sum will be stored
+  int firstTermLocation = -1;  // Location of first sum term
+  F sumValue(0);               // Accumulation of constants
   eval::InstructionEnum instrType;
 
   for (int i = 0; i < nTerms; ++i) {
-    v.getNode(i).accept(*this); // generate code for this term
+    v.getNode(i).accept(*this);  // generate code for this term
     // If result was a constant, just accumulate
     if (resultLocation_ < 0) {
-      sumValue += v.isPos(i)?this->resultValue_:-this->resultValue_;
+      sumValue += v.isPos(i) ? this->resultValue_ : -this->resultValue_;
       continue;
     }
     // Establish sum location
-    if (sumLocation < 0) { // If sum location is not set
+    if (sumLocation < 0) {  // If sum location is not set
       if (firstTermLocation >= 0) {
         if (this->alloc.isTemporaryLocation(firstTermLocation)) {
           sumLocation = firstTermLocation;
         } else {
           sumLocation = this->alloc.reserveLocation();
-          std::stringstream oss; oss << "_t" << sumLocation;
+          std::stringstream oss;
+          oss << "_t" << sumLocation;
           annPtr_->setDataName(sumLocation, oss.str());
-          instrType = v.isPos(i)?eval::InstructionEnum::ADD
-                                :eval::InstructionEnum::SUB;
-          codePtr_->push_back(eval::Instruction<F>(
-            instrType, firstTermLocation, this->resultLocation_, sumLocation));
+          instrType = v.isPos(i) ? eval::InstructionEnum::ADD
+                                 : eval::InstructionEnum::SUB;
+          codePtr_->push_back(eval::Instruction<F>(instrType, firstTermLocation,
+                                                   this->resultLocation_,
+                                                   sumLocation));
           LDBG_ << codePtr_->back();
           continue;
         }
@@ -184,25 +184,27 @@ void CodeGenerator<F>::process(const context::Sum& v) {
       }
     }
     // It is not a constant and sum location is set
-    if (i < nTerms-1) { // If this is not the last term
-      instrType = v.isPos(i)?eval::InstructionEnum::ADDTO
-                            :eval::InstructionEnum::SUBFROM;
-      codePtr_->push_back(eval::Instruction<F>(
-        instrType, this->resultLocation_, 0, sumLocation));
+    if (i < nTerms - 1) {  // If this is not the last term
+      instrType = v.isPos(i) ? eval::InstructionEnum::ADDTO
+                             : eval::InstructionEnum::SUBFROM;
+      codePtr_->push_back(eval::Instruction<F>(instrType, this->resultLocation_,
+                                               0, sumLocation));
     } else {
-      instrType = v.isPos(i)?eval::InstructionEnum::ADD
-                            :eval::InstructionEnum::SUB;
+      instrType =
+          v.isPos(i) ? eval::InstructionEnum::ADD : eval::InstructionEnum::SUB;
       codePtr_->push_back(eval::Instruction<F>(
-        instrType, sumLocation, this->resultLocation_, sumLocation));
+          instrType, sumLocation, this->resultLocation_, sumLocation));
     }
     LDBG_ << codePtr_->back();
-    // Release previous result location if it is temporary as it is no longer needed
+    // Release previous result location if it is temporary as it is no longer
+    // needed
     if (this->alloc.isTemporaryLocation(this->resultLocation_)) {
       this->alloc.releaseLocation(this->resultLocation_);
     }
   }
   // Once we passed though all sum terms, we have 3 cases
-  //  1. only contant(s) have been encountered (sumlocation < 0 && firstTermLocation < 0)
+  //  1. only contant(s) have been encountered (sumlocation < 0 &&
+  //  firstTermLocation < 0)
   //     - nothing todo just propogate the constant
   //  2. there was only one non-constant with possibly a accumulated constant
   //     (sumlocation < 0 && firstTermLocation >=0)
@@ -211,30 +213,33 @@ void CodeGenerator<F>::process(const context::Sum& v) {
   //     - return sumLocation (after adding in a constant)
 
   if (sumLocation < 0) {
-    if (firstTermLocation < 0) { // case 1
+    if (firstTermLocation < 0) {      // case 1
       this->resultValue_ = sumValue;  // Only set resultValue as constant
       this->resultLocation_ = -1;
-    } else { // case 2
+    } else {  // case 2
       if (!sumValue.template is<0>()) {
         if (this->alloc.isTemporaryLocation(firstTermLocation)) {
           sumLocation = firstTermLocation;
         } else {
           sumLocation = this->alloc.reserveLocation();
-          std::stringstream oss; oss << "_t" << sumLocation;
+          std::stringstream oss;
+          oss << "_t" << sumLocation;
           annPtr_->setDataName(sumLocation, oss.str());
         }
-        codePtr_->push_back(eval::Instruction<F>(
-          eval::InstructionEnum::ADDC, firstTermLocation, sumValue, sumLocation));
+        codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::ADDC,
+                                                 firstTermLocation, sumValue,
+                                                 sumLocation));
         LDBG_ << codePtr_->back();
       } else {
         sumLocation = firstTermLocation;
       }
       this->resultLocation_ = sumLocation;
     }
-  } else { // case 3, nothing to do except perhaps add in accumulated constant if any
+  } else {  // case 3, nothing to do except perhaps add in accumulated constant
+            // if any
     if (!sumValue.template is<0>()) {
       codePtr_->push_back(eval::Instruction<F>(
-        eval::InstructionEnum::ADDC, sumLocation, sumValue, sumLocation));
+          eval::InstructionEnum::ADDC, sumLocation, sumValue, sumLocation));
       LDBG_ << codePtr_->back();
     }
     resultLocation_ = sumLocation;
@@ -246,31 +251,34 @@ void CodeGenerator<F>::process(const context::Product& v) {
   int nTerms = v.getNumberOfNodes();
   BOOST_LOG_FUNCTION();
   LTRC_ << "Generating code for Product " << nTerms << " terms...";
-  int sumLocation = -1; // undefined, location where this sum will be stored
-  int firstTermLocation = -1; // Location of first sum term
-  F sumValue(1);  // Accumulation of constants
+  int sumLocation = -1;  // undefined, location where this sum will be stored
+  int firstTermLocation = -1;  // Location of first sum term
+  F sumValue(1);               // Accumulation of constants
   eval::InstructionEnum instrType;
 
   for (int i = 0; i < nTerms; ++i) {
-    v.getNode(i).accept(*this); // generate code for this term
+    v.getNode(i).accept(*this);  // generate code for this term
     // If result was a constant, just accumulate
     if (resultLocation_ < 0) {
-      sumValue *= v.isPos(i)?this->resultValue_:this->resultValue_.getInverse();
+      sumValue *=
+          v.isPos(i) ? this->resultValue_ : this->resultValue_.getInverse();
       continue;
     }
     // Establish sum location
-    if (sumLocation < 0) { // If sum location is not set
+    if (sumLocation < 0) {  // If sum location is not set
       if (firstTermLocation >= 0) {
         if (this->alloc.isTemporaryLocation(firstTermLocation)) {
           sumLocation = firstTermLocation;
         } else {
           sumLocation = this->alloc.reserveLocation();
-          std::stringstream oss; oss << "_t" << sumLocation;
+          std::stringstream oss;
+          oss << "_t" << sumLocation;
           annPtr_->setDataName(sumLocation, oss.str());
-          instrType = v.isPos(i)?eval::InstructionEnum::MUL
-                                :eval::InstructionEnum::DIV;
-          codePtr_->push_back(eval::Instruction<F>(
-            instrType, firstTermLocation, this->resultLocation_, sumLocation));
+          instrType = v.isPos(i) ? eval::InstructionEnum::MUL
+                                 : eval::InstructionEnum::DIV;
+          codePtr_->push_back(eval::Instruction<F>(instrType, firstTermLocation,
+                                                   this->resultLocation_,
+                                                   sumLocation));
           LDBG_ << codePtr_->back();
           continue;
         }
@@ -280,25 +288,27 @@ void CodeGenerator<F>::process(const context::Product& v) {
       }
     }
     // It is not a constant and sum location is set
-    if (i < nTerms-1) { // If this is not the last term
-      instrType = v.isPos(i)?eval::InstructionEnum::MULBY
-                            :eval::InstructionEnum::DIVBY;
-      codePtr_->push_back(eval::Instruction<F>(
-        instrType, this->resultLocation_, 0, sumLocation));
+    if (i < nTerms - 1) {  // If this is not the last term
+      instrType = v.isPos(i) ? eval::InstructionEnum::MULBY
+                             : eval::InstructionEnum::DIVBY;
+      codePtr_->push_back(eval::Instruction<F>(instrType, this->resultLocation_,
+                                               0, sumLocation));
     } else {
-      instrType = v.isPos(i)?eval::InstructionEnum::MUL
-                            :eval::InstructionEnum::DIV;
+      instrType =
+          v.isPos(i) ? eval::InstructionEnum::MUL : eval::InstructionEnum::DIV;
       codePtr_->push_back(eval::Instruction<F>(
-        instrType, sumLocation, this->resultLocation_, sumLocation));
+          instrType, sumLocation, this->resultLocation_, sumLocation));
     }
     LDBG_ << codePtr_->back();
-    // Release previous result location if it is temporary as it is no longer needed
+    // Release previous result location if it is temporary as it is no longer
+    // needed
     if (this->alloc.isTemporaryLocation(this->resultLocation_)) {
       this->alloc.releaseLocation(this->resultLocation_);
     }
   }
   // Once we passed though all sum terms, we have 3 cases
-  //  1. only contant(s) have been encountered (sumlocation < 0 && firstTermLocation < 0)
+  //  1. only contant(s) have been encountered (sumlocation < 0 &&
+  //  firstTermLocation < 0)
   //     - nothing todo just propogate the constant
   //  2. there was only one non-constant with possibly a accumulated constant
   //     (sumlocation < 0 && firstTermLocation >=0)
@@ -307,30 +317,33 @@ void CodeGenerator<F>::process(const context::Product& v) {
   //     - return sumLocation (after adding in a constant)
 
   if (sumLocation < 0) {
-    if (firstTermLocation < 0) { // case 1
+    if (firstTermLocation < 0) {      // case 1
       this->resultValue_ = sumValue;  // Only set resultValue as constant
       this->resultLocation_ = -1;
-    } else { // case 2
+    } else {  // case 2
       if (!sumValue.template is<1>()) {
         if (this->alloc.isTemporaryLocation(firstTermLocation)) {
           sumLocation = firstTermLocation;
         } else {
           sumLocation = this->alloc.reserveLocation();
-          std::stringstream oss; oss << "_t" << sumLocation;
+          std::stringstream oss;
+          oss << "_t" << sumLocation;
           annPtr_->setDataName(sumLocation, oss.str());
         }
-        codePtr_->push_back(eval::Instruction<F>(
-          eval::InstructionEnum::MULC, firstTermLocation, sumValue, sumLocation));
+        codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::MULC,
+                                                 firstTermLocation, sumValue,
+                                                 sumLocation));
         LDBG_ << codePtr_->back();
       } else {
         sumLocation = firstTermLocation;
       }
       this->resultLocation_ = sumLocation;
     }
-  } else { // case 3, nothing to do except perhaps add in accumulated constant if any
+  } else {  // case 3, nothing to do except perhaps add in accumulated constant
+            // if any
     if (!sumValue.template is<1>()) {
       codePtr_->push_back(eval::Instruction<F>(
-        eval::InstructionEnum::MULC, sumLocation, sumValue, sumLocation));
+          eval::InstructionEnum::MULC, sumLocation, sumValue, sumLocation));
       LDBG_ << codePtr_->back();
     }
     resultLocation_ = sumLocation;
@@ -343,7 +356,8 @@ template <typename F>
 void CodeGenerator<F>::process(const context::Sum& v) {
   // TODO: need to be refactored
   int nTerms = v.getNumberOfNodes();
-  BOOST_SCOPED_LOG_CTX(LTRC_) << "Generating code for Sum " << nTerms << " terms...";
+  BOOST_SCOPED_LOG_CTX(LTRC_) << "Generating code for Sum " << nTerms << "
+terms...";
 
   int sumLocation = -1; // undefined, location where this sum will be stored
   int firstTermLocation = -1; // Location of first sum term
@@ -360,23 +374,24 @@ void CodeGenerator<F>::process(const context::Sum& v) {
       if (sumLocation >= 0) { // If sum location already determined
         if (i < nTerms-1) { // If this is not the last term
           if (v.isPos(i)) {
-            LDBG_ << "ADDTO   " << sumLocation << ", "  << this->resultLocation_;
-            codePtr_->push_back(eval::Instruction<F>(
-              eval::Instruction<F>::Type::ADDTO, this->resultLocation_, 0, sumLocation));
-          } else {
-            LDBG_ << "SUBFROM " << sumLocation << ", "  << this->resultLocation_;
-            codePtr_->push_back(eval::Instruction<F>(
-              eval::Instruction<F>::Type::SUBFROM, this->resultLocation_, 0, sumLocation));
+            LDBG_ << "ADDTO   " << sumLocation << ", "  <<
+this->resultLocation_; codePtr_->push_back(eval::Instruction<F>(
+              eval::Instruction<F>::Type::ADDTO, this->resultLocation_, 0,
+sumLocation)); } else { LDBG_ << "SUBFROM " << sumLocation << ", "  <<
+this->resultLocation_; codePtr_->push_back(eval::Instruction<F>(
+              eval::Instruction<F>::Type::SUBFROM, this->resultLocation_, 0,
+sumLocation));
           }
         } else { // This is last term of the sum
           if (v.isPos(i)) {
-            LDBG_ << "ADD   " << sumLocation << ", "  << sumLocation << ", " << resultLocation_;
+            LDBG_ << "ADD   " << sumLocation << ", "  << sumLocation << ", " <<
+resultLocation_; codePtr_->push_back(eval::Instruction<F>(
+              eval::Instruction<F>::Type::ADD, this->resultLocation_,
+sumLocation, sumLocation)); } else { LDBG_ << "SUB   " << sumLocation << ", " <<
+sumLocation << ", " << resultLocation_;
             codePtr_->push_back(eval::Instruction<F>(
-              eval::Instruction<F>::Type::ADD, this->resultLocation_, sumLocation, sumLocation));
-          } else {
-            LDBG_ << "SUB   " << sumLocation << ", "  << sumLocation << ", " << resultLocation_;
-            codePtr_->push_back(eval::Instruction<F>(
-              eval::Instruction<F>::Type::SUB, sumLocation, this->resultLocation_, sumLocation));
+              eval::Instruction<F>::Type::SUB, sumLocation,
+this->resultLocation_, sumLocation));
           }
         }
         if (this->alloc.isTemporaryLocation(this->resultLocation_)) {
@@ -388,23 +403,24 @@ void CodeGenerator<F>::process(const context::Sum& v) {
             sumLocation = firstTermLocation;
             if (i < nTerms-1) { // If this is not the last term
               if (v.isPos(i)) {
-                LDBG_ << "ADDTO  " << sumLocation << ", "  << this->resultLocation_;
-                codePtr_->push_back(eval::Instruction<F>(
-                  eval::Instruction<F>::Type::ADDTO, this->resultLocation_, 0, sumLocation));
-              } else {
-                LDBG_ << "SUBFROM " << sumLocation << ", "  << this->resultLocation_;
-                codePtr_->push_back(eval::Instruction<F>(
-                  eval::Instruction<F>::Type::SUBFROM, this->resultLocation_, 0, sumLocation));
+                LDBG_ << "ADDTO  " << sumLocation << ", "  <<
+this->resultLocation_; codePtr_->push_back(eval::Instruction<F>(
+                  eval::Instruction<F>::Type::ADDTO, this->resultLocation_, 0,
+sumLocation)); } else { LDBG_ << "SUBFROM " << sumLocation << ", "  <<
+this->resultLocation_; codePtr_->push_back(eval::Instruction<F>(
+                  eval::Instruction<F>::Type::SUBFROM, this->resultLocation_, 0,
+sumLocation));
               }
             } else {
               if (v.isPos(i)) {
-                LDBG_ << "ADD   " << sumLocation << ", "  << sumLocation << ", " << resultLocation_;
+                LDBG_ << "ADD   " << sumLocation << ", "  << sumLocation << ", "
+<< resultLocation_; codePtr_->push_back(eval::Instruction<F>(
+                  eval::Instruction<F>::Type::ADD, this->resultLocation_,
+sumLocation, sumLocation)); } else { LDBG_ << "SUB   " << sumLocation << ", " <<
+sumLocation << ", " << resultLocation_;
                 codePtr_->push_back(eval::Instruction<F>(
-                  eval::Instruction<F>::Type::ADD, this->resultLocation_, sumLocation, sumLocation));
-              } else {
-                LDBG_ << "SUB   " << sumLocation << ", "  << sumLocation << ", " << resultLocation_;
-                codePtr_->push_back(eval::Instruction<F>(
-                  eval::Instruction<F>::Type::SUB, sumLocation, this->resultLocation_, sumLocation));
+                  eval::Instruction<F>::Type::SUB, sumLocation,
+this->resultLocation_, sumLocation));
               }
             }
           } else {
@@ -412,13 +428,14 @@ void CodeGenerator<F>::process(const context::Sum& v) {
             std::stringstream oss; oss << "_t" << sumLocation;
             annPtr_->setDataName(sumLocation, oss.str());
             if (v.isPos(i)) {
-              LDBG_ << "ADD  " << sumLocation << ", "  << firstTermLocation << ", " << this->resultLocation_;
+              LDBG_ << "ADD  " << sumLocation << ", "  << firstTermLocation <<
+", " << this->resultLocation_; codePtr_->push_back(eval::Instruction<F>(
+                eval::Instruction<F>::Type::ADD, this->resultLocation_,
+firstTermLocation, sumLocation)); } else { LDBG_ << "SUB   " << sumLocation <<
+", "  << sumLocation << ", " << resultLocation_;
               codePtr_->push_back(eval::Instruction<F>(
-                eval::Instruction<F>::Type::ADD, this->resultLocation_, firstTermLocation, sumLocation));
-            } else {
-              LDBG_ << "SUB   " << sumLocation << ", "  << sumLocation << ", " << resultLocation_;
-              codePtr_->push_back(eval::Instruction<F>(
-                eval::Instruction<F>::Type::SUB, sumLocation, this->resultLocation_, sumLocation));
+                eval::Instruction<F>::Type::SUB, sumLocation,
+this->resultLocation_, sumLocation));
             }
           }
           if (this->alloc.isTemporaryLocation(this->resultLocation_)) {
@@ -432,23 +449,27 @@ void CodeGenerator<F>::process(const context::Sum& v) {
   }
   if (sumLocation >= 0) { // and there was non-constant term
       if (!sumValue.isZero()) {
-        LDBG_ << "ADDC  " << sumLocation << ", " << sumLocation << ", F(" << sumValue << ")";
-        codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::ADDC, sumLocation, sumValue, sumLocation));
+        LDBG_ << "ADDC  " << sumLocation << ", " << sumLocation << ", F(" <<
+sumValue << ")";
+        codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::ADDC,
+sumLocation, sumValue, sumLocation));
       }
   }  else {
     if (firstTermLocation >= 0) {  // But there was non-const term
       if (!sumValue.isZero()) {
           if (this->alloc.isTemporaryLocation(firstTermLocation)) {
             sumLocation = firstTermLocation;
-            LDBG_ << "ADDC  " << sumLocation << ", " << sumLocation << ", F(" << sumValue << ")";
-            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::ADDC, sumLocation, sumValue, sumLocation));
-          } else {
-            sumLocation = this->alloc.reserveLocation();
-            std::stringstream oss; oss << "_t" << sumLocation;
-            annPtr_->setDataName(sumLocation, oss.str());
+            LDBG_ << "ADDC  " << sumLocation << ", " << sumLocation << ", F(" <<
+sumValue << ")";
+            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::ADDC,
+sumLocation, sumValue, sumLocation)); } else { sumLocation =
+this->alloc.reserveLocation(); std::stringstream oss; oss << "_t" <<
+sumLocation; annPtr_->setDataName(sumLocation, oss.str());
 
-            LDBG_ << "ADDC  " << sumLocation << ", "  << firstTermLocation << ", F(" << sumValue << ")";
-            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::ADDC, firstTermLocation, sumValue, sumLocation));
+            LDBG_ << "ADDC  " << sumLocation << ", "  << firstTermLocation << ",
+F(" << sumValue << ")";
+            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::ADDC,
+firstTermLocation, sumValue, sumLocation));
           }
       } else {
         sumLocation = firstTermLocation;
@@ -466,27 +487,29 @@ void CodeGenerator<F>::process(const context::Sum& v) {
 template <typename F>
 void CodeGenerator<F>::process(const context::Assignment& v) {
   BOOST_LOG_FUNCTION();
-  LTRC_ << "Generating code for Assignment to '"
-    << v.getId() << "' (" << cntxPtr_->getIdIndex(v.getId()) << ")";
+  LTRC_ << "Generating code for Assignment to '" << v.getId() << "' ("
+        << cntxPtr_->getIdIndex(v.getId()) << ")";
 
   v.getValue().accept(*this);  // Process right hand side first.
 
   // Get last instruction produced by rhs.
   if (!codePtr_ || (codePtr_->size() == 0)) {
-    const char* err = "Unexpected null or empty code array while generating code for assignment";
+    const char* err =
+        "Unexpected null or empty code array while generating code for "
+        "assignment";
     LERR_ << err;
     throw std::runtime_error(err);
   }
   // Get index of a variable to assign to.
   int idxDest = this->cntxPtr_->getIdIndex(v.getId());
   if (resultLocation_ < 0) {  // Result is just a constant.
-    codePtr_->push_back(eval::Instruction<F>(
-        eval::InstructionEnum::SET, 0, resultValue_,idxDest));
+    codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::SET, 0,
+                                             resultValue_, idxDest));
   } else if (!this->alloc.isTemporaryLocation(resultLocation_)) {
-      //resultLocation_ != currDataSize_-1) {
-    codePtr_->push_back(eval::Instruction<F>(
-        eval::InstructionEnum::COPY, resultLocation_, 0, idxDest));
-  } else { // Temporary location, modify last instruction
+    // resultLocation_ != currDataSize_-1) {
+    codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::COPY,
+                                             resultLocation_, 0, idxDest));
+  } else {  // Temporary location, modify last instruction
     eval::Instruction<F>& last = codePtr_->back();
     // Change destination of last instruction to it.
     last.setDestination(idxDest);
@@ -503,28 +526,27 @@ void CodeGenerator<F>::process(const context::Determinant& v) {
   int nCols = mtx.getNCols();
 
   BOOST_LOG_FUNCTION();
-  LTRC_ << "Generating code for Determinant of matrix "
-    << mtx.getName() << " " << nRows << "x" << nCols;
-  //int size2 = math::intlog(nRows);
+  LTRC_ << "Generating code for Determinant of matrix " << mtx.getName() << " "
+        << nRows << "x" << nCols;
+  // int size2 = math::intlog(nRows);
 
   // Reserve memmory locations for this matrix
   int matrixStart = this->alloc.reserveLocation(
       nRows * nCols /* 1 << (size2 << 1) */, false /* non-temporary */);
 
-
-  //std::vector<std::pair<int,int> > zeroes;
-  //int prevZeroLocation = -1;
-  codePtr_->push_back(eval::Instruction<F>(
-    eval::InstructionEnum::SETM, nRows*nCols, F(0), matrixStart));
+  // std::vector<std::pair<int,int> > zeroes;
+  // int prevZeroLocation = -1;
+  codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::SETM,
+                                           nRows * nCols, F(0), matrixStart));
 
   LDBG_ << this->codePtr_->back();
 
   for (int i = 0; i < nRows; i++) {
     for (int j = 0; j < nCols; j++) {
-      //int loc = matrixStart+(i<<size2)|j;
-      int loc = matrixStart+i*nRows+j;
+      // int loc = matrixStart+(i<<size2)|j;
+      int loc = matrixStart + i * nRows + j;
 
-      const context::Value& val = mtx.getEntry(i,j);
+      const context::Value& val = mtx.getEntry(i, j);
 
       // Get string representation of matrix entry assignment
       std::ostringstream ss;
@@ -541,16 +563,16 @@ void CodeGenerator<F>::process(const context::Determinant& v) {
       if (resultLocation_ < 0) {
         if (!this->resultValue_.template is<0>()) {
           this->annPtr_->addAnnotation(startInstr, ss.str());
-          codePtr_->push_back(eval::Instruction<F>(
-            eval::InstructionEnum::SET, 1, this->resultValue_, loc));
+          codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::SET,
+                                                   1, this->resultValue_, loc));
           LDBG_ << this->codePtr_->back();
         }
       } else {
         this->annPtr_->addAnnotation(startInstr, ss.str());
         if (!this->alloc.isTemporaryLocation(resultLocation_)) {
-          //resultLocation_ != currDataSize_-1) {
-          codePtr_->push_back(eval::Instruction<F>(
-             eval::InstructionEnum::COPY, resultLocation_, 0, loc));
+          // resultLocation_ != currDataSize_-1) {
+          codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::COPY,
+                                                   resultLocation_, 0, loc));
           LDBG_ << this->codePtr_->back();
         } else {
           // No need to issue instruction, just change last destination.
@@ -565,12 +587,13 @@ void CodeGenerator<F>::process(const context::Determinant& v) {
   }
   // Save result of the determinant into temporary location
   int loc = this->alloc.reserveLocation();
-  codePtr_->push_back(eval::Instruction<F>(
-      eval::InstructionEnum::DET, matrixStart, nRows, loc));
+  codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::DET,
+                                           matrixStart, nRows, loc));
   LDBG_ << this->codePtr_->back();
   resultLocation_ = loc;
   // Anotate memory location
-  std::stringstream oss; oss << "_t" << resultLocation_;
+  std::stringstream oss;
+  oss << "_t" << resultLocation_;
   annPtr_->setDataName(resultLocation_, oss.str());
 }
 
@@ -590,8 +613,8 @@ template <typename F>
 void CodeGenerator<F>::process(const context::Id& v) {
   int varIndex = cntxPtr_->getIdIndex(v.getName());
   BOOST_LOG_FUNCTION();
-  LTRC_ << "Generating code for Id '"
-      << v.getName() << "' (" << varIndex << ")";
+  LTRC_ << "Generating code for Id '" << v.getName() << "' (" << varIndex
+        << ")";
 
   this->resultLocation_ = this->cntxPtr_->getIdIndex(v.getName());
 }
@@ -599,8 +622,7 @@ void CodeGenerator<F>::process(const context::Id& v) {
 template <typename F>
 void CodeGenerator<F>::process(const context::Integer& v) {
   BOOST_LOG_FUNCTION();
-  LTRC_ << "Generating code for Integer '"
-      << v.getInt() << "'";
+  LTRC_ << "Generating code for Integer '" << v.getInt() << "'";
 
   // Convert integer represented as string into Field value this way unlimited
   // size integers are supported and only limited by field size.
@@ -626,7 +648,8 @@ void CodeGenerator<F>::process(const context::Matrix& /* v */) {
 template <typename F>
 void CodeGenerator<F>::process(const context::Product& v) {
   int nTerms = v.getNumberOfNodes();
-  BOOST_SCOPED_LOG_CTX(LTRC_) << "Generating code for Product of " << nTerms << " terms...";
+  BOOST_SCOPED_LOG_CTX(LTRC_) << "Generating code for Product of " << nTerms <<
+" terms...";
 
   int productLocation = -1; // undefined
   int firstTermLocation = -1; // undefined
@@ -646,24 +669,26 @@ void CodeGenerator<F>::process(const context::Product& v) {
       if (productLocation >= 0) { // If we have a place to accumulate product
          if (i < nTerms-1) { // If not last term
            LDBG_ << "MULBY  " << productLocation << ", " << resultLocation_;
-           codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULBY, resultLocation_, 0,  productLocation));
-         } else {
-           LDBG_ << "MUL  " << productLocation << ", " << productLocation << ", " << resultLocation_;
-           codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MUL, resultLocation_, productLocation,  productLocation));
+           codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULBY,
+resultLocation_, 0,  productLocation)); } else { LDBG_ << "MUL  " <<
+productLocation << ", " << productLocation << ", " << resultLocation_;
+           codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MUL,
+resultLocation_, productLocation,  productLocation));
          }
       } else { // No product location has not been established yet
-        if (firstTermLocation >= 0) { // See if there was already a non constant term
-          if (this->alloc.isTemporaryLocation(firstTermLocation)) {
-            productLocation = firstTermLocation;
-            LDBG_ << "MULTO  " << productLocation << ", "  << this->resultLocation_;
-            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULBY, this->resultLocation_, 0, productLocation));
-          } else {
-            productLocation = this->alloc.reserveLocation();
-            std::stringstream oss; oss << "_t" << productLocation;
-            annPtr_->setDataName(productLocation, oss.str());
+        if (firstTermLocation >= 0) { // See if there was already a non constant
+term if (this->alloc.isTemporaryLocation(firstTermLocation)) { productLocation =
+firstTermLocation; LDBG_ << "MULTO  " << productLocation << ", "  <<
+this->resultLocation_;
+            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULBY,
+this->resultLocation_, 0, productLocation)); } else { productLocation =
+this->alloc.reserveLocation(); std::stringstream oss; oss << "_t" <<
+productLocation; annPtr_->setDataName(productLocation, oss.str());
 
-            LDBG_ << "MUL  " << productLocation << ", "  << firstTermLocation << ", " << this->resultLocation_;
-            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MUL, this->resultLocation_, firstTermLocation, productLocation));
+            LDBG_ << "MUL  " << productLocation << ", "  << firstTermLocation <<
+", " << this->resultLocation_;
+            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MUL,
+this->resultLocation_, firstTermLocation, productLocation));
           }
         } else { // This is first non-const term
           firstTermLocation = this->resultLocation_;
@@ -671,25 +696,28 @@ void CodeGenerator<F>::process(const context::Product& v) {
       }
     }
   }
-  if (productLocation >= 0) { // There was product accumulation location established
-     if (!productValue.isOne()) {
-       LDBG_ << "MULC  " << productLocation << ", " << productLocation << ", F(" << productValue << ")";
-       codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULC, productLocation, productValue, productLocation));
+  if (productLocation >= 0) { // There was product accumulation location
+established if (!productValue.isOne()) { LDBG_ << "MULC  " << productLocation <<
+", " << productLocation << ", F(" << productValue << ")";
+       codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULC,
+productLocation, productValue, productLocation));
      }
   } else {
     if (firstTermLocation >= 0) {  // But there was non-const term
       if (!productValue.isOne()) {
           if (this->alloc.isTemporaryLocation(firstTermLocation)) {
             productLocation = firstTermLocation;
-            LDBG_ << "MULC  " << productLocation << ", " << productLocation << ", F(" << productValue << ")";
-            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULC, productLocation, productValue, productLocation));
-          } else {
-            productLocation = this->alloc.reserveLocation();
-            std::stringstream oss; oss << "_t" << productLocation;
-            annPtr_->setDataName(productLocation, oss.str());
+            LDBG_ << "MULC  " << productLocation << ", " << productLocation <<
+", F(" << productValue << ")";
+            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULC,
+productLocation, productValue, productLocation)); } else { productLocation =
+this->alloc.reserveLocation(); std::stringstream oss; oss << "_t" <<
+productLocation; annPtr_->setDataName(productLocation, oss.str());
 
-            LDBG_ << "MULC  " << productLocation << ", "  << firstTermLocation << ", F(" << productValue << ")";
-            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULC, firstTermLocation, productValue, productLocation));
+            LDBG_ << "MULC  " << productLocation << ", "  << firstTermLocation
+<< ", F(" << productValue << ")";
+            codePtr_->push_back(eval::Instruction<F>(eval::Instruction<F>::Type::MULC,
+firstTermLocation, productValue, productLocation));
           }
       } else {
         productLocation = firstTermLocation;
@@ -721,11 +749,12 @@ void CodeGenerator<F>::process(const context::Negation& v) {
     this->resultValue_.negate();
   } else {
     int loc = this->alloc.reserveLocation();
-    std::stringstream oss; oss << "_t" << loc;
+    std::stringstream oss;
+    oss << "_t" << loc;
     annPtr_->setDataName(loc, oss.str());
 
     this->codePtr_->push_back(eval::Instruction<F>(
-      eval::InstructionEnum::NEG, this->resultLocation_, 0, loc));
+        eval::InstructionEnum::NEG, this->resultLocation_, 0, loc));
     LDBG_ << this->codePtr_->back();
     this->resultLocation_ = loc;
   }
@@ -740,14 +769,17 @@ void CodeGenerator<F>::process(const context::Power& v) {
   if (this->resultLocation_ < 0) {
     this->resultLocation_ = -1;
     F val = this->resultValue_;
-    for (int i = 0; i < exponent; i++) { this->resultValue_ *= val; }
+    for (int i = 0; i < exponent; i++) {
+      this->resultValue_ *= val;
+    }
   } else {
     int loc = this->alloc.reserveLocation();
-    std::stringstream oss; oss << "_t" << loc;
+    std::stringstream oss;
+    oss << "_t" << loc;
     annPtr_->setDataName(loc, oss.str());
 
-    codePtr_->push_back(eval::Instruction<F>(
-      eval::InstructionEnum::POW, resultLocation_, exponent, loc));
+    codePtr_->push_back(eval::Instruction<F>(eval::InstructionEnum::POW,
+                                             resultLocation_, exponent, loc));
     LDBG_ << this->codePtr_->back();
     this->resultLocation_ = loc;
   }

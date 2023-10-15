@@ -6,12 +6,10 @@
  */
 
 #include "Scanner.h"
-
-#include "context/context.h"
 #include "context/InterpContext.h"
+#include "context/context.h"
 
 #include <boost/shared_ptr.hpp>
-
 #include <string>
 #include <vector>
 
@@ -30,7 +28,6 @@ namespace maple {
  */
 
 class Driver {
-
   /** Reference to the calculator context filled during parsing of the
    * expressions. */
   boost::shared_ptr<context::InterpContext> context_;
@@ -44,7 +41,7 @@ class Driver {
   /// stream name (file or input stream) used for error messages.
   std::string streamname_;
 
-public:
+ public:
   boost::shared_ptr<context::InterpContext> getContext() { return context_; }
   /// construct a new parser driver context
   Driver();
@@ -58,8 +55,8 @@ public:
    * @return true if successfully parsed
    */
   bool parse_stream(std::istream& in,
-       boost::shared_ptr<context::InterpContext> context,
-	     const std::string& sname = "stream input");
+                    boost::shared_ptr<context::InterpContext> context,
+                    const std::string& sname = "stream input");
 
   /** Invoke the scanner and parser on an input string.
    * @param input	input string
@@ -68,8 +65,8 @@ public:
    * @return		true if successfully parsed
    */
   bool parse_string(const std::string& input,
-        boost::shared_ptr<context::InterpContext> context,
-		    const std::string& sname = "string stream");
+                    boost::shared_ptr<context::InterpContext> context,
+                    const std::string& sname = "string stream");
 
   /** Invoke the scanner and parser on a file. Use parse_stream with a
    * std::ifstream if detection of file reading errors is required.
@@ -78,9 +75,9 @@ public:
    * @return		true if successfully parsed
    */
   bool parse_file(const std::string& filename,
-    boost::shared_ptr<context::InterpContext> context);
+                  boost::shared_ptr<context::InterpContext> context);
 
-  void setDebugScanner(bool val) { trace_scanning_ = val;}
+  void setDebugScanner(bool val) { trace_scanning_ = val; }
   void setDebugParser(bool val) { trace_parsing_ = val; }
   // To demonstrate pure handling of parse errors, instead of
   // simply dumping them on the standard error output, we will pass
@@ -99,7 +96,6 @@ public:
    *  \#define yylex driver.lexer->lex
    */
   Scanner* lexer;
-
 };
 
 }  // namespace maple

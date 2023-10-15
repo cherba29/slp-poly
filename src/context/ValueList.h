@@ -6,17 +6,19 @@
  */
 
 #include "Value.h"
+
 #include <vector>
 
 namespace context {
 
 class ValueList : public Value {
-public:
+ public:
   void addValue(Value* val) { vals_.push_back(val); }
   size_t getSize() const { return vals_.size(); }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
-private:
+
+ private:
   std::vector<Value*> vals_;
 };
 

@@ -6,7 +6,6 @@
  */
 
 #include "Value.h"
-
 #include "util/SmartAssert.h"
 
 #include <boost/shared_ptr.hpp>
@@ -17,8 +16,8 @@ namespace context {
  * @brief Product node, encapsulating a sequence of sub expressions.
  */
 class Product : public Value {
-public:
-  Product() { }
+ public:
+  Product() {}
 
   void multiply(Value* node) {
     ASSERT1(node != NULL).msg("Cannot add NULL node to product");
@@ -39,7 +38,8 @@ public:
   size_t getNumberOfNodes() const { return nodes_.size(); }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
-private:
+
+ private:
   std::vector<boost::shared_ptr<Value> > nodes_;
   std::vector<bool> isPos_;
 };

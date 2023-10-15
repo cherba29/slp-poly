@@ -7,13 +7,12 @@
  * http://www.cuj.com/documents/s=8464/cujcexp0308alexandr/cujcexp0308alexandr.html
  */
 
-#include <string>
-#include <vector>
+#include <boost/current_function.hpp>
+#include <boost/lexical_cast.hpp>
 #include <exception>
 #include <stdexcept>
-
-#include <boost/lexical_cast.hpp>
-#include <boost/current_function.hpp>
+#include <string>
+#include <vector>
 
 //#include "Enumeration.h"
 #undef WARN
@@ -23,17 +22,17 @@
 #include "util/LevelEnum.h"
 
 namespace smart_assert {
-//ENUMERATION(Level, WARN, DEBUG, ERROR, FATAL);
+// ENUMERATION(Level, WARN, DEBUG, ERROR, FATAL);
 
 /**
  * @brief Smart Assert context, encapsulates location, level and description of
  * the assert statement
  */
 class Context {
-public:
-  Context() : level_(LevelEnum::DEBUG), lineNumber_(0) { }
+ public:
+  Context() : level_(LevelEnum::DEBUG), lineNumber_(0) {}
   Context(const std::string& expression)
-    : level_(LevelEnum::DEBUG), lineNumber_(0), expression_(expression) { }
+      : level_(LevelEnum::DEBUG), lineNumber_(0), expression_(expression) {}
 
   void setLevel(LevelEnum level) { level_ = level; }
   LevelEnum getLevel() const { return level_; }
@@ -41,21 +40,27 @@ public:
   void setFileName(const std::string& fileName) { fileName_ = fileName; }
   const std::string& getFileName() const;
 
-  void setFunctionName(const std::string& functionName) { functionName_ = functionName; }
+  void setFunctionName(const std::string& functionName) {
+    functionName_ = functionName;
+  }
   const std::string& getFunctionName() const { return functionName_; }
 
   void setLineNumber(unsigned int lineNumber) { lineNumber_ = lineNumber; }
   unsigned int getLineNumber() const { return lineNumber_; }
 
-  void setDescription(const std::string& description) { description_ = description; }
+  void setDescription(const std::string& description) {
+    description_ = description;
+  }
   const std::string& getDescription() const { return description_; }
 
-  void setExpression( const std::string& expression) { expression_ = expression; }
+  void setExpression(const std::string& expression) {
+    expression_ = expression;
+  }
   const std::string& getExpression() const { return expression_; }
 
   typedef std::pair<std::string, std::string> NamedValue;
 
-  void addValue(const std::string& name, const std::string& value ) {
+  void addValue(const std::string& name, const std::string& value) {
     namedValues_.push_back(std::make_pair(name, value));
   }
   const std::vector<NamedValue>& getValues() const { return namedValues_; }
@@ -63,7 +68,7 @@ public:
   // return user-friendly assert message
   std::string getMessage() const;
 
-protected:
+ protected:
   std::string fileName_;
   LevelEnum level_;
   std::string functionName_;
@@ -74,39 +79,36 @@ protected:
 };  // class Context
 
 class AssertException : public std::runtime_error {
-public:
+ public:
   AssertException(const Context& context)
-    : runtime_error(context.getMessage()) {}
+      : runtime_error(context.getMessage()) {}
   virtual ~AssertException() throw() {}
 };
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable:4355) // warning C4355: 'this' : used in base member initializer list
+#pragma warning(disable : 4355)  // warning C4355: 'this' : used in base member
+                                 // initializer list
 #endif
 
 class SmartAssert {
-public:
-  SmartAssert(const char* expression) :
-    SMART_ASSERT_A(*this),
-    SMART_ASSERT_B(*this),
-    context_(expression) {};
+ public:
+  SmartAssert(const char* expression)
+      : SMART_ASSERT_A(*this), SMART_ASSERT_B(*this), context_(expression){};
 
   ~SmartAssert();
 
-  SmartAssert&  setContext(
-      const char* fileName,
-      const char* functionName,
-      const unsigned int lineNumber);
+  SmartAssert& setContext(const char* fileName, const char* functionName,
+                          const unsigned int lineNumber);
 
-  SmartAssert&  setExpression(const char* expression);
+  SmartAssert& setExpression(const char* expression);
 
   template <typename V>
   SmartAssert& addValue(const char* name, const V& value) {
-    try{
+    try {
       context_.addValue(name, boost::lexical_cast<std::string>(value));
-    } catch(const boost::bad_lexical_cast& ) {
-      context_.addValue(name, "value could not be converted to string." );
+    } catch (const boost::bad_lexical_cast&) {
+      context_.addValue(name, "value could not be converted to string.");
     }
     return *this;
   }
@@ -116,13 +118,13 @@ public:
     return *this;
   }
 
-  SmartAssert&  warn(const std::string&);
+  SmartAssert& warn(const std::string&);
 
-  SmartAssert&  debug(const std::string&);
+  SmartAssert& debug(const std::string&);
 
-  SmartAssert&  error(const std::string&);
+  SmartAssert& error(const std::string&);
 
-  SmartAssert&  fatal(const std::string&);
+  SmartAssert& fatal(const std::string&);
 
   // NULL as callback will disable handling specified level of assertions
   typedef void (*HandlerCallback)(const Context&);
@@ -131,7 +133,7 @@ public:
   SmartAssert& SMART_ASSERT_A;
   SmartAssert& SMART_ASSERT_B;
 
-private:
+ private:
   static void defaultWarnHandler(const Context&);
   static void defaultDebugHandler(const Context&);
   static void defaultErrorHandler(const Context&);
@@ -149,27 +151,32 @@ private:
 #define SMART_ASSERT_B(x) SMART_ASSERT_OP(x, A)
 
 #define SMART_ASSERT_OP(x, next) \
-    SMART_ASSERT_A.addValue( #x, (x) ).SMART_ASSERT_ ## next
+  SMART_ASSERT_A.addValue(#x, (x)).SMART_ASSERT_##next
 
-#define ASSERT0(expr) \
-   if (expr){;} \
-   else \
-    smart_assert::SmartAssert(#expr).setContext( \
-        __FILE__, BOOST_CURRENT_FUNCTION, __LINE__).SMART_ASSERT_A
-
+#define ASSERT0(expr)                                           \
+  if (expr) {                                                   \
+    ;                                                           \
+  } else                                                        \
+    smart_assert::SmartAssert(#expr)                            \
+        .setContext(__FILE__, BOOST_CURRENT_FUNCTION, __LINE__) \
+        .SMART_ASSERT_A
 
 #ifndef NDEBUG
-#define ASSERT1(expr) \
-   if (expr){;} \
-   else \
-    smart_assert::SmartAssert(#expr).setContext( \
-        __FILE__, BOOST_CURRENT_FUNCTION, __LINE__).SMART_ASSERT_A
+#define ASSERT1(expr)                                           \
+  if (expr) {                                                   \
+    ;                                                           \
+  } else                                                        \
+    smart_assert::SmartAssert(#expr)                            \
+        .setContext(__FILE__, BOOST_CURRENT_FUNCTION, __LINE__) \
+        .SMART_ASSERT_A
 
-#define ASSERT2(expr) \
-   if (expr){;} \
-   else \
-    smart_assert::SmartAssert(#expr).setContext( \
-        __FILE__, BOOST_CURRENT_FUNCTION, __LINE__).SMART_ASSERT_A
+#define ASSERT2(expr)                                           \
+  if (expr) {                                                   \
+    ;                                                           \
+  } else                                                        \
+    smart_assert::SmartAssert(#expr)                            \
+        .setContext(__FILE__, BOOST_CURRENT_FUNCTION, __LINE__) \
+        .SMART_ASSERT_A
 
 /*
 #define SMART_ASSERT(expr) \
@@ -191,16 +198,16 @@ private:
 */
 #else
 #define ASSERT1(expr) \
-   if ( true )\
-     {;} \
-   else \
-   smart_assert::SmartAssert("").SMART_ASSERT_A
+  if (true) {         \
+    ;                 \
+  } else              \
+    smart_assert::SmartAssert("").SMART_ASSERT_A
 
 #define ASSERT2(expr) \
-   if ( true )\
-     {;} \
-   else \
-   smart_assert::SmartAssert("").SMART_ASSERT_A
+  if (true) {         \
+    ;                 \
+  } else              \
+    smart_assert::SmartAssert("").SMART_ASSERT_A
 /*
 #define SMART_VERIFY(expr) \
    if ( true ) \
@@ -214,9 +221,9 @@ private:
    else \
    smart_assert::SmartAssert( "" ).SMART_ASSERT_A
 */
-#endif // ifndef NDEBUG
+#endif  // ifndef NDEBUG
 
-} // namespace smart_assert
+}  // namespace smart_assert
 
 #ifdef _MSC_VER
 #pragma warning(pop)

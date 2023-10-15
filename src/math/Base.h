@@ -14,26 +14,26 @@
 #endif
 
 #ifdef _MSC_VER
-  typedef __int32 int32_t;
-  typedef unsigned __int32 uint32_t;
-  typedef __int64 int64_t;
-  typedef unsigned __int64 uint64_t;
-  #ifdef __LP64__
-    typedef __int128 int128_t;
-    typedef unsigned __int128 u_int128_t;
-  #endif
-#else // g++
-  #include <stdint.h>
-  #define __forceinline __inline__
-  typedef int int32_t __attribute__ ((__mode__ (__SI__)));
-  typedef unsigned int uint32_t __attribute__ ((__mode__ (__SI__)));
-  typedef int int64_t __attribute__ ((__mode__ (__DI__)));
-  typedef unsigned int uint64_t __attribute__ ((__mode__ (__DI__)));
+typedef __int32 int32_t;
+typedef unsigned __int32 uint32_t;
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+#ifdef __LP64__
+typedef __int128 int128_t;
+typedef unsigned __int128 u_int128_t;
+#endif
+#else  // g++
+#include <stdint.h>
+#define __forceinline __inline__
+typedef int int32_t __attribute__((__mode__(__SI__)));
+typedef unsigned int uint32_t __attribute__((__mode__(__SI__)));
+typedef int int64_t __attribute__((__mode__(__DI__)));
+typedef unsigned int uint64_t __attribute__((__mode__(__DI__)));
 
-  #ifdef __LP64__
-    typedef int int128_t __attribute__((mode(TI)));
-    typedef unsigned int uint128_t __attribute__((mode(TI)));
-  #endif
+#ifdef __LP64__
+typedef int int128_t __attribute__((mode(TI)));
+typedef unsigned int uint128_t __attribute__((mode(TI)));
+#endif
 #endif
 
 BOOST_STATIC_ASSERT(sizeof(int32_t) == 4);
@@ -44,7 +44,8 @@ BOOST_STATIC_ASSERT(sizeof(int64_t) == 8);
 BOOST_STATIC_ASSERT(sizeof(uint128_t) == 16);
 #endif
 
-template <typename IntType> struct TypeInfo {};
+template <typename IntType>
+struct TypeInfo {};
 
 template <>
 struct TypeInfo<int32_t> {
@@ -104,7 +105,8 @@ namespace field {
  */
 inline unsigned int getPrimeFourierOrder(uint64_t n) {
   unsigned int result = 0;
-  for (--n; !(n & 1) && n; ++result, n >>= 1);
+  for (--n; !(n & 1) && n; ++result, n >>= 1)
+    ;
   return result;
 }
 
@@ -125,13 +127,13 @@ unsigned int getFourierOrder() {
 }
 //**************************************************************************
 template <typename F>
-unsigned int computePrimitiveRoots(F newOmega, F* primRoots,
-                                   F* primRootInvs, unsigned int count) {
+unsigned int computePrimitiveRoots(F newOmega, F* primRoots, F* primRootInvs,
+                                   unsigned int count) {
   unsigned int depth;
   for (depth = 0; newOmega.hasInverse() && depth < count; ++depth) {
     primRoots[depth] = newOmega;
     primRootInvs[depth] = newOmega.getInverse();
-    newOmega = newOmega.getSqrt(); // If sqrt does not exist sets to 0
+    newOmega = newOmega.getSqrt();  // If sqrt does not exist sets to 0
   }
   return depth;
 }
@@ -140,4 +142,3 @@ unsigned int computePrimitiveRoots(F newOmega, F* primRoots,
 }  // namespace math
 
 #endif  // NTRP_MATH_BASE_H
-

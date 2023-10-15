@@ -4,6 +4,4 @@
 
 #include "PartialPolynomial.h"
 
-namespace algebra {
-
-}  // namespace algebra
+namespace algebra {}  // namespace algebra

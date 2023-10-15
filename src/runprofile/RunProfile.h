@@ -12,23 +12,21 @@
 
 #include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>
-
 #include <string>
 #include <vector>
-
 
 namespace runprofile {
 
 class InterpProfile;  // InterpProfile.h
 class RunProfile {
-public:
+ public:
   RunProfile();
   ~RunProfile();
 
   /** Should overwrite existing output file */
   bool isOverwrite() const { return overwrite_; }
   /** Set whether to overwrite existing output file */
-  void setOverwrite(bool val)  { overwrite_ = val; }
+  void setOverwrite(bool val) { overwrite_ = val; }
 
   void setInputFileName(const std::string& filename) {
     inputFileName_ = filename;
@@ -54,7 +52,8 @@ public:
     return logLevel_[m.getIndex()];
   }
 
-  void setLogLevel(logging::LogModuleEnum module, const logging::LogLevelEnum& level) {
+  void setLogLevel(logging::LogModuleEnum module,
+                   const logging::LogLevelEnum& level) {
     logLevel_[module.getIndex()] = level;
   }
 
@@ -62,9 +61,7 @@ public:
     return logTags_;
   }
 
-  void addLogTag(const logging::LogTagEnum& tag) {
-    logTags_.push_back(tag);
-  }
+  void addLogTag(const logging::LogTagEnum& tag) { logTags_.push_back(tag); }
 
   boost::shared_ptr<InterpProfile const> getInterpProfile() const {
     return interpProfile_;
@@ -72,13 +69,9 @@ public:
 
   void setInterpProfile(boost::shared_ptr<InterpProfile>& iprof);
 
-  const std::string& getInputFileName() const {
-    return inputFileName_;
-  }
+  const std::string& getInputFileName() const { return inputFileName_; }
 
-  const std::string& getOutputFileName() const {
-    return outputFileName_;
-  }
+  const std::string& getOutputFileName() const { return outputFileName_; }
 
   const boost::optional<std::string>& getTraceFileName() const {
     return traceFileName_;
@@ -88,14 +81,11 @@ public:
     return infoFileName_;
   }
 
-  const std::string& getOptionDescription() const {
-    return description_;
-  }
+  const std::string& getOptionDescription() const { return description_; }
 
-  void setOptionDescription(const std::string& desc) {
-    description_ = desc;
-  }
-private:
+  void setOptionDescription(const std::string& desc) { description_ = desc; }
+
+ private:
   std::string description_;
   ActionEnum action_;
   logging::LogLevelEnum logLevel_[logging::LogModuleEnum::NUM_ENUMS];
@@ -105,13 +95,13 @@ private:
 
   std::string inputFileName_;
   std::string outputFileName_;
-  bool overwrite_;              /**< Overwrite output file ? */
+  bool overwrite_; /**< Overwrite output file ? */
 
   boost::optional<std::string> traceFileName_;
   boost::optional<std::string> infoFileName_;
 };
 
-std::ostream& operator << (std::ostream& os, const RunProfile& profile);
+std::ostream& operator<<(std::ostream& os, const RunProfile& profile);
 
 }  // namespace runprofile
 

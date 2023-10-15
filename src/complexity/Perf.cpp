@@ -18,24 +18,23 @@
  */
 
 #include "Perf.h"
+
 #include "Estimator.h"
 #include "Tracker.h"
-
 #include "util/log.h"
 
 #include <boost/shared_ptr.hpp>
 
 #define LOG_MODULE ::logging::LogModuleEnum::COMPLEXITY
 
-
 namespace complexity {
 
 namespace {
 
-typedef std::map<std::string,boost::shared_ptr<TrackWithEqn> > Name2TrackerMap;
+typedef std::map<std::string, boost::shared_ptr<TrackWithEqn> > Name2TrackerMap;
 Name2TrackerMap trackedAlgs;
 
-} // anonymous namespace
+}  // anonymous namespace
 
 Perf::Perf(const std::string& alg, double size, int nTimes)
     : size_(size), nTimes_(nTimes) {
@@ -43,24 +42,22 @@ Perf::Perf(const std::string& alg, double size, int nTimes)
   if (it != trackedAlgs.end()) {
     tracker_ = it->second;
   }
-  LTRC_ << "Starting perf monitor for " << alg
-        << " size=" << size
-        << ", ntimes=" << nTimes
-        << " predicted " << this->predicted();
+  LTRC_ << "Starting perf monitor for " << alg << " size=" << size
+        << ", ntimes=" << nTimes << " predicted " << this->predicted();
   tm_.restart();
 }
 
 Perf::~Perf() {
   if (tracker_) {
-    double measurement = tm_.elapsed()/nTimes_;
+    double measurement = tm_.elapsed() / nTimes_;
     LDBG_ << "Adding measurement of " << measurement << " for size " << size_;
-    tracker_->addMeasurement(size_,measurement,size_);
+    tracker_->addMeasurement(size_, measurement, size_);
   }
 }
 
 double Perf::predicted() const {
   if (tracker_) {
-    return nTimes_*tracker_->getEquation().evaluateAt(size_);
+    return nTimes_ * tracker_->getEquation().evaluateAt(size_);
   } else {
     return std::numeric_limits<double>::quiet_NaN();
   }
@@ -71,17 +68,15 @@ double Perf::predicted(const std::string& alg, double size, int nTimes) {
   if (it == trackedAlgs.end()) {
     return std::numeric_limits<double>::quiet_NaN();
   }
-  return nTimes*(it->second)->getEquation().evaluateAt(size);
+  return nTimes * (it->second)->getEquation().evaluateAt(size);
 }
 
-double Perf::current() const {
-  return tm_.elapsed();
-}
+double Perf::current() const { return tm_.elapsed(); }
 
-int Perf::registerAlg(
-    const std::string& alg, boost::shared_ptr<TrackWithEqn> eqn) {
-  std::pair<Name2TrackerMap::iterator,bool> inserted
-      = trackedAlgs.insert(std::make_pair(alg,eqn));
+int Perf::registerAlg(const std::string& alg,
+                      boost::shared_ptr<TrackWithEqn> eqn) {
+  std::pair<Name2TrackerMap::iterator, bool> inserted =
+      trackedAlgs.insert(std::make_pair(alg, eqn));
   return inserted.second ? 0 : -1;
 }
 
@@ -107,7 +102,7 @@ void Perf::exercise(const std::string& alg, TestFunction f, double maxTime) {
   if (it == trackedAlgs.end()) {
     return;
   }
-  Estimator est(f,it->second);
+  Estimator est(f, it->second);
   est.run(maxTime);
 }
 

@@ -24,7 +24,8 @@ namespace vandermonde {
  *   v_1 & v_2 & \cdots & v_n \\
  *  \vdots & \vdots & \ddots & \vdots \\
  *   v_1^{n-1} & v_2^{n-1} & \cdots & v_n^{n-1}
- *   \end{array}\right), \hat{x}=\left(\begin{array}{c}x_1\\x_2\\\vdots\\x_n\end{array}\right),
+ *   \end{array}\right),
+ * \hat{x}=\left(\begin{array}{c}x_1\\x_2\\\vdots\\x_n\end{array}\right),
  *   \hat{a}=\left(\begin{array}{c}a_1\\a_2\\\vdots\\a_n\end{array}\right),
  * \f]
  * Let \f$B=A^T\f$, we have \f$\hat{x}=(B^{-1})^T\hat{a}\f$. If j-th column
@@ -40,11 +41,8 @@ namespace vandermonde {
  * \f]
  * Therefore,
  * \f[
- *   B_j(z) = \prod_{1\le k\le n, k\ne j}\frac{z-v_k}{v_j-v_k}, \quad 1\le j \le n
- * \f]
- * and
- * \f[
- *   \hat{x}=(B^{-1})^T \hat{a} = \left(\begin{array}{c}
+ *   B_j(z) = \prod_{1\le k\le n, k\ne j}\frac{z-v_k}{v_j-v_k}, \quad 1\le j \le
+ * n \f] and \f[ \hat{x}=(B^{-1})^T \hat{a} = \left(\begin{array}{c}
  *     \sum_{i=0}^{n-1} b_{i,1} \hat{a}_i\\
  *     \vdots\\
  *     \sum_{i=0}^{n-1} b_{i,n} \hat{a}_i
@@ -64,40 +62,41 @@ namespace vandermonde {
  * \f[
  *   B(z) D(z) = q_{2n} z^{2n} + q_{2n-1} z^{2n-1} + \cdots + q_1 z + q_0.
  * \f]
- * The coefficient of \f$z^j\f$ in the quatient of \f$B(z)D(z)/(z-w)\f$ is given by
- * \f[
- *  Q_j(w)=q_{2n}w^{j-1}+q_{2n-1} w^{j-2}+\cdots+q_{j+2} w + q_{j+1}.
- * \f]
+ * The coefficient of \f$z^j\f$ in the quatient of \f$B(z)D(z)/(z-w)\f$ is given
+ * by \f[ Q_j(w)=q_{2n}w^{j-1}+q_{2n-1} w^{j-2}+\cdots+q_{j+2} w + q_{j+1}. \f]
  * Clearly, \f$Q_n(v_i)=\alpha_i x_i\f$. \f$Q_n(w)\f$ is a degree \f$n-1\f$
- * polynomial and has to be evaluated at \f$n\f$ points \f$v_1,v_2,\ldots,v_n.\f$
+ * polynomial and has to be evaluated at \f$n\f$ points
+ * \f$v_1,v_2,\ldots,v_n.\f$
  *
  * The \f$\alpha_i\f$ still remain to be evaluated. Observe that
- * \f$B'=dB(x)/dz=\sum_i\prod_{j\ne i}(z-v_j).\f$ Therefore \f$B'(v_i)=\alpha_i.\f$
- * All the \f$\alpha_i, 1\le i\le n,\f$ can be obtained by evaluating
- * \f$B'(z)\f$ at points \f$v_1,v_2,\ldots,v_n\f$. This can be done efficiently
- * using algorithm that was used to evaluate \f$Q_n(w)\f$.
+ * \f$B'=dB(x)/dz=\sum_i\prod_{j\ne i}(z-v_j).\f$ Therefore
+ * \f$B'(v_i)=\alpha_i.\f$ All the \f$\alpha_i, 1\le i\le n,\f$ can be obtained
+ * by evaluating \f$B'(z)\f$ at points \f$v_1,v_2,\ldots,v_n\f$. This can be
+ * done efficiently using algorithm that was used to evaluate \f$Q_n(w)\f$.
  *
  * The Algorithm:
- * - Input: Entries \f$v_1,\cdots,v_n\f$ which make up transposed Vandermonde matrix
- * \f$A\f$; vector \f$\hat{a}=(a_1,\cdots,a_n)^T\f$
+ * - Input: Entries \f$v_1,\cdots,v_n\f$ which make up transposed Vandermonde
+ * matrix \f$A\f$; vector \f$\hat{a}=(a_1,\cdots,a_n)^T\f$
  * - Output: Vector \f$\hat{x}=(x_1,\ldots,x_n)^T\f$ where \f$x=A^{-1}a\f$
  *   -# Compute the polynomial \f$B(z)=\prod_{1\le j\le n}(z-vj)\f$ by the
  * tree multiplication algorithm.
  *   -# Let \f$D(z)=a_1 z^n+z_2 z^{n-1}+\cdots+a_{n-1} z^2+a_n z\f$.
  * Compute \f$B(z) D(z)\f$ using fast polynomial multiplication.
  * Let \f$B(z)D(z)-q_{2n}z^{2n}+q_{2n-1}z^{2n-1}+\cdots+q_0\f$. Read off
- * the polynomial \f$Q_n(w)=q_{2n}w^{n-1}+\cdots+q_{n+2}w+q_{n+1}\f$ from \f$B(z)D(z)\f$
- *   -# Evaluate \f$Q_n(w)\f$ at points \f$v_1,\ldots,v_n\f$ to obtain \f$\alpha_i x_i\f$.
- * (The \f$\alpha_i\f$ are the scalars described earlier.)
- *   -# Compute the \f$\alpha_i\f$ by evaluating \f$B'(z)\f$ at points \f$v_1,\ldots,v_n\f$.
+ * the polynomial \f$Q_n(w)=q_{2n}w^{n-1}+\cdots+q_{n+2}w+q_{n+1}\f$ from
+ * \f$B(z)D(z)\f$
+ *   -# Evaluate \f$Q_n(w)\f$ at points \f$v_1,\ldots,v_n\f$ to obtain
+ * \f$\alpha_i x_i\f$. (The \f$\alpha_i\f$ are the scalars described earlier.)
+ *   -# Compute the \f$\alpha_i\f$ by evaluating \f$B'(z)\f$ at points
+ * \f$v_1,\ldots,v_n\f$.
  *   -# Output \f$(\alpha_i x_i/\alpha_i)_{i=1,\ldots,n}\f$
  *
  * The above algorithm is split into two stages.
-  */
+ */
 
-template<class F>
-class FFTSolver: public Solver<F> {
-public:
+template <class F>
+class FFTSolver : public Solver<F> {
+ public:
   /**
    * @brief Setup FFT transpose Vandermode solver.
    * @param size - input matrix size
@@ -117,15 +116,15 @@ public:
 
   virtual void evaluate(const F* coeffs, F* result);
 
-private:
+ private:
   unsigned int size_;    /**< size_ number of values to solve for */
   unsigned int logsize_; /**< size_ < 2^logsize_ */
-  F* scalars_; /**< \f$\alpha_i\f$ above */
+  F* scalars_;           /**< \f$\alpha_i\f$ above */
   F** subprods_;
 };
 
-} // namespace vandermonde
-} // namespace math
+}  // namespace vandermonde
+}  // namespace math
 
 #include "FFTSolver-Impl.h"
 

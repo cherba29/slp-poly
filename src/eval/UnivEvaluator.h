@@ -18,7 +18,8 @@ class UnivEvaluator {
   F* vals_;
   Evaluator<F>& evaluator_;
   int idx_;
-public:
+
+ public:
   UnivEvaluator(Evaluator<F>& e, int idx, const F* vals)
       : evaluator_(e), idx_(idx) {
     int nVars = evaluator_.getNumberOfVariables();

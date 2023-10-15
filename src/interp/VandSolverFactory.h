@@ -6,7 +6,6 @@
  */
 
 #include "interp/VandSolveTypeEnum.h"
-
 #include "math/vandermonde/Solver.h"
 
 #include <boost/shared_ptr.hpp>
@@ -18,8 +17,7 @@ namespace interp {
  */
 template <class F>
 class VandSolverFactory {
-public:
-
+ public:
   VandSolverFactory(VandSolveTypeEnum choice);
 
   /**
@@ -28,25 +26,26 @@ public:
    * If factory was created with "BEST" option, this function will built faster
    * solver for given size.
    * @param[in] size - size of vandermonde matrix, or number of entries
-   * @param[in] entries - array of entries from which all matrix entries are derived
+   * @param[in] entries - array of entries from which all matrix entries are
+   * derived
    * @param[in] nSolve - how many times this solver will be used, default=1
    *                 (useful for BEST)
    * @return FFTVandermondeSolver or QuadVandermondeSolver
    * @see VandermondeSolver
    */
-  boost::shared_ptr<math::vandermonde::Solver<F> >
-  newSolver(unsigned int size, const F* entries, int nSolve=1) const;
+  boost::shared_ptr<math::vandermonde::Solver<F> > newSolver(
+      unsigned int size, const F* entries, int nSolve = 1) const;
 
   /**
    * @brief Get the  name of the algorithm this factory would construct.
    */
-  const char* getAlgName(unsigned int size, int nSolve=1) const;
+  const char* getAlgName(unsigned int size, int nSolve = 1) const;
 
-private:
+ private:
   VandSolveTypeEnum choice_;
 };
 
-} // namespace interp
+}  // namespace interp
 
 #include "VandSolverFactory-impl.h"
 #endif  // NTRP_VAND_SOLVER_FACTORY_H

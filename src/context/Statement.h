@@ -9,11 +9,11 @@ namespace context {
 class Processor;
 
 class Statement {
-public:
+ public:
   virtual void accept(Processor& proc) const = 0;
   virtual ~Statement() {}
 };
 
 }  // namespace context
 
-#endif // NTRP_CONTEXT_STATEMENT_H
+#endif  // NTRP_CONTEXT_STATEMENT_H

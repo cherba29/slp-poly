@@ -17,15 +17,16 @@ namespace context {
  * @brief Assignment statement, encapsulating id=value
  */
 class Assignment : public Statement {
-public:
-  Assignment(const std::string& id, Value* val) : id_(id), val_(val) { }
+ public:
+  Assignment(const std::string& id, Value* val) : id_(id), val_(val) {}
 
   const std::string& getId() const { return id_; }
 
   const Value& getValue() const { return *val_; }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
-private:
+
+ private:
   std::string id_;
   boost::shared_ptr<Value> val_;
 };

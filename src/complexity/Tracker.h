@@ -20,7 +20,6 @@
  */
 
 #include "Equation.h"
-
 #include "util/log.h"
 //#include <boost/concept/assert.hpp>
 #include <map>
@@ -31,12 +30,12 @@
 namespace complexity {
 
 class Measurement {
-public:
+ public:
   long double size;
   long double value;
   long double weight;
-  Measurement(long double s, long double v, long double w) :
-      size(s), value(v), weight(w) {}
+  Measurement(long double s, long double v, long double w)
+      : size(s), value(v), weight(w) {}
 };
 
 inline bool operator<(const Measurement& a, const Measurement& b) {
@@ -54,14 +53,14 @@ inline bool operator<(const Measurement& a, const Measurement& b) {
  * @see Tracker
  */
 class TrackWithEqn {
-//  typedef std::multimap<long double, long double> MeasurementSet;
+  //  typedef std::multimap<long double, long double> MeasurementSet;
   typedef std::set<Measurement> MeasurementSet;
   MeasurementSet measurements_;
 
   Equation& eqn_;
   bool dirty_;
-public:
 
+ public:
   TrackWithEqn(Equation& eqn) : eqn_(eqn), dirty_(true) {}
 
   /**
@@ -72,8 +71,8 @@ public:
    * @param type - not used in this implementation. Here to be used by derived
    *        classes in case types of various measurements need to be tracked.
    */
-  void addMeasurement(
-      long double size, long double timeVal, long double weight);
+  void addMeasurement(long double size, long double timeVal,
+                      long double weight);
 
   /**
    * @brief Return complexity equation, if new measurements were added
@@ -109,22 +108,18 @@ public:
  */
 template <typename EqnT>
 class Tracker : public TrackWithEqn {
-//  BOOST_CONCEPT_ASSERT((Convertable<EqnT,Equation>));
+  //  BOOST_CONCEPT_ASSERT((Convertable<EqnT,Equation>));
   EqnT eqn_;
 
-public:
+ public:
+  Tracker() : TrackWithEqn(eqn_) {}
+  // Tracker(EqnT eqn) : TrackWithEqn(eqn_), eqn_(eqn) {  }
+  ~Tracker() {}
 
-  Tracker() : TrackWithEqn(eqn_) {  }
-  //Tracker(EqnT eqn) : TrackWithEqn(eqn_), eqn_(eqn) {  }
-  ~Tracker() {  }
+};  // class Tracker
 
-}; // class Tracker
-
-} // close namespace complexity
-
-
+}  // namespace complexity
 
 #undef LOG_MODULE
-
 
 #endif  // #ifndef NTRP_COMPLEXITY_TRACKER_H

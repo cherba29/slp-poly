@@ -3,9 +3,8 @@
 
 #include "complexity/Equation.h"
 #include "complexity/Tracker.h"
-
-#include "math/vandermonde/QuadSolver.h"
 #include "math/vandermonde/FFTSolver.h"
+#include "math/vandermonde/QuadSolver.h"
 
 #include <boost/scoped_array.hpp>
 #include <boost/timer.hpp>
@@ -19,7 +18,7 @@ namespace vandermonde {
 
 template <typename F>
 class QuadSetup {
-public:
+ public:
   typedef complexity::QuadEquation ComplexityEquation;
 
   long double operator()(long double size) {
@@ -40,14 +39,14 @@ public:
     boost::timer tm;
     tm.restart();
     math::vandermonde::QuadSolver<F> testVand(sz, testEntries.get());
-    //testVand.solveTranspose(testEntries.get(), result.get());
+    // testVand.solveTranspose(testEntries.get(), result.get());
     return tm.elapsed();
   }
 };
 
 template <typename F>
 class QuadSolve {
-public:
+ public:
   typedef complexity::QuadEquation ComplexityEquation;
 
   long double operator()(long double size) {
@@ -76,7 +75,7 @@ public:
 
 template <typename F>
 class FFTSetup {
-public:
+ public:
   typedef complexity::NLogN2Equation ComplexityEquation;
 
   long double operator()(long double size) {
@@ -97,15 +96,14 @@ public:
     boost::timer tm;
     tm.restart();
     math::vandermonde::FFTSolver<F> testVand(sz, testEntries.get());
-    //testVand.solveTranspose(testEntries.get(), result.get());
+    // testVand.solveTranspose(testEntries.get(), result.get());
     return tm.elapsed();
   }
 };
 
-
 template <typename F>
 class FFTSolve {
-public:
+ public:
   typedef complexity::NLogN2Equation ComplexityEquation;
 
   long double operator()(long double size) {
@@ -131,7 +129,6 @@ public:
     return tm.elapsed();
   }
 };
-
 
 }  // namespace vandermonde
 }  // namespace operation

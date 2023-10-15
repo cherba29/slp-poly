@@ -6,11 +6,10 @@
  */
 
 #include "context.h"
-
 #include "util/log.h"
 
-#include <vector>
 #include <sstream>
+#include <vector>
 
 #ifdef LOG_MODULE
 #undef LOG_MODULE
@@ -26,7 +25,8 @@ namespace context {
 class IdentifierData {
   int index_;  // Also index of the result.
   bool bound_;
-public:
+
+ public:
   IdentifierData(int index, bool bound) : index_(index), bound_(bound) {}
 
   void setBound(bool bound) { bound_ = bound; }
@@ -45,7 +45,8 @@ class InterpContext {
   std::vector<Statement*> statements_;
   int nVars_;
   int nBoundVars_;
-public:
+
+ public:
   InterpContext() : nVars_(0), nBoundVars_(0) {}
 
   void finalize() {
@@ -53,14 +54,14 @@ public:
     for (it = symTable_.begin(); it != symTable_.end(); ++it) {
       IdentifierData& id = it->second;
       if (id.isBound()) {
-        id.setIndex(nVars_-id.getIndex());
+        id.setIndex(nVars_ - id.getIndex());
       }
     }
   }
 
   bool addIdentifier(const std::string& name, bool asBound) {
     std::map<std::string, IdentifierData>::const_iterator it;
-    if ((it=symTable_.find(name)) != symTable_.end()) {
+    if ((it = symTable_.find(name)) != symTable_.end()) {
       if (asBound && !it->second.isBound()) {
         return false;  // now bound but previously unbound, should be an error
       }
@@ -69,8 +70,7 @@ public:
       if (asBound) {
         index = -nBoundVars_;
         ++nBoundVars_;
-      }
-      else {
+      } else {
         index = nVars_;
         ++nVars_;
       }
@@ -89,7 +89,7 @@ public:
 
   Matrix* getMatrix(const std::string& name) {
     std::map<std::string, Matrix*>::const_iterator it;
-    if ((it=matrices_.find(name)) != matrices_.end()) {
+    if ((it = matrices_.find(name)) != matrices_.end()) {
       return it->second;
     } else {
       return NULL;
@@ -107,7 +107,7 @@ public:
 
   int getIdIndex(const std::string& name) const {
     std::map<std::string, IdentifierData>::const_iterator it;
-    if ((it=symTable_.find(name)) != symTable_.end()) {
+    if ((it = symTable_.find(name)) != symTable_.end()) {
       return it->second.getIndex();
     }
     return -1;
@@ -115,7 +115,7 @@ public:
 
   const std::string& getVarName(int idx) const {
     std::map<std::string, IdentifierData>::const_iterator it;
-    for (it=symTable_.begin(); it != symTable_.end(); ++it) {
+    for (it = symTable_.begin(); it != symTable_.end(); ++it) {
       if (it->second.getIndex() == idx) return it->first;
     }
     std::stringstream errMsg;
@@ -130,7 +130,7 @@ public:
 
   int getNumberOfVariables() const { return nVars_; }
 
-  int getNumberOfIdentifiers() const { return nVars_+ nBoundVars_;  }
+  int getNumberOfIdentifiers() const { return nVars_ + nBoundVars_; }
 
   const Statement& getStatement(int i) const { return *(statements_[i]); }
 };

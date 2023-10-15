@@ -5,16 +5,13 @@
  * @file Interpolator.h Definition of interp::Interpolator
  */
 
-#include "interp/VarOrderEnum.h"
-#include "interp/PrunningEnum.h"
-
-#include "algebra/Polynomial.h"
-#include "algebra/PartialPolynomial.h"
-
-#include "math/util/prime.h"
-
-#include "VandSolverFactory.h"
 #include "Newton.h"
+#include "VandSolverFactory.h"
+#include "algebra/PartialPolynomial.h"
+#include "algebra/Polynomial.h"
+#include "interp/PrunningEnum.h"
+#include "interp/VarOrderEnum.h"
+#include "math/util/prime.h"
 
 #include <boost/shared_ptr.hpp>
 
@@ -22,8 +19,7 @@ namespace interp {
 
 template <typename F>
 class Interpolator {
-public:
-
+ public:
   /**
    * @brief Contruct interpolator
    * @param vf Vandermonde matrix solver factory
@@ -35,14 +31,15 @@ public:
    * @param verifyFinal - verify final polynomial against black box on that
    *        many random points
    */
-  Interpolator(
-      boost::shared_ptr<VandSolverFactory<F> > vf,
-      const typename algebra::PartialPolynomial<F>::OrderByFunctor&
-          polOrderSortBy,
-      PrunningEnum prn,
-      int verifyStage, int verifyFinal)
-    : vf_(vf), polOrderSortBy_(polOrderSortBy), prn_(prn),
-      verifyStage_(verifyStage), verifyFinal_(verifyFinal) { }
+  Interpolator(boost::shared_ptr<VandSolverFactory<F> > vf,
+               const typename algebra::PartialPolynomial<F>::OrderByFunctor&
+                   polOrderSortBy,
+               PrunningEnum prn, int verifyStage, int verifyFinal)
+      : vf_(vf),
+        polOrderSortBy_(polOrderSortBy),
+        prn_(prn),
+        verifyStage_(verifyStage),
+        verifyFinal_(verifyFinal) {}
 
   /**
    * @brief  Interpolate evaluator
@@ -56,62 +53,58 @@ public:
    * @return polynomial such that pol == eval on all points x_i
    */
   template <typename E>
-  boost::shared_ptr<algebra::Polynomial<F> const>
-  interpolate(E& evaluator,
-              boost::shared_ptr<algebra::PartialPolynomial<F> > ppol
-                  = boost::shared_ptr<algebra::PartialPolynomial<F> >());
+  boost::shared_ptr<algebra::Polynomial<F> const> interpolate(
+      E& evaluator, boost::shared_ptr<algebra::PartialPolynomial<F> > ppol =
+                        boost::shared_ptr<algebra::PartialPolynomial<F> >());
 
-  ~Interpolator() {  }
-/*
-  void setVarOrder(const eval::VarOrder& ord) {
-    std::vector<int> varPerm(nVars+1);
-    switch(ord) {
-      case InterpProfile::Prunning::NONE: {
-        varPerm.pop_back(); // Not homogenizing
-        for (int i = 0; i < nVars; ++i) { varPerm[i] = stats[i].varIdx;  }
-        break;
-      }
-      case InterpProfile::Prunning::ORIG_ORDER: {
-        varPerm[0] = nVars; // If homogenizing, hom var will be first
-        for (int i = 1; i <= nVars; ++i) { varPerm[i] = stats[i-1].varIdx;  }
-        break;
-      }
-      case InterpProfile::Prunning::MAX_LAST:{
-        varPerm[0] = nVars; // If homogenizing, hom var will be first
-        // find max deg idx and place it last
-        int maxDeg = 0; int maxIdx = -1; int i;
-        for (i = 0; i < nVars; ++i) {
-          if (maxDeg < stats[i-1].pol->getMaxDegree(0)) {
-            maxDeg = stats[i-1].pol->getMaxDegree(0);
-            maxIdx = i;
+  ~Interpolator() {}
+  /*
+    void setVarOrder(const eval::VarOrder& ord) {
+      std::vector<int> varPerm(nVars+1);
+      switch(ord) {
+        case InterpProfile::Prunning::NONE: {
+          varPerm.pop_back(); // Not homogenizing
+          for (int i = 0; i < nVars; ++i) { varPerm[i] = stats[i].varIdx;  }
+          break;
+        }
+        case InterpProfile::Prunning::ORIG_ORDER: {
+          varPerm[0] = nVars; // If homogenizing, hom var will be first
+          for (int i = 1; i <= nVars; ++i) { varPerm[i] = stats[i-1].varIdx;  }
+          break;
+        }
+        case InterpProfile::Prunning::MAX_LAST:{
+          varPerm[0] = nVars; // If homogenizing, hom var will be first
+          // find max deg idx and place it last
+          int maxDeg = 0; int maxIdx = -1; int i;
+          for (i = 0; i < nVars; ++i) {
+            if (maxDeg < stats[i-1].pol->getMaxDegree(0)) {
+              maxDeg = stats[i-1].pol->getMaxDegree(0);
+              maxIdx = i;
+            }
           }
+          int skip = varPerm[nVars] = i; // Place it last
+          for (int i = 1; i < nVars; ++i) { // Copy remaining in the order
+    requested if (i==skip) continue; varPerm[i] = stats[i-1].varIdx;
+          }
+          break;
         }
-        int skip = varPerm[nVars] = i; // Place it last
-        for (int i = 1; i < nVars; ++i) { // Copy remaining in the order requested
-          if (i==skip) continue;
-          varPerm[i] = stats[i-1].varIdx;
+        default: {
+          LERR_ << "Bad prunning option";
+          throw std::runtime_exception("Bad prunning option");
         }
-        break;
       }
-      default: {
-        LERR_ << "Bad prunning option";
-        throw std::runtime_exception("Bad prunning option");
+      if (!evalPtr->swapInVariableOrder(&varPerm)) {
+        LERR_ << "Could not set variable order";
       }
     }
-    if (!evalPtr->swapInVariableOrder(&varPerm)) {
-      LERR_ << "Could not set variable order";
-    }
-  }
-  */
-private:
+    */
+ private:
   /**
    * @brief Helper function to interpolate single variable
    */
   template <typename E>
-  boost::shared_ptr<algebra::PartialPolynomial<F> >
-  sparseInterpolateStage(
-      E& evaluator,
-      const algebra::PartialPolynomial<F>& polA,
+  boost::shared_ptr<algebra::PartialPolynomial<F> > sparseInterpolateStage(
+      E& evaluator, const algebra::PartialPolynomial<F>& polA,
       const algebra::PartialPolynomial<F>& polB);
 
   boost::shared_ptr<VandSolverFactory<F> > vf_;

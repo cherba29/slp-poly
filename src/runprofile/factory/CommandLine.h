@@ -15,7 +15,8 @@ namespace factory {
 class CommandLine {
   CommandLine();
   ~CommandLine();
-public:
+
+ public:
   /**
    * @brief Construct runprofile given command line parameters
    * Can throw exception if command line does not follow excepted format.
@@ -24,17 +25,14 @@ public:
 };
 
 class CommandLineException : public std::exception {
-public:
+ public:
 };
 
-class ConflictingOptionException : public CommandLineException {
-};
+class ConflictingOptionException : public CommandLineException {};
 
-class RequiredOptionException : public CommandLineException {
-};
+class RequiredOptionException : public CommandLineException {};
 
-class BadOptionException : public CommandLineException {
-};
+class BadOptionException : public CommandLineException {};
 
 }  // namespace factory
 }  // namespace runprofile

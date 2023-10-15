@@ -27,7 +27,7 @@ class ValueList;
  * @sa context::Value
  */
 class Processor {
-public:
+ public:
   virtual void process(const Assignment& v) = 0;
   virtual void process(const Determinant& v) = 0;
   virtual void process(const Function& v) = 0;
@@ -47,4 +47,4 @@ public:
 
 }  // namespace context
 
-#endif // NTRP_CONTEXT_PROCESSOR_H
+#endif  // NTRP_CONTEXT_PROCESSOR_H

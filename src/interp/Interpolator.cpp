@@ -4,7 +4,4 @@
 
 #include "Interpolator.h"
 
-namespace interp {
-
-
-}  // namespace interp
+namespace interp {}  // namespace interp

@@ -21,7 +21,6 @@
  */
 
 #include <boost/date_time/posix_time/posix_time.hpp>
-
 #include <string>
 
 /**
@@ -29,7 +28,7 @@
  */
 
 class Platform {
-public:
+ public:
   static const char* getApplicationName();
   static const char* getApplicationDescription();
   static int getMajorVersion();
@@ -46,7 +45,6 @@ public:
    * @return Date Time of last committed revision.
    */
   static const char* getCommitDateTime();
-
 
   static const char* getBugReportUrl();
   static const char* getSite();

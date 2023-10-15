@@ -4,14 +4,14 @@
 
 #include "SmartAssert.h"
 
-#include <iostream>
-#include <iomanip>
-#include <sstream>
 #include <cstdlib>
+#include <iomanip>
+#include <iostream>
+#include <sstream>
 
 namespace smart_assert {
 
-//ENUM_VALUES(Level, "warn", "debug", "error", "fatal")
+// ENUM_VALUES(Level, "warn", "debug", "error", "fatal")
 
 std::string Context::getMessage() const {
   std::ostringstream oss;
@@ -26,45 +26,41 @@ std::string Context::getMessage() const {
   if (it != namedValues_.end()) {
     oss << "Values: " << it->first << " = " << it->second << std::endl;
   }
-  for (++it; it != namedValues_.end(); ++it ) {
+  for (++it; it != namedValues_.end(); ++it) {
     oss << std::setw(9) << it->first << " = " << it->second << std::endl;
   }
   return oss.str();
 }
 
 SmartAssert::HandlerCallback SmartAssert::callbacks_[LevelEnum::NUM_ENUMS] = {
-  SmartAssert::defaultWarnHandler,
-  SmartAssert::defaultDebugHandler,
-  SmartAssert::defaultErrorHandler,
-  SmartAssert::defaultFatalHandler
-};
+    SmartAssert::defaultWarnHandler, SmartAssert::defaultDebugHandler,
+    SmartAssert::defaultErrorHandler, SmartAssert::defaultFatalHandler};
 
 SmartAssert::~SmartAssert() {
   const LevelEnum level = context_.getLevel();
-  if ((level.getId() >= LevelEnum::WARN)
-      && (level.getId() < LevelEnum::FATAL)) {
+  if ((level.getId() >= LevelEnum::WARN) &&
+      (level.getId() < LevelEnum::FATAL)) {
     if (callbacks_[level.getIndex()]) {
       callbacks_[level.getIndex()](context_);
     }
   } else {
-    abort(); // something very bad
+    abort();  // something very bad
   }
 }
 
-SmartAssert& SmartAssert::setContext(
-    const char* fileName,
-    const char* functionName,
-    const unsigned int lineNumber) {
+SmartAssert& SmartAssert::setContext(const char* fileName,
+                                     const char* functionName,
+                                     const unsigned int lineNumber) {
 #if defined(WIN32)
   static const char* dir_separator = "\\";
 #else
   static const char* dir_separator = "/";
-#endif // defined(WIN32)
+#endif  // defined(WIN32)
 
   std::string sfile(fileName);
-  const std::string::size_type nPos = sfile.find_last_of( dir_separator );
-  context_.setFileName(
-      (nPos == std::string::npos) ? fileName : sfile.substr(nPos + 1));
+  const std::string::size_type nPos = sfile.find_last_of(dir_separator);
+  context_.setFileName((nPos == std::string::npos) ? fileName
+                                                   : sfile.substr(nPos + 1));
 
   context_.setFunctionName(functionName);
   context_.setLineNumber(lineNumber);
@@ -116,15 +112,16 @@ void SmartAssert::defaultErrorHandler(const Context& context) {
 
 void SmartAssert::defaultFatalHandler(const Context& context) {
   std::cerr << context.getMessage();
-  std::abort(); // Hard exit, no clean up
+  std::abort();  // Hard exit, no clean up
 }
 
 void SmartAssert::setHandler(LevelEnum level, HandlerCallback callback) {
-  ASSERT0((level.getId() >= LevelEnum::WARN)
-      && (level.getIndex() > LevelEnum::NUM_ENUMS))
-          .error("Bad assertion level.").addValue("level", level);
+  ASSERT0((level.getId() >= LevelEnum::WARN) &&
+          (level.getIndex() > LevelEnum::NUM_ENUMS))
+      .error("Bad assertion level.")
+      .addValue("level", level);
 
-  ASSERT0( callback != NULL )
+  ASSERT0(callback != NULL)
       .warn("Assertion handling for specified level will be disabled")
       .addValue("level", level);
 

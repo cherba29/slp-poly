@@ -11,15 +11,15 @@ namespace eval {
 
 class DataAllocator {
   int maxAllocatedLocation;
-  std::map<int,bool> locations;  // Location Index, isTemporary
-public:
-  DataAllocator() :  maxAllocatedLocation(-1) {}
+  std::map<int, bool> locations;  // Location Index, isTemporary
+ public:
+  DataAllocator() : maxAllocatedLocation(-1) {}
 
   int getMaxAllocSize() const { return maxAllocatedLocation; }
 
-  int getCurrentAllocSize() const { 
+  int getCurrentAllocSize() const {
     if (this->locations.size() > 0) {
-      return (--(this->locations.end()))->first;    
+      return (--(this->locations.end()))->first;
     }
     return 0;
   }
@@ -31,7 +31,7 @@ public:
     std::map<int, bool>::const_iterator it = this->locations.begin();
     for (; it != this->locations.end(); ++it) {
       if ((it->first - location) > size) {
-        location = it->first-size - 1; // Next location will allocated
+        location = it->first - size - 1;  // Next location will allocated
         break;
       }
       location = it->first;
@@ -47,20 +47,19 @@ public:
   }
 
   void releaseLocation(int locIdx) {
-    std::map<int,bool>::iterator it = this->locations.find(locIdx);
+    std::map<int, bool>::iterator it = this->locations.find(locIdx);
     if (it != this->locations.end()) {
       this->locations.erase(it);
     }
   }
 
   bool isTemporaryLocation(int locIdx) {
-    std::map<int,bool>::iterator it = this->locations.find(locIdx);
+    std::map<int, bool>::iterator it = this->locations.find(locIdx);
     if (it != this->locations.end()) {
       return it->second;
     }
     return false;
   }
-
 };
 
 }  // namespace eval

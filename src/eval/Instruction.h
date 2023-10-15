@@ -19,15 +19,17 @@ namespace eval {
 
 template <class F>
 class Instruction {
-public:
-  //ENUMERATION(Type, ADD, ADDC, ADDTO, NEG, SUB, SUBC, SUBFROM, MUL, MULC, MULBY, DIV, DIVC, DIVBY, POW, DET, DET2P, SET, SETM, SETM2P, COPY );
-  // DET2P determinant, determinant of matrix allocated for 2^intlog(size)
-  // SETM2P set with constant, set 2D array, set 2D array of size 2^intlog(size)
+ public:
+  // ENUMERATION(Type, ADD, ADDC, ADDTO, NEG, SUB, SUBC, SUBFROM, MUL, MULC,
+  // MULBY, DIV, DIVC, DIVBY, POW, DET, DET2P, SET, SETM, SETM2P, COPY );
+  //  DET2P determinant, determinant of matrix allocated for 2^intlog(size)
+  //  SETM2P set with constant, set 2D array, set 2D array of size
+  //  2^intlog(size)
   Instruction(InstructionEnum t, int src1, int src2, int dest)
-    : type_(t), src1_(src1), src2_(src2), dest_(dest) {}
+      : type_(t), src1_(src1), src2_(src2), dest_(dest) {}
 
   Instruction(InstructionEnum t, int src1, F src2, int dest)
-    : type_(t), src1_(src1), const_(src2), dest_(dest) {}
+      : type_(t), src1_(src1), const_(src2), dest_(dest) {}
 
   InstructionEnum getType() const { return type_; }
 
@@ -38,7 +40,7 @@ public:
   int getDestination() const { return dest_; }
   void setDestination(int dest) { dest_ = dest; }
 
-private:
+ private:
   InstructionEnum type_;
   int src1_;  // Memory location
   int src2_;  // Memory location
@@ -46,25 +48,24 @@ private:
   int dest_;  // Memory location
 };
 
-//template <typename F>
-//ENUM_OSTREAM(typename Instruction<F>::Type)
+// template <typename F>
+// ENUM_OSTREAM(typename Instruction<F>::Type)
 //
-//template <typename F>
-//ENUM_CHOICE_OSTREAM(typename Instruction<F>::Type)
+// template <typename F>
+// ENUM_CHOICE_OSTREAM(typename Instruction<F>::Type)
 //
-//template <typename F>
-//ENUM_VALUES_NO_CHECK(Instruction<F>::Type,
-//            "ADD", "ADDC", "ADDTO",
-//            "NEG",
-//            "SUB", "SUBC", "SUBFROM",
-//            "MUL", "MULC", "MULBY",
-//            "DIV", "DIVC", "DIVBY",
-//            "POW",
-//            "DET", "DET2P",
-//            "SET", "SETM", "SETM2P",
-//            "COPY")
-} // namespace eval
-
+// template <typename F>
+// ENUM_VALUES_NO_CHECK(Instruction<F>::Type,
+//             "ADD", "ADDC", "ADDTO",
+//             "NEG",
+//             "SUB", "SUBC", "SUBFROM",
+//             "MUL", "MULC", "MULBY",
+//             "DIV", "DIVC", "DIVBY",
+//             "POW",
+//             "DET", "DET2P",
+//             "SET", "SETM", "SETM2P",
+//             "COPY")
+}  // namespace eval
 
 //#undef LOG_MODULE
 #endif  // NTRP_EVAL_INSTRUCTION_H

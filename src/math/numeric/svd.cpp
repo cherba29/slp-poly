@@ -6,106 +6,106 @@
 
 #include <algorithm>
 #include <cmath>
-#include <limits>
 #include <complex>
+#include <limits>
 
 namespace math {
 namespace numeric {
 
-void svbksb(long double** U, long double W[], long double** V,
-            int m, int n,
-            long double B[],
-            long double X[]) {
-	int jj;
-	int j;
-	int i;
-	long double s;
-	long double* tmp = new long double[n];
-	// Calculate U^T B
-	for (j = 0; j < n; j++) {
-		s = 0;
-		if (W[j]) {
-			for (i = 0; i < m; i++) {
-				s += U[i][j] * B[i];
-			}
-			s /= W[j];
-		}
-		tmp[j] = s;
-	}
-	// Matrix multiply by V to get an answer
-	for (j = 0; j < n; j++) {
-		s = 0;
-		for (jj = 0; jj < n; jj++) {
-			s += V[j][jj] * tmp[jj];
-		}
-		X[j] = s;
-	}
-	delete[] tmp;
+void svbksb(long double** U, long double W[], long double** V, int m, int n,
+            long double B[], long double X[]) {
+  int jj;
+  int j;
+  int i;
+  long double s;
+  long double* tmp = new long double[n];
+  // Calculate U^T B
+  for (j = 0; j < n; j++) {
+    s = 0;
+    if (W[j]) {
+      for (i = 0; i < m; i++) {
+        s += U[i][j] * B[i];
+      }
+      s /= W[j];
+    }
+    tmp[j] = s;
+  }
+  // Matrix multiply by V to get an answer
+  for (j = 0; j < n; j++) {
+    s = 0;
+    for (jj = 0; jj < n; jj++) {
+      s += V[j][jj] * tmp[jj];
+    }
+    X[j] = s;
+  }
+  delete[] tmp;
 }
 
-void solveViaSVD(long double** A, long double X[], long double B[], int m, int n) {
-	long double** U = new long double*[m];
-	int i;
-	for (i = 0; i < m; i++) {
-		U[i] = new long double[n];
-		for (int j = 0; j < n; j++) {
-			U[i][j] = A[i][j];
-		}
-	}
-	long double* W = new long double[n];
-	long double** V = new long double*[n];
-	for (i = 0; i < n; i++) {
-		V[i] = new long double[n];
-	}
-	svdcmp(U, m, n, W, V);
-	long double wmax = 0.0; // Will be the maximum singular value obtained.
-	for (i = 0; i < n; i++) {
-		if (W[i] > wmax) {
-			wmax = W[i];
-		}
-	}
-	// This is where we set the threshold for singular values
-	// allowed to be nonzero. The constant is typical, but not universal.
-	// You have to experiment with your own application.
-	long double wmin = wmax * std::numeric_limits<long double>::epsilon(); // 1.0e-6;
-	for (i = 0; i < n; i++) {
-		if (W[i] < wmin) {
-			W[i] = 0.0;
-		}
-	}
-	svbksb(U, W, V, m, n, B, X); // Back substitute
-	for (i = 0; i < m; i++) {
-		delete[] U[i];
-	}
-	delete[] U;
-	for (i = 0; i < n; i++) {
-		delete[] V[i];
-	}
-	delete[] V;
-	delete[] W;
+void solveViaSVD(long double** A, long double X[], long double B[], int m,
+                 int n) {
+  long double** U = new long double*[m];
+  int i;
+  for (i = 0; i < m; i++) {
+    U[i] = new long double[n];
+    for (int j = 0; j < n; j++) {
+      U[i][j] = A[i][j];
+    }
+  }
+  long double* W = new long double[n];
+  long double** V = new long double*[n];
+  for (i = 0; i < n; i++) {
+    V[i] = new long double[n];
+  }
+  svdcmp(U, m, n, W, V);
+  long double wmax = 0.0;  // Will be the maximum singular value obtained.
+  for (i = 0; i < n; i++) {
+    if (W[i] > wmax) {
+      wmax = W[i];
+    }
+  }
+  // This is where we set the threshold for singular values
+  // allowed to be nonzero. The constant is typical, but not universal.
+  // You have to experiment with your own application.
+  long double wmin =
+      wmax * std::numeric_limits<long double>::epsilon();  // 1.0e-6;
+  for (i = 0; i < n; i++) {
+    if (W[i] < wmin) {
+      W[i] = 0.0;
+    }
+  }
+  svbksb(U, W, V, m, n, B, X);  // Back substitute
+  for (i = 0; i < m; i++) {
+    delete[] U[i];
+  }
+  delete[] U;
+  for (i = 0; i < n; i++) {
+    delete[] V[i];
+  }
+  delete[] V;
+  delete[] W;
 }
 
 //#define SIGN(a,b) ((b) >= 0.0 ? fabs(a) : -fabs(a))
 inline long double sign(long double a, long double b) {
-	return (b) >= 0.0 ? std::abs(a) : -std::abs(a);
+  return (b) >= 0.0 ? std::abs(a) : -std::abs(a);
 }
 inline long double pythag(long double a, long double b) {
-	long double absa, absb;
-	absa = std::abs(a);
-	absb = std::abs(b);
-	if (absa > absb) {
-		long double val = absb / absa;
-		val *= val;
-		return absa * std::sqrt(1.0 + val);
-	} else {
-		if (absb == 0.0) {
-			return 0.0;
-		} else {
-			long double val = absa / absb;
-			val *= val;
-			return absb * std::sqrt(1.0 + val);
-		}
-	}
+  long double absa, absb;
+  absa = std::abs(a);
+  absb = std::abs(b);
+  if (absa > absb) {
+    long double val = absb / absa;
+    val *= val;
+    return absa * std::sqrt(1.0 + val);
+  } else {
+    if (absb == 0.0) {
+      return 0.0;
+    } else {
+      long double val = absa / absb;
+      val *= val;
+      return absb * std::sqrt(1.0 + val);
+    }
+  }
 }
 
 // Given a matrix a[0..m-1][0..n-1], this routine computes its singular value
@@ -113,243 +113,223 @@ inline long double pythag(long double a, long double b) {
 // diagonal matrix of singular values W is output as a vector w[0..n-1].
 // The matrix V (not the transpose V^T ) is output as nxn v[0..n-1][0..n-1].
 
-bool svdcmp(long double **a, int m, int n, long double w[], long double **v) {
+bool svdcmp(long double** a, int m, int n, long double w[], long double** v) {
+  const long max_iter = 30;
+  const long double eps = std::numeric_limits<long double>::epsilon();
+  long nm = 0, l = 0;
+  bool flag;
+  long double c, f, h, s, x, y, z;
+  long double g = 0.0;
+  long double scale = 0.0;
+  long double anorm = 0.0;
+  long double* rv1 = new long double[n];
 
-	const long max_iter = 30;
-	const long double eps = std::numeric_limits<long double>::epsilon();
-	long nm = 0, l = 0;
-	bool flag;
-	long double c, f, h, s, x, y, z;
-	long double g = 0.0;
-	long double scale = 0.0;
-	long double anorm = 0.0;
-	long double* rv1 = new long double[n];
+  for (long i = 0; i < n; ++i) {
+    l = i + 1;
+    rv1[i] = scale * g;
+    g = s = scale = 0.0;
+    if (i < m) {
+      for (long k = i; k < m; ++k) {
+        scale += std::abs(a[k][i]);
+      }
+      if (scale) {
+        for (long k = i; k < m; ++k) {
+          a[k][i] /= scale;
+          s += a[k][i] * a[k][i];
+        }
+        f = a[i][i];
+        g = -sign(std::sqrt(s), f);
+        h = f * g - s;
+        a[i][i] = f - g;
+        for (long j = l; j < n; ++j) {
+          s = 0.0;
+          for (long k = i; k < m; ++k) {
+            s += a[k][i] * a[k][j];
+          }
+          f = s / h;
 
-	for (long i = 0; i < n; ++i) {
-		l = i + 1;
-		rv1[i] = scale*g;
-		g = s = scale = 0.0;
-		if (i < m) {
-			for (long k = i; k < m; ++k) {
-				scale += std::abs(a[k][i]);
-			}
-			if (scale) {
-				for (long k = i; k < m; ++k) {
-					a[k][i] /= scale;
-					s += a[k][i] * a[k][i];
-				}
-				f = a[i][i];
-				g = -sign(std::sqrt(s), f);
-				h = f * g - s;
-				a[i][i] = f - g;
-				for (long j = l; j < n; ++j) {
-					s = 0.0;
-					for (long k = i; k < m; ++k) {
-						s += a[k][i] * a[k][j];
-					}
-					f = s / h;
+          for (long k = i; k < m; ++k) a[k][j] += f * a[k][i];
+        }
+        for (long k = i; k < m; ++k) a[k][i] *= scale;
+      }
+    }
 
-					for (long k = i; k < m; ++k)
-						a[k][j] += f * a[k][i];
-				}
-				for (long k = i; k < m; ++k)
-					a[k][i] *= scale;
-			}
-		}
+    w[i] = scale * g;
 
-		w[i] = scale *g;
+    g = s = scale = 0.0;
 
-		g = s = scale = 0.0;
+    if (i < m && i < n - 1) {
+      for (long k = l; k < n; ++k) scale += std::abs(a[i][k]);
 
-		if (i < m && i < n - 1) {
-			for (long k = l; k < n; ++k)
-				scale += std::abs(a[i][k]);
+      if (scale) {
+        for (long k = l; k < n; ++k) {
+          a[i][k] /= scale;
+          s += a[i][k] * a[i][k];
+        }
+        f = a[i][l];
+        g = -sign(std::sqrt(s), f);
+        h = f * g - s;
+        a[i][l] = f - g;
 
-			if (scale) {
-				for (long k = l; k < n; ++k) {
-					a[i][k] /= scale;
-					s += a[i][k] * a[i][k];
-				}
-				f = a[i][l];
-				g = -sign(std::sqrt(s), f);
-				h = f * g - s;
-				a[i][l] = f - g;
+        for (long k = l; k < n; ++k) rv1[k] = a[i][k] / h;
 
-				for (long k = l; k < n; ++k)
-					rv1[k] = a[i][k]/h;
+        for (long j = l; j < m; ++j) {
+          s = 0.0;
+          for (long k = l; k < n; ++k) s += a[j][k] * a[i][k];
 
-				for (long j = l; j < m; ++j) {
-					s = 0.0;
-					for (long k = l; k < n; ++k)
-						s += a[j][k] * a[i][k];
+          for (long k = l; k < n; ++k) a[j][k] += s * rv1[k];
+        }
+        for (long k = l; k < n; ++k) a[i][k] *= scale;
+      }
+    }
+    anorm = std::max(anorm, (std::abs(w[i]) + std::abs(rv1[i])));
+  }
+  for (long i = n - 1; i >= 0; --i) {
+    if (i < n - 1) {
+      if (g != 0) {
+        for (long j = l; j < n; ++j) v[j][i] = (a[i][j] / a[i][l]) / g;
 
-					for (long k = l; k < n; ++k)
-						a[j][k] += s * rv1[k];
-				}
-				for (long k = l; k < n; ++k)
-					a[i][k] *= scale;
-			}
-		}
-		anorm = std::max(anorm, (std::abs(w[i]) + std::abs(rv1[i])));
-	}
-	for (long i = n - 1; i >= 0; --i) {
-		if (i < n - 1) {
-			if (g != 0) {
-				for (long j = l; j < n; ++j)
-					v[j][i] = (a[i][j]/a[i][l])/g;
+        for (long j = l; j < n; ++j) {
+          s = 0.0;
+          for (long k = l; k < n; ++k) s += a[i][k] * v[k][j];
 
-				for (long j = l; j < n; ++j) {
-					s = 0.0;
-					for (long k = l; k < n; ++k)
-						s += a[i][k] * v[k][j];
+          for (long k = l; k < n; ++k) v[k][j] += s * v[k][i];
+        }
+      }
 
-					for (long k = l; k < n; ++k)
-						v[k][j] += s * v[k][i];
-				}
-			}
+      for (long j = l; j < n; ++j) v[i][j] = v[j][i] = 0.0;
+    }
 
-			for (long j = l; j < n; ++j)
-				v[i][j] = v[j][i] = 0.0;
-		}
+    v[i][i] = 1.0;
+    g = rv1[i];
+    l = i;
+  }
 
-		v[i][i] = 1.0;
-		g = rv1[i];
-		l = i;
-	}
+  for (long i = std::min(m, n) - 1; i >= 0; --i) {
+    l = i + 1;
+    g = w[i];
 
-	for (long i = std::min(m, n) - 1; i >= 0; --i) {
-		l = i + 1;
-		g = w[i];
+    for (long j = l; j < n; ++j) a[i][j] = 0.0;
 
-		for (long j = l; j < n; ++j)
-			a[i][j] = 0.0;
+    if (g != 0) {
+      g = 1.0 / g;
 
-		if (g != 0) {
-			g = 1.0 / g;
+      for (long j = l; j < n; ++j) {
+        s = 0.0;
+        for (long k = l; k < m; ++k) s += a[k][i] * a[k][j];
 
-			for (long j = l; j < n; ++j) {
-				s = 0.0;
-				for (long k = l; k < m; ++k)
-					s += a[k][i] * a[k][j];
+        f = (s / a[i][i]) * g;
 
-				f = (s / a[i][i]) * g;
+        for (long k = i; k < m; ++k) a[k][j] += f * a[k][i];
+      }
+      for (long j = i; j < m; ++j) a[j][i] *= g;
+    } else {
+      for (long j = i; j < m; ++j) a[j][i] = 0.0;
+    }
 
-				for (long k = i; k < m; ++k)
-					a[k][j] += f * a[k][i];
-			}
-			for (long j = i; j < m; ++j)
-				a[j][i] *= g;
-		} else {
-			for (long j = i; j < m; ++j)
-				a[j][i] = 0.0;
-		}
+    ++a[i][i];
+  }
 
-		++a[i][i];
-	}
+  for (long k = n - 1; k >= 0; --k) {
+    for (long its = 1; its <= max_iter; ++its) {
+      flag = true;
+      for (l = k; l >= 1; --l) {
+        nm = l - 1;
+        if (std::abs(rv1[l]) <= eps * anorm) {
+          flag = false;
+          break;
+        }
+        if (std::abs(w[nm]) <= eps * anorm) {
+          break;
+        }
+      }
 
-	for (long k = n - 1; k >= 0; --k) {
-		for (long its = 1; its <= max_iter; ++its) {
-			flag = true;
-			for (l = k; l >= 1; --l) {
-				nm = l - 1;
-				if (std::abs(rv1[l]) <= eps * anorm) {
-					flag = false;
-					break;
-				}
-				if (std::abs(w[nm]) <= eps * anorm) {
-					break;
-				}
-			}
+      if (flag) {
+        c = 0.0;
+        s = 1.0;
+        for (long i = l; i <= k; ++i) {
+          f = s * rv1[i];
+          rv1[i] = c * rv1[i];
+          if (std::abs(f) <= eps * anorm) break;
 
-			if (flag) {
-				c = 0.0;
-				s = 1.0;
-				for (long i = l; i <= k; ++i) {
-					f = s * rv1[i];
-					rv1[i] = c*rv1[i];
-					if (std::abs(f) <= eps * anorm)
-						break;
+          g = w[i];
+          h = pythag(f, g);
+          w[i] = h;
+          h = 1.0 / h;
+          c = g * h;
+          s = -f * h;
+          for (long j = 0; j < m; ++j) {
+            y = a[j][nm];
+            z = a[j][i];
+            a[j][nm] = y * c + z * s;
+            a[j][i] = z * c - y * s;
+          }
+        }
+      }
 
-					g = w[i];
-					h = pythag(f, g);
-					w[i] = h;
-					h = 1.0 / h;
-					c = g * h;
-					s = -f * h;
-					for (long j = 0; j < m; ++j) {
-						y = a[j][nm];
-						z = a[j][i];
-						a[j][nm] = y*c + z*s;
-						a[j][i] = z*c - y*s;
-					}
-				}
-			}
+      z = w[k];
+      if (l == k) {
+        if (z < 0.0) {
+          w[k] = -z;
+          for (long j = 0; j < n; ++j) v[j][k] = -v[j][k];
+        }
+        break;
+      }
 
-			z = w[k];
-			if (l == k) {
-				if (z < 0.0) {
-					w[k] = -z;
-					for (long j = 0; j < n; ++j)
-						v[j][k] = -v[j][k];
-				}
-				break;
-			}
+      if (its == max_iter) return false;
 
-			if (its == max_iter)
-				return false;
-
-			x = w[l];
-			nm = k - 1;
-			y = w[nm];
-			g = rv1[nm];
-			h = rv1[k];
-			f = ((y - z) * (y + z) + (g - h) * (g + h)) / (2.0 * h * y);
-			g = pythag(f, 1.0);
-			f = ((x - z) * (x + z) + h * ((y / (f + sign(g, f))) - h)) / x;
-			c = s = 1.0;
-			for (long j = l; j <= nm; ++j) {
-				long i = j + 1;
-				g = rv1[i];
-				y = w[i];
-				h = s * g;
-				g = c * g;
-				z = pythag(f, h);
-				rv1[j] = z;
-				c = f / z;
-				s = h / z;
-				f = x * c + g * s;
-				g = g * c - x * s;
-				h = y * s;
-				y *= c;
-				for (long jj = 0; jj < n; ++jj) {
-					x = v[jj][j];
-					z = v[jj][i];
-					v[jj][j] = x*c + z*s;
-					v[jj][i] = z*c - x*s;
-				}
-				z = pythag(f, h);
-				w[j] = z;
-				if (z != 0) {
-					z = 1.0 / z;
-					c = f * z;
-					s = h * z;
-				}
-				f = c * g + s * y;
-				x = c * y - s * g;
-				for (long jj = 0; jj < m; ++jj) {
-					y = a[jj][j];
-					z = a[jj][i];
-					a[jj][j] = y*c + z*s;
-					a[jj][i] = z*c - y*s;
-				}
-			}
-			rv1[l] = 0.0;
-			rv1[k] = f;
-			w[k] = x;
-		}
-	}
-	delete[] rv1;
-	return true;
+      x = w[l];
+      nm = k - 1;
+      y = w[nm];
+      g = rv1[nm];
+      h = rv1[k];
+      f = ((y - z) * (y + z) + (g - h) * (g + h)) / (2.0 * h * y);
+      g = pythag(f, 1.0);
+      f = ((x - z) * (x + z) + h * ((y / (f + sign(g, f))) - h)) / x;
+      c = s = 1.0;
+      for (long j = l; j <= nm; ++j) {
+        long i = j + 1;
+        g = rv1[i];
+        y = w[i];
+        h = s * g;
+        g = c * g;
+        z = pythag(f, h);
+        rv1[j] = z;
+        c = f / z;
+        s = h / z;
+        f = x * c + g * s;
+        g = g * c - x * s;
+        h = y * s;
+        y *= c;
+        for (long jj = 0; jj < n; ++jj) {
+          x = v[jj][j];
+          z = v[jj][i];
+          v[jj][j] = x * c + z * s;
+          v[jj][i] = z * c - x * s;
+        }
+        z = pythag(f, h);
+        w[j] = z;
+        if (z != 0) {
+          z = 1.0 / z;
+          c = f * z;
+          s = h * z;
+        }
+        f = c * g + s * y;
+        x = c * y - s * g;
+        for (long jj = 0; jj < m; ++jj) {
+          y = a[jj][j];
+          z = a[jj][i];
+          a[jj][j] = y * c + z * s;
+          a[jj][i] = z * c - y * s;
+        }
+      }
+      rv1[l] = 0.0;
+      rv1[k] = f;
+      w[k] = x;
+    }
+  }
+  delete[] rv1;
+  return true;
 }
 
 /*
@@ -594,13 +574,14 @@ bool svdcmp(long double **a, int m, int n, long double w[], long double **v) {
 double pythag(double a, double b)
 
 {
-	double absa, absb;
-	absa = fabs(a);
-	absb = fabs(b);
-	if (absa > absb)
-		return absa * sqrt(1.0 + SQR(absb / absa));
-	else
-		return (absb == 0.0 ? 0.0 : absb * sqrt(1.0 + SQR(absa / absb)));
+        double absa, absb;
+        absa = fabs(a);
+        absb = fabs(b);
+        if (absa > absb)
+                return absa * sqrt(1.0 + SQR(absb / absa));
+        else
+                return (absb == 0.0 ? 0.0 : absb * sqrt(1.0 + SQR(absa /
+absb)));
 }
 */
 

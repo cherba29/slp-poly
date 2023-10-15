@@ -18,24 +18,21 @@
 
 #include "MultiIndexMap.h"
 
-#include <string>
-#include <sstream>
 #include <ostream>
+#include <sstream>
+#include <string>
 
 namespace {
-bool stringContains(const std::string& str, const char* substrings[], int nSubStrings) {
+bool stringContains(const std::string& str, const char* substrings[],
+                    int nSubStrings) {
   for (int i = 0; i < nSubStrings; ++i) {
     if (str.find(substrings[i]) != std::string::npos) return true;
   }
   return false;
 }
 
-const char* needToQuote[] = {
-    ":", "[", "?", "]", "@",
-    "!", "'", "`", "\"",
-    "{", "}", "&", "%", "#",
-    ",", " ", "|", "*"
-};
+const char* needToQuote[] = {":", "[", "?", "]", "@", "!", "'", "`", "\"",
+                             "{", "}", "&", "%", "#", ",", " ", "|", "*"};
 
 const int needToQuoteSize = sizeof(needToQuote) / sizeof(const char*);
 
@@ -43,18 +40,29 @@ std::string ymlEscapeString(const std::string& str) {
   if (stringContains(str, needToQuote, needToQuoteSize)) {
     std::ostringstream oss;
     oss << '"';
-    for (std::string::const_iterator i = str.begin(), end = str.end(); i != end; ++i) {
+    for (std::string::const_iterator i = str.begin(), end = str.end(); i != end;
+         ++i) {
       unsigned char c = *i;
       if (' ' <= c and c <= '~' and c != '\\' and c != '"') {
         oss << c;
       } else {
         oss << '\\';
-        switch(c) {
-          case '"':  oss << '"';  break;
-          case '\\': oss << '\\'; break;
-          case '\t': oss << 't';  break;
-          case '\r': oss << 'r';  break;
-          case '\n': oss << 'n';  break;
+        switch (c) {
+          case '"':
+            oss << '"';
+            break;
+          case '\\':
+            oss << '\\';
+            break;
+          case '\t':
+            oss << 't';
+            break;
+          case '\r':
+            oss << 'r';
+            break;
+          case '\n':
+            oss << 'n';
+            break;
           default:
             char const* const hexdig = "0123456789ABCDEF";
             oss << 'x';
@@ -94,7 +102,7 @@ const MultiIndexMap& MultiIndexMap::operator[](int idx) const {
   return error_ = MultiIndexMap();
 }
 
-MultiIndexMap& MultiIndexMap::operator[](const std::string& idx)  {
+MultiIndexMap& MultiIndexMap::operator[](const std::string& idx) {
   if (value_.which() != MultiIndexMap::MAP) {
     this->value_ = MultiIndexMap::Mim();
   }
@@ -102,7 +110,7 @@ MultiIndexMap& MultiIndexMap::operator[](const std::string& idx)  {
   return mim[idx];
 }
 
-MultiIndexMap& MultiIndexMap::operator[](int idx)  {
+MultiIndexMap& MultiIndexMap::operator[](int idx) {
   if (value_.which() != MultiIndexMap::LIST) {
     this->value_ = MultiIndexMap::Mil();
   }
@@ -128,16 +136,16 @@ MultiIndexMap& MultiIndexMap::operator+=(const MultiIndexMap& val) {
   return *this;
 }
 
-
 class stream_value : public boost::static_visitor<> {
   std::ostream* os_;
   int indent_;
-public:
+
+ public:
   stream_value(std::ostream* os, int indent) : os_(os), indent_(indent) {}
-  void operator()(const std::string & str)  const  {
+  void operator()(const std::string& str) const {
     *os_ << ymlEscapeString(str);
   }
-  void operator()(const MultiIndexMap::Mil& list) const  {
+  void operator()(const MultiIndexMap::Mil& list) const {
     MultiIndexMap::Mil::const_iterator it;
     for (it = list.begin(); it != list.end(); ++it) {
       if (it->second.value_.which() != MultiIndexMap::STRING) break;
@@ -146,8 +154,8 @@ public:
     if (isPureList) {
       *os_ << "[ ";
       for (it = list.begin(); it != list.end(); ++it) {
-         if (it != list.begin()) *os_ << ", ";
-         *os_ << it->second;
+        if (it != list.begin()) *os_ << ", ";
+        *os_ << it->second;
       }
       *os_ << " ]";
     } else {
@@ -159,7 +167,7 @@ public:
       }
     }
   }
-  void operator()(const MultiIndexMap::Mim& map) const  {
+  void operator()(const MultiIndexMap::Mim& map) const {
     MultiIndexMap::Mim::const_iterator it;
     for (it = map.begin(); it != map.end(); ++it) {
       *os_ << std::endl;

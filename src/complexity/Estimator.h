@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "complexity/Tracker.h"
 #include "complexity/Equation.h"
+#include "complexity/Tracker.h"
 #include "util/log.h"
 
 #include <boost/function.hpp>
@@ -30,7 +30,7 @@
 
 namespace complexity {
 
-typedef boost::function<long double (long double size)> TestFunction;
+typedef boost::function<long double(long double size)> TestFunction;
 /**
  * @brief
  * Example
@@ -42,7 +42,8 @@ typedef boost::function<long double (long double size)> TestFunction;
 class Estimator {
   TestFunction f_;
   boost::shared_ptr<TrackWithEqn> tracker_;
-public:
+
+ public:
   /**
    * @brief Constructor
    */
@@ -63,9 +64,9 @@ public:
 
   boost::shared_ptr<TrackWithEqn> getTracker() { return tracker_; }
 
-}; // class Estimator
+};  // class Estimator
 
-} // namespace complexity
+}  // namespace complexity
 
 #undef LOG_MODULE
 

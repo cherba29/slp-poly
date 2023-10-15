@@ -6,9 +6,9 @@
  */
 
 #include <algorithm>
-#include <vector>
-#include <string>
 #include <ostream>
+#include <string>
+#include <vector>
 
 #ifdef max
 #undef max
@@ -22,7 +22,7 @@ namespace algebra {
 
 template <typename F>
 class Polynomial {
-public:
+ public:
   /**
    * @brief Create polynomial with given variables and that many terms.
    * Initial polynomial coefficients/degrees are not set, and may contain
@@ -53,7 +53,7 @@ public:
    * @brief Return degree of varIdx variable in t-th term
    */
   int getDegree(int t, int varIdx) const {
-    return *(terms_+nVars_*t+varIdx);
+    return *(terms_ + nVars_ * t + varIdx);
   }
 
   /**
@@ -72,8 +72,8 @@ public:
   int getMinDegree(int varIdx) const;
 
   /**
-   * @brief Retunr number of allocated polynomial terms, note that there might be
-   * zero terms which will be included in this count
+   * @brief Retunr number of allocated polynomial terms, note that there might
+   * be zero terms which will be included in this count
    */
   unsigned int getNumberOfTerms() const { return nTerms_; }
 
@@ -101,18 +101,19 @@ public:
    * @brief set degree of varIdx variable at t-th term
    */
   void setDegree(int t, int varIdx, int deg) {
-    *(terms_+nVars_*t+varIdx) = deg;
+    *(terms_ + nVars_ * t + varIdx) = deg;
   }
 
   /**
    * @brief Pack the polynomial removing any terms with zero coefficients
    */
   void removeZeroTerms();
-private:
+
+ private:
   unsigned int nTerms_;
   unsigned int nVars_;
   std::vector<std::string> varNames_;
-  int* terms_; // 2D array of term degrees
+  int* terms_;  // 2D array of term degrees
   F* coeffs_;
 };
 

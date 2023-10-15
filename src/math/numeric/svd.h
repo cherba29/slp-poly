@@ -5,7 +5,6 @@
  * @file svd.h Implementation of Singular Value Decomposition
  */
 
-
 namespace math {
 namespace numeric {
 
@@ -18,26 +17,20 @@ namespace numeric {
  * @param X - output, solution, vector of size n
  * @see svdcmp
  */
-void svbksb(
-    const long double** U,
-    const long double W[],
-    const long double** V,
-    int m,
-    int n,
-    const long double B[],
-    long double X[]);
+void svbksb(const long double** U, const long double W[], const long double** V,
+            int m, int n, const long double B[], long double X[]);
 
-
-void solveViaSVD(
-    long double** A, long double X[], long double B[], int m, int n);
+void solveViaSVD(long double** A, long double X[], long double B[], int m,
+                 int n);
 
 /**
  * @brief This routine computes its singular value decomposition,  A = U W V^T.
  * @param a - input/output mxn matrix, the mxn matrix U replaces a on output.
- * @param w - output nxn diagonal matrix of singular values W is output as a vector w[0..n-1].
+ * @param w - output nxn diagonal matrix of singular values W is output as a
+ * vector w[0..n-1].
  * @param v - output nxn matrix V (not the transpose V^T ) is output
  */
-bool svdcmp(long double **a, int m, int n, long double w[], long double **v);
+bool svdcmp(long double** a, int m, int n, long double w[], long double** v);
 
 }  // namespace numeric
 }  // namespace math

@@ -6,6 +6,7 @@
  */
 
 #include "Value.h"
+
 #include <string>
 
 namespace context {
@@ -15,13 +16,14 @@ namespace context {
  * to intermediate form as only then the underlying field is known.
  */
 class Integer : public Value {
-public:
-  Integer(const std::string& val) : val_(val) { }
+ public:
+  Integer(const std::string& val) : val_(val) {}
 
   const std::string& getInt() const { return val_; }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
-private:
+
+ private:
   std::string val_;
 };
 

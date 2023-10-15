@@ -7,22 +7,23 @@
 
 #include "Processor.h"
 #include "Value.h"
-#include <string>
-#include <map>
+
 #include <boost/shared_ptr.hpp>
+#include <map>
+#include <string>
 
 namespace context {
 
 class Table : public Value {
-public:
+ public:
   void setEntry(const std::string& name, Value* val) {
-    entries_.insert(
-        std::pair<std::string, boost::shared_ptr<Value> >(
-            name, boost::shared_ptr<Value>(val)));
+    entries_.insert(std::pair<std::string, boost::shared_ptr<Value> >(
+        name, boost::shared_ptr<Value>(val)));
   }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
-private:
+
+ private:
   std::map<std::string, boost::shared_ptr<Value> > entries_;
 };
 

@@ -13,9 +13,8 @@
 namespace math {
 namespace vandermonde {
 
-template<class F>
+template <class F>
 QuadSolver<F>::QuadSolver(unsigned int size, const F* entries) {
-
   size_ = size;
   entries_ = new F[size_];
   rootPoly_ = new F[size_];
@@ -27,19 +26,19 @@ QuadSolver<F>::QuadSolver(unsigned int size, const F* entries) {
     entries_[i] = entries[i];
     rootPoly_[i] = coeff = -entries[i];
     for (unsigned int j = i; j > 0; j--) {
-      rootPoly_[j] += rootPoly_[j-1];
-      rootPoly_[j-1] *= coeff;
+      rootPoly_[j] += rootPoly_[j - 1];
+      rootPoly_[j - 1] *= coeff;
     }
   }
 }
 
-template<class F>
+template <class F>
 QuadSolver<F>::~QuadSolver() {
   delete[] rootPoly_;
   delete[] entries_;
 }
 
-template<class F>
+template <class F>
 void QuadSolver<F>::solveTranspose(const F* values, F* result) {
   if (size_ <= 1) {
     result[0] = values[0];
@@ -62,21 +61,21 @@ void QuadSolver<F>::solveTranspose(const F* values, F* result) {
       result[i] += values[j - 1] * coeff;
     }
     // div = _rootPoly[i](_entries[i])
-    if (div.hasInverse()) { // @ todo avoid exception
+    if (div.hasInverse()) {  // @ todo avoid exception
       result[i] /= div;
     } else {
       std::ostringstream errs;
-      errs << "QuadVandermonde.solveTranspose: divisor " << div << " has no inverse";
+      errs << "QuadVandermonde.solveTranspose: divisor " << div
+           << " has no inverse";
       throw std::runtime_error(errs.str());
     }
   }
 }
 
-template<class F>
+template <class F>
 void QuadSolver<F>::evaluate(const F* coeffs, F* result) {
   unsigned int i, j;
-  for (j = 0; j < size_; ++j)
-    result[j] = coeffs[size_ - 1];
+  for (j = 0; j < size_; ++j) result[j] = coeffs[size_ - 1];
   for (i = size_ - 1; i > 0; i--) {
     for (j = 0; j < size_; ++j) {
       result[j] *= entries_[j];
@@ -85,5 +84,5 @@ void QuadSolver<F>::evaluate(const F* coeffs, F* result) {
   }
 }
 
-} // namespace vandermonde
-} // namespace math
+}  // namespace vandermonde
+}  // namespace math

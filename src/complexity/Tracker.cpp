@@ -22,24 +22,22 @@
 #include "util/log.h"
 
 #include <boost/scoped_array.hpp>
-
 #include <cmath>
 
 #define LOG_MODULE ::logging::LogModuleEnum::COMPLEXITY
 
 namespace complexity {
 
-namespace {
+namespace {}  // anonymous namespace
 
-} // anonymous namespace
-
-void TrackWithEqn::addMeasurement(long double size, long double timeVal, long double weight) {
+void TrackWithEqn::addMeasurement(long double size, long double timeVal,
+                                  long double weight) {
   unsigned int nTerms = eqn_.getNTerms();
 
   if (measurements_.size() > nTerms) {
     MeasurementSet::iterator it = measurements_.begin();
     if (it->weight < weight) {
-      if (measurements_.size() > 2*nTerms) {
+      if (measurements_.size() > 2 * nTerms) {
         measurements_.erase(it);
       }
       measurements_.insert(Measurement(size, timeVal, weight));
@@ -52,7 +50,7 @@ void TrackWithEqn::addMeasurement(long double size, long double timeVal, long do
 }
 
 const Equation& TrackWithEqn::getEquation() const {
-  if (dirty_) { // If new measurement exist
+  if (dirty_) {  // If new measurement exist
 
     // E x C = T, solve for C
 
@@ -64,7 +62,7 @@ const Equation& TrackWithEqn::getEquation() const {
 
     // Allocate memory for E and T all in one shot
     boost::scoped_array<long double> Etmp(
-      new long double[nMeasurements * (nTerms + 2)]);
+        new long double[nMeasurements * (nTerms + 2)]);
     long double** E = reinterpret_cast<long double**>(Etmp.get());
     for (int i = 0; i < nMeasurements; ++i) {
       E[i] = Etmp.get() + nMeasurements + i * nTerms;
@@ -83,8 +81,8 @@ const Equation& TrackWithEqn::getEquation() const {
     // Note that logically we consider this object constant
     // we are just refining equation coefficients in light of new measurements
     TrackWithEqn* this_ = const_cast<TrackWithEqn*>(this);
-    math::numeric::solveViaSVD(
-        E, (this_->eqn_).getCoeffs(), T, nMeasurements, nTerms);
+    math::numeric::solveViaSVD(E, (this_->eqn_).getCoeffs(), T, nMeasurements,
+                               nTerms);
 
     this_->dirty_ = false;
   }
@@ -102,6 +100,4 @@ long double TrackWithEqn::getResidual() const {
   return std::sqrt(residual);
 }
 
-
 }  // namespace complexity
-

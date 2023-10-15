@@ -6,6 +6,7 @@
  */
 
 #include "context.h"
+
 #include <ostream>
 
 namespace context {
@@ -29,10 +30,10 @@ class Printer : public Processor {
   virtual void process(const context::Table& v);
   virtual void process(const context::ValueList& v);
 
-public:
+ public:
   Printer(std::ostream& os) : os_(os) {}
 };
 
 }  // namespace context
 
-#endif // NTRP_CONTEXT_PRINTER_H
+#endif  // NTRP_CONTEXT_PRINTER_H

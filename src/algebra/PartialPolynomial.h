@@ -7,13 +7,11 @@
  */
 
 #include "Polynomial.h"
-
 #include "util/SmartAssert.h"
 
-#include <boost/scoped_array.hpp>
 #include <boost/function.hpp>
+#include <boost/scoped_array.hpp>
 #include <boost/shared_ptr.hpp>
-
 #include <vector>
 
 namespace algebra {
@@ -24,7 +22,8 @@ class PartialPolynomial {
   /** Set of variable indices making up the partial polynomial */
   std::vector<int> varIdxs_;
   boost::shared_ptr<Polynomial<F> > pol_;
-public:
+
+ public:
   /**
    * @brief Create partial polynomial
    * @param nVars - total number of variables including pol variables
@@ -32,15 +31,13 @@ public:
    * @param varIdxs - variable indices making up this polynomial
    * @param pol - polynomial in non-fixed variables
    */
-  PartialPolynomial(
-      int nVars,
-      const F* fixedVals,
-      const std::vector<int>& varIdxs,
-      boost::shared_ptr<Polynomial<F> > pol)
-    : fixedVals_(nVars), varIdxs_(varIdxs), pol_(pol) {
-    ASSERT1(varIdxs.size() == pol->getNumberOfVariables())(
-        "Number of indices must match number of variables in the polynomial");
-    std::copy(fixedVals, fixedVals+nVars, fixedVals_.begin());
+  PartialPolynomial(int nVars, const F* fixedVals,
+                    const std::vector<int>& varIdxs,
+                    boost::shared_ptr<Polynomial<F> > pol)
+      : fixedVals_(nVars), varIdxs_(varIdxs), pol_(pol) {
+    ASSERT1(varIdxs.size() == pol->getNumberOfVariables())
+    ("Number of indices must match number of variables in the polynomial");
+    std::copy(fixedVals, fixedVals + nVars, fixedVals_.begin());
   }
 
   /**
@@ -84,11 +81,13 @@ public:
   int getTotalNumberOfVariables() const { return fixedVals_.size(); }
 
   // Ordering predicates for  PartialEvalPolynomial
-  typedef boost::function2<
-      bool, const PartialPolynomial&, const PartialPolynomial&> OrderByFunctor;
+  typedef boost::function2<bool, const PartialPolynomial&,
+                           const PartialPolynomial&>
+      OrderByFunctor;
 
-  typedef std::binary_function<
-      const PartialPolynomial&, const PartialPolynomial&, bool> Compare;
+  typedef std::binary_function<const PartialPolynomial&,
+                               const PartialPolynomial&, bool>
+      Compare;
 
   struct MinDegOrder : public Compare {
     bool operator()(const PartialPolynomial& x,
@@ -122,19 +121,20 @@ public:
   };
   // define order for shared_ptr in terms of installed order by functor,
   // which can be any of the above predicates
-  class PtrOrder : public std::binary_function<
-      const boost::shared_ptr<PartialPolynomial>&,
-      const boost::shared_ptr<PartialPolynomial>&,
-      bool> {
+  class PtrOrder
+      : public std::binary_function<const boost::shared_ptr<PartialPolynomial>&,
+                                    const boost::shared_ptr<PartialPolynomial>&,
+                                    bool> {
     // Functor taking two ppols returning bool
     OrderByFunctor order_;
-  public:
-    PtrOrder():order_(MaxTermsOrder()) {}  // default order
+
+   public:
+    PtrOrder() : order_(MaxTermsOrder()) {}  // default order
     PtrOrder(const OrderByFunctor& ord) : order_(ord) {}
 
     bool operator()(const boost::shared_ptr<PartialPolynomial>& a,
                     const boost::shared_ptr<PartialPolynomial>& b) {
-      return this->order_(*a,*b);
+      return this->order_(*a, *b);
     }
   };
 };

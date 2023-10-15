@@ -10,13 +10,14 @@
 namespace context {
 
 class Id : public Value {
-public:
+ public:
   Id(const std::string& name) : name_(name) {}
 
   const std::string& getName() const { return name_; }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
-private:
+
+ private:
   std::string name_;
 };
 

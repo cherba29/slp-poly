@@ -1,5 +1,6 @@
 /**
- * @file FieldBenchmarks.cpp Implementation of non-templated parts of FieldBenchmarks class
+ * @file FieldBenchmarks.cpp Implementation of non-templated parts of
+ * FieldBenchmarks class
  *
  * Copyright (C) 2010  Arthur D. Cherba
  * This program is free software: you can redistribute it and/or modify
@@ -72,4 +73,4 @@ int FieldBenchmarks::run(util::MultiIndexMap* mmap) {
   return 0;
 }
 
-} // namespace run
+}  // namespace run

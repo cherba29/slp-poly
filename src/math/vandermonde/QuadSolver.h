@@ -17,19 +17,19 @@ namespace vandermonde {
  * Setup this solver precomputing langrange polynomial in O(n^2)
  */
 template <typename F>
-class QuadSolver: public Solver<F> {
-public:
+class QuadSolver : public Solver<F> {
+ public:
   QuadSolver(unsigned int size, const F* entries);
 
   virtual ~QuadSolver();
 
-  virtual unsigned int getMatrixSize() const { return size_;	}
-  virtual F getEntry(unsigned int i) const {	return entries_[i];	}
+  virtual unsigned int getMatrixSize() const { return size_; }
+  virtual F getEntry(unsigned int i) const { return entries_[i]; }
   virtual void solveTranspose(const F* values, F* result);
 
   virtual void evaluate(const F* coeffs, F* result);
 
-private:
+ private:
   unsigned int size_;  // Size of Vandermonde system
   F* entries_;         // Vandermonde system entries
   F* rootPoly_;

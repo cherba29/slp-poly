@@ -5,18 +5,21 @@
  * @file context.h Includes all of context
  */
 
+// clang-format off
+// These need to be included before as they are forward declared.
 #include "Value.h"
 #include "Processor.h"
+// clang-format on
+
 #include "Assignment.h"
+#include "Determinant.h"
 #include "Function.h"
 #include "Id.h"
 #include "Integer.h"
 #include "Matrix.h"
-#include "Determinant.h"
 #include "NamedValue.h"
 #include "Negation.h"
 #include "Power.h"
-#include "Processor.h"
 #include "Product.h"
 #include "RealNumber.h"
 #include "Statement.h"

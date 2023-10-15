@@ -3,8 +3,8 @@
  */
 
 #include "Driver.h"
-#include "Scanner.h"
 
+#include "Scanner.h"
 #include "util/log.h"
 
 #include <fstream>
@@ -14,12 +14,7 @@ namespace maple {
 
 #define LOG_MODULE ::logging::LogModuleEnum::PARSER
 
-
-Driver::Driver()
-    : trace_scanning_(false),
-      trace_parsing_(false)
-{
-}
+Driver::Driver() : trace_scanning_(false), trace_parsing_(false) {}
 
 bool Driver::parse_stream(std::istream& in,
                           boost::shared_ptr<context::InterpContext> context,
@@ -38,7 +33,7 @@ bool Driver::parse_stream(std::istream& in,
   return parser.parse() == 0;
 }
 
-bool Driver::parse_file(const std::string &filename,
+bool Driver::parse_file(const std::string& filename,
                         boost::shared_ptr<context::InterpContext> context) {
   std::ifstream in(filename.c_str());
   if (!in.good()) {
@@ -50,7 +45,7 @@ bool Driver::parse_file(const std::string &filename,
   return parse_stream(in, context, filename);
 }
 
-bool Driver::parse_string(const std::string &input,
+bool Driver::parse_string(const std::string& input,
                           boost::shared_ptr<context::InterpContext> context,
                           const std::string& sname) {
   std::istringstream iss(input);
@@ -61,8 +56,6 @@ void Driver::error(const class location& l, const std::string& m) {
   LERR_ << l << ": " << m;
 }
 
-void Driver::error(const std::string& m) {
-  LERR_ << m;
-}
+void Driver::error(const std::string& m) { LERR_ << m; }
 
-} // namespace maple
+}  // namespace maple

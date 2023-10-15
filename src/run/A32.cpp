@@ -4,12 +4,10 @@
  *
  */
 
-#include "Interpolation.h"
 #include "FieldBenchmarks.h"
-
+#include "Interpolation.h"
 #include "math/field/Field_uint.h"
 #include "math/util/prime.h"
-
 #include "util/SmartAssert.h"
 #include "util/log.h"
 
@@ -22,7 +20,6 @@ typedef math::field::Field_uint<uint32_t, math::Prime<uint32_t>::A> field;
 int Interpolation::runA32(
     const boost::shared_ptr<context::InterpContext>& ctxtPtr,
     util::MultiIndexMap* m) {
-
   LAPP_ << "Interpolating with A32 (Hardcoded choice A prime): "
         << field::getName();
 
@@ -31,10 +28,10 @@ int Interpolation::runA32(
 
 int FieldBenchmarks::runA32(util::MultiIndexMap* m) {
   LAPP_ << "Benchmarking with A32 (Hardcoded choice A prime): "
-    << field::getName();
+        << field::getName();
 
   return this->runWithField<field>(m);
 }
 
-} // namespace run
-#endif // #ifdef FIELD_A32
+}  // namespace run
+#endif  // #ifdef FIELD_A32

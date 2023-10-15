@@ -3,14 +3,14 @@
 
 //! Test performance of given field on various algorithms
 
+#include "complexity/AlgEnum.h"
 #include "complexity/Equation.h"
 #include "complexity/Estimator.h"
-#include "complexity/AlgEnum.h"
 #include "complexity/Perf.h"
 #include "operation/field/benchmark.h"
 #include "operation/vandermonde/benchmark.h"
-#include "util/log.h"
 #include "util/MultiIndexMap.h"
+#include "util/log.h"
 
 #include <iomanip>
 #include <sstream>
@@ -20,20 +20,20 @@
 namespace run {
 
 class FieldBenchmarks {
-public:
+ public:
   template <typename BENCHMARKER>
   void runFieldOperation(complexity::AlgEnum alg, util::MultiIndexMap* mmap) {
-    util::MultiIndexMap& m = *mmap; // Reference is more convenient
+    util::MultiIndexMap& m = *mmap;  // Reference is more convenient
 
-    const double MAX_FIELD_TEST_TIME = 5.0; // seconds
-    //typedef typename complexity::Estimator<T> FieldOperationEstimator;
-    //FieldOperationEstimator estField;
-    //estField.run(MAX_FIELD_TEST_TIME);
+    const double MAX_FIELD_TEST_TIME = 5.0;  // seconds
+    // typedef typename complexity::Estimator<T> FieldOperationEstimator;
+    // FieldOperationEstimator estField;
+    // estField.run(MAX_FIELD_TEST_TIME);
     {
       using namespace complexity;
       Perf::registerAlg<LinearEquation>(alg.toString());
 
-      Perf::exercise(alg.toString(),BENCHMARKER(),MAX_FIELD_TEST_TIME);
+      Perf::exercise(alg.toString(), BENCHMARKER(), MAX_FIELD_TEST_TIME);
       const Equation* eq = Perf::getEquation(alg.toString());
 
       if (eq) {
@@ -41,7 +41,7 @@ public:
                << eq->solveFor(1.0) << " ops/sec";
         LAPP1_ << "  equation " << std::scientific << *eq;
         m["equation"] = *eq;
-        m["evals_sec"] =  eq->solveFor(1.0);
+        m["evals_sec"] = eq->solveFor(1.0);
       } else {
         LWRN_ << "equation " << alg.toString() << " is NULL";
       }
@@ -109,8 +109,8 @@ public:
     m["fourier_order"] = order;
     m["size"] = F::getSize();
 
-    runFieldOperation<operation::field::Add<F> >(
-        complexity::AlgEnum::FIELD_ADD, &(m["operation"]["add"]));
+    runFieldOperation<operation::field::Add<F> >(complexity::AlgEnum::FIELD_ADD,
+                                                 &(m["operation"]["add"]));
     runFieldOperation<operation::field::Subtract<F> >(
         complexity::AlgEnum::FIELD_SUB, &(m["operation"]["sub"]));
     runFieldOperation<operation::field::Multiply<F> >(
@@ -122,18 +122,20 @@ public:
 
     const double BENCHMARK_TIME_LIMIT = 2.0;
     {
-      LAPP1_ << "Benchmarking " << complexity::AlgEnum::VAND_QUAD_SETUP 
+      LAPP1_ << "Benchmarking " << complexity::AlgEnum::VAND_QUAD_SETUP
              << " for " << BENCHMARK_TIME_LIMIT << " sec";
       const complexity::AlgEnum alg = complexity::AlgEnum::VAND_QUAD_SETUP;
       complexity::Perf::registerAlg<complexity::QuadEquation>(alg.toString());
-      complexity::Perf::exercise(
-          alg.toString(), operation::vandermonde::QuadSetup<F>(), BENCHMARK_TIME_LIMIT);
-      const complexity::Equation* eq = complexity::Perf::getEquation(alg.toString());
+      complexity::Perf::exercise(alg.toString(),
+                                 operation::vandermonde::QuadSetup<F>(),
+                                 BENCHMARK_TIME_LIMIT);
+      const complexity::Equation* eq =
+          complexity::Perf::getEquation(alg.toString());
       if (eq) {
         double timeToEval = eq->evaluateAt(1000000);
-        LAPP1_ << "Vandermonde Quad setup for size 1000000 in " 
-               << std::fixed << std::setprecision(4)
-               << timeToEval << " secs equation " << std::scientific << *eq;
+        LAPP1_ << "Vandermonde Quad setup for size 1000000 in " << std::fixed
+               << std::setprecision(4) << timeToEval << " secs equation "
+               << std::scientific << *eq;
         m["vandermonde"]["setup"]["quad"]["equation"] = *eq;
       } else {
         LWRN_ << "  equation NULL";
@@ -141,56 +143,74 @@ public:
       }
     }
 
-    //typedef complexity::Estimator<operation::vandermonde::QuadSolve<F> > QuadSolveEstimator;
-    //QuadSolveEstimator estQuadSolve;
-    //estQuadSolve.run(2*MAX_FIELD_TEST_TIME);
+    // typedef complexity::Estimator<operation::vandermonde::QuadSolve<F> >
+    // QuadSolveEstimator; QuadSolveEstimator estQuadSolve;
+    // estQuadSolve.run(2*MAX_FIELD_TEST_TIME);
 
-    //timeToEval = QuadSolveEstimator::getComplexityEquation().evaluateAt(1000000);
-    //LAPP1_ << "Vandermonde Quad solve for size 1000000 in " << std::fixed << std::setprecision(4)
-    //       << timeToEval << " secs equation " << std::scientific << QuadSolveEstimator::getComplexityEquation();
+    // timeToEval =
+    // QuadSolveEstimator::getComplexityEquation().evaluateAt(1000000); LAPP1_
+    // << "Vandermonde Quad solve for size 1000000 in " << std::fixed <<
+    // std::setprecision(4)
+    //        << timeToEval << " secs equation " << std::scientific <<
+    //        QuadSolveEstimator::getComplexityEquation();
 
-    //m["vandermonde"]["solve"]["quad"]["equation"] = QuadSolveEstimator::getComplexityEquation();
+    // m["vandermonde"]["solve"]["quad"]["equation"] =
+    // QuadSolveEstimator::getComplexityEquation();
 
-    //typedef complexity::Estimator<operation::vandermonde::FFTSetup<F> > FFTSetupEstimator;
-    //FFTSetupEstimator estFFTSetup;
-    //estFFTSetup.run(2*MAX_FIELD_TEST_TIME);
+    // typedef complexity::Estimator<operation::vandermonde::FFTSetup<F> >
+    // FFTSetupEstimator; FFTSetupEstimator estFFTSetup;
+    // estFFTSetup.run(2*MAX_FIELD_TEST_TIME);
 
-    //timeToEval = FFTSetupEstimator::getComplexityEquation().evaluateAt(1000000);
-    //LAPP1_ << "Vandermonde FFT setup for size 1000000 in " << std::fixed << std::setprecision(4)
-    //       << timeToEval << " secs equation " << std::scientific << FFTSetupEstimator::getComplexityEquation();
+    // timeToEval =
+    // FFTSetupEstimator::getComplexityEquation().evaluateAt(1000000); LAPP1_ <<
+    // "Vandermonde FFT setup for size 1000000 in " << std::fixed <<
+    // std::setprecision(4)
+    //        << timeToEval << " secs equation " << std::scientific <<
+    //        FFTSetupEstimator::getComplexityEquation();
 
-    //m["vandermonde"]["setup"]["fft"]["equation"] = FFTSetupEstimator::getComplexityEquation();
+    // m["vandermonde"]["setup"]["fft"]["equation"] =
+    // FFTSetupEstimator::getComplexityEquation();
 
-    //typedef complexity::Estimator<operation::vandermonde::FFTSolve<F> > FFTSolveEstimator;
-    //FFTSolveEstimator estFFTSolve;
-    //estFFTSolve.run(2*MAX_FIELD_TEST_TIME);
+    // typedef complexity::Estimator<operation::vandermonde::FFTSolve<F> >
+    // FFTSolveEstimator; FFTSolveEstimator estFFTSolve;
+    // estFFTSolve.run(2*MAX_FIELD_TEST_TIME);
 
-    //timeToEval = FFTSolveEstimator::getComplexityEquation().evaluateAt(1000000);
-    //LAPP1_ << "Vandermonde FFT solve for size 1000000 in " << std::fixed << std::setprecision(4)
-    //       << timeToEval << " secs equation " << std::scientific << FFTSolveEstimator::getComplexityEquation();
+    // timeToEval =
+    // FFTSolveEstimator::getComplexityEquation().evaluateAt(1000000); LAPP1_ <<
+    // "Vandermonde FFT solve for size 1000000 in " << std::fixed <<
+    // std::setprecision(4)
+    //        << timeToEval << " secs equation " << std::scientific <<
+    //        FFTSolveEstimator::getComplexityEquation();
 
-    //m["vandermonde"]["solve"]["fft"]["equation"] = FFTSolveEstimator::getComplexityEquation();
+    // m["vandermonde"]["solve"]["fft"]["equation"] =
+    // FFTSolveEstimator::getComplexityEquation();
 
-    //long double intersectionPoint
-    //  = complexity::Equation::intersectsAt(FFTSetupEstimator::getComplexityEquation(),
-    //                         QuadSetupEstimator::getComplexityEquation());
-    //LAPP1_ << "FFT Setup intersects Quad at " << intersectionPoint;
+    // long double intersectionPoint
+    //   =
+    //   complexity::Equation::intersectsAt(FFTSetupEstimator::getComplexityEquation(),
+    //                          QuadSetupEstimator::getComplexityEquation());
+    // LAPP1_ << "FFT Setup intersects Quad at " << intersectionPoint;
 
-    //m["vandermonde"]["setup"]["fft_quad_intersection"] = intersectionPoint;
-    //LAPP1_ << "FFT setup time "
-    //       << FFTSetupEstimator::getComplexityEquation().evaluateAt(intersectionPoint)
-    //       << " Quad setup time "
-    //       << QuadSetupEstimator::getComplexityEquation().evaluateAt(intersectionPoint);
+    // m["vandermonde"]["setup"]["fft_quad_intersection"] = intersectionPoint;
+    // LAPP1_ << "FFT setup time "
+    //        <<
+    //        FFTSetupEstimator::getComplexityEquation().evaluateAt(intersectionPoint)
+    //        << " Quad setup time "
+    //        <<
+    //        QuadSetupEstimator::getComplexityEquation().evaluateAt(intersectionPoint);
 
-    //intersectionPoint
-    //  = complexity::Equation::intersectsAt(FFTSolveEstimator::getComplexityEquation(),
-    //                         QuadSolveEstimator::getComplexityEquation());
-    //LAPP1_ << "FFT solve intersects Quad at " << intersectionPoint;
-    //m["vandermonde"]["solve"]["fft_quad_intersection"] = intersectionPoint;
-    //LAPP1_ << "FFT solve time "
-    //       << FFTSolveEstimator::getComplexityEquation().evaluateAt(intersectionPoint)
-    //       << " Quad solve time "
-    //       << QuadSolveEstimator::getComplexityEquation().evaluateAt(intersectionPoint);
+    // intersectionPoint
+    //   =
+    //   complexity::Equation::intersectsAt(FFTSolveEstimator::getComplexityEquation(),
+    //                          QuadSolveEstimator::getComplexityEquation());
+    // LAPP1_ << "FFT solve intersects Quad at " << intersectionPoint;
+    // m["vandermonde"]["solve"]["fft_quad_intersection"] = intersectionPoint;
+    // LAPP1_ << "FFT solve time "
+    //        <<
+    //        FFTSolveEstimator::getComplexityEquation().evaluateAt(intersectionPoint)
+    //        << " Quad solve time "
+    //        <<
+    //        QuadSolveEstimator::getComplexityEquation().evaluateAt(intersectionPoint);
     return 0;
   }
 

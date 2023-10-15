@@ -6,14 +6,15 @@
  *
  */
 
-#include <stdexcept>
 #include "Operation.h"
+
+#include <stdexcept>
 
 namespace operation {
 namespace field {
 
 class FieldOperation {
-public:
+ public:
   typedef enum {
     ADD,
     SUBTRACT,
@@ -31,13 +32,10 @@ public:
     }
     op_ = static_cast<OperatorEnum_type>(i);
   }
-  operator OperatorEnum_type() const {
-    return op_;
-  }
-  operator int() const {
-    return static_cast<int>(op_);
-  }
-private:
+  operator OperatorEnum_type() const { return op_; }
+  operator int() const { return static_cast<int>(op_); }
+
+ private:
   OperatorEnum_type op_;
 };
 
@@ -46,5 +44,4 @@ typedef OperationCount<FieldOperation> FieldOperations;
 }  // namespace field
 }  // namespace operation
 
-#endif // NTRP_OPERATION_FIELD_FIELDOPERATIONS_H_
-
+#endif  // NTRP_OPERATION_FIELD_FIELDOPERATIONS_H_

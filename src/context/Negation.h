@@ -10,12 +10,12 @@
 
 #include <boost/shared_ptr.hpp>
 
-
 namespace context {
 
 class Negation : public Value {
   boost::shared_ptr<Value> val_;
-public:
+
+ public:
   Negation(Value* val) : val_(val) {
     ASSERT1(val)(val).msg("Negation cannot be created out of NULL");
   }

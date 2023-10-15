@@ -26,22 +26,20 @@ namespace complexity {
 
 template <typename EQN, typename T>
 class PerfAlg : public T {
-public:
-  PerfAlg(const char* name) : name_(name) {
-    Perf::registerAlg<EQN>(name_);
-  }
+ public:
+  PerfAlg(const char* name) : name_(name) { Perf::registerAlg<EQN>(name_); }
 
-  template<typename A1>
+  template <typename A1>
   PerfAlg(const char* name, A1 a1) : T(a1), name_(name) {
     Perf::registerAlg<EQN>(name_);
   }
 
-  template<typename A1, typename A2>
+  template <typename A1, typename A2>
   PerfAlg(const char* name, A1 a1, A2 a2) : T(a1, a2), name_(name) {
     Perf::registerAlg<EQN>(name_);
   }
 
-  template<typename A1, typename A2, typename A3>
+  template <typename A1, typename A2, typename A3>
   PerfAlg(const char* name, A1 a1, A2 a2, A3 a3) : T(a1, a2, a3), name_(name) {
     Perf::registerAlg<EQN>(name_);
   }
@@ -49,9 +47,10 @@ public:
   const std::string& getName() const { return name_; }
 
   double predicted(double size, int nTimes) const {
-    return Perf::predicted(name_,size,nTimes);
+    return Perf::predicted(name_, size, nTimes);
   }
-private:
+
+ private:
   std::string name_;
 };  // class PerfAlg
 

@@ -6,7 +6,6 @@
  */
 
 #include "Value.h"
-
 #include "util/SmartAssert.h"
 
 #include <boost/shared_ptr.hpp>
@@ -17,8 +16,8 @@ namespace context {
  * @brief Sum node, encapsulating a sequence of sub expressions.
  */
 class Sum : public Value {
-public:
-  Sum() { }
+ public:
+  Sum() {}
 
   // Add value to this sum. Sum takes ownership.
   void add(Value* node) {
@@ -41,7 +40,8 @@ public:
   size_t getNumberOfNodes() const { return nodes_.size(); }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
-private:
+
+ private:
   std::vector<boost::shared_ptr<Value> > nodes_;
   std::vector<bool> isPos_;
 };

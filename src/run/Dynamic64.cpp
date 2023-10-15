@@ -12,10 +12,9 @@
  * $Id$
  */
 
-#include "Interpolation.h"
 #include "FieldBenchmarks.h"
+#include "Interpolation.h"
 #include "math/field/Field.h"
-
 #include "util/SmartAssert.h"
 #include "util/log.h"
 
@@ -26,28 +25,24 @@ namespace run {
 typedef math::field::Field<uint64_t> field;
 
 int Interpolation::runDynamic64(
-  const boost::shared_ptr<context::InterpContext>& ctxtPtr,
-  util::MultiIndexMap* m)
-{
-
+    const boost::shared_ptr<context::InterpContext>& ctxtPtr,
+    util::MultiIndexMap* m) {
   const std::vector<uint64_t>& primes = interpProfile_->getFieldPrimes();
-  ASSERT0(primes.size() == 1)(primes.size())
-    .msg("There should be exactly one prime specified for this option");
+  ASSERT0(primes.size() == 1)
+  (primes.size())
+      .msg("There should be exactly one prime specified for this option");
   field::setPrime(primes[0]);
 
   return runWithField<field>(ctxtPtr, m);
 }
 
 int FieldBenchmarks::runDynamic64(util::MultiIndexMap* m) {
-
   field::setPrime(math::Prime<uint64_t>::A);
 
-  LAPP_ << "Benchmarking with Dynamic32: "
-    << field::getName();
+  LAPP_ << "Benchmarking with Dynamic32: " << field::getName();
 
   return runWithField<field>(m);
 }
 
-} // namespace run
-#endif //FIELD_DYNAMIC64
-
+}  // namespace run
+#endif  // FIELD_DYNAMIC64

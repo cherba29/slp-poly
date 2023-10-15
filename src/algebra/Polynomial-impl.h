@@ -11,18 +11,18 @@
 namespace algebra {
 
 template <typename F>
-Polynomial<F>::Polynomial(
-    const std::vector<std::string>& varNames, unsigned int nTerms)
-  : nTerms_(nTerms),
-    nVars_(varNames.size()),
-    varNames_(varNames),
-    terms_((nTerms && nVars_) ? new int[nTerms * nVars_] : NULL),
-    coeffs_((nTerms) ? new F[nTerms] : NULL) {
-  //for (unsigned int i = 0; i < nTerms; ++i) {
-  //  for (unsigned int j = 0; j < nVars_; ++j) {
-  //    terms_[nVars_*i+j] = 0;
-  //  }
-  //}
+Polynomial<F>::Polynomial(const std::vector<std::string>& varNames,
+                          unsigned int nTerms)
+    : nTerms_(nTerms),
+      nVars_(varNames.size()),
+      varNames_(varNames),
+      terms_((nTerms && nVars_) ? new int[nTerms * nVars_] : NULL),
+      coeffs_((nTerms) ? new F[nTerms] : NULL) {
+  // for (unsigned int i = 0; i < nTerms; ++i) {
+  //   for (unsigned int j = 0; j < nVars_; ++j) {
+  //     terms_[nVars_*i+j] = 0;
+  //   }
+  // }
 }
 
 template <typename F>
@@ -33,8 +33,9 @@ Polynomial<F>::~Polynomial() {
 
 template <typename F>
 F Polynomial<F>::monValue(int t, const F* vals) const {
-  F prod; prod.template setTo<1>();
-  const int* term = terms_+t*nVars_;
+  F prod;
+  prod.template setTo<1>();
+  const int* term = terms_ + t * nVars_;
   for (unsigned int i = 0; i < nVars_; i++) {
     prod *= vals[i].getPow(term[i]);
   }
@@ -43,10 +44,11 @@ F Polynomial<F>::monValue(int t, const F* vals) const {
 
 template <typename F>
 F Polynomial<F>::operator()(const F* vals) const {
-  F sum; sum.template setTo<0>();
+  F sum;
+  sum.template setTo<0>();
   F prod;
   const int* term = terms_;
-  for (unsigned int i = 0; i < nTerms_; ++i, term+=nVars_) {
+  for (unsigned int i = 0; i < nTerms_; ++i, term += nVars_) {
     prod = coeffs_[i];
     for (unsigned int j = 0; j < nVars_; ++j) {
       prod *= vals[j].getPow(term[j]);
@@ -59,9 +61,9 @@ F Polynomial<F>::operator()(const F* vals) const {
 template <typename F>
 int Polynomial<F>::getMaxDegree(int varIdx) const {
   if (nTerms_ < 1) return -1;
-  const int* term = terms_+varIdx;
-  int max = *term; // Degree in first term
-  for (unsigned int i = 1; i < nTerms_; ++i,term+=nVars_) {
+  const int* term = terms_ + varIdx;
+  int max = *term;  // Degree in first term
+  for (unsigned int i = 1; i < nTerms_; ++i, term += nVars_) {
     max = std::max(max, *term);
   }
   return max;
@@ -74,7 +76,7 @@ int Polynomial<F>::getTotDegree() const {
   for (unsigned int i = 0; i < nTerms_; ++i) {
     int deg = 0;
     for (unsigned int j = 0; j < nVars_; ++j, ++term) {
-      deg+=*term;
+      deg += *term;
     }
     max = std::max(max, deg);
   }
@@ -83,9 +85,12 @@ int Polynomial<F>::getTotDegree() const {
 
 template <typename F>
 std::string Polynomial<F>::getShortName() const {
-  std::ostringstream oss;  oss << '[';
+  std::ostringstream oss;
+  oss << '[';
   for (size_t i = 0; i < nVars_; i++) {
-    if (i) { oss << ","; }
+    if (i) {
+      oss << ",";
+    }
     oss << varNames_[i];
   }
   oss << ']';
@@ -95,10 +100,10 @@ std::string Polynomial<F>::getShortName() const {
 template <typename F>
 int Polynomial<F>::getMinDegree(int varIdx) const {
   if (nTerms_ < 1) return -1;
-  const int* term = terms_+varIdx;
+  const int* term = terms_ + varIdx;
   int min = *term;
   for (unsigned int i = 1; i < nTerms_; ++i) {
-    term+=nVars_ ;
+    term += nVars_;
     min = std::min(min, *term);
   }
   return min;
@@ -109,7 +114,7 @@ void Polynomial<F>::removeZeroTerms() {
   unsigned int i = 0;
   for (unsigned int t = 0; t < nTerms_; ++t) {
     if (!coeffs_[t].template is<0>()) {
-      if (t != i) { // copy t term to i term
+      if (t != i) {  // copy t term to i term
         coeffs_[i] = coeffs_[t];
         for (unsigned int j = 0; j < nVars_; ++j) {
           *(terms_ + nVars_ * i + j) = *(terms_ + nVars_ * t + j);
@@ -122,23 +127,22 @@ void Polynomial<F>::removeZeroTerms() {
 }
 
 template <typename F>
-std::ostream& operator << (std::ostream& os, const algebra::Polynomial<F>& p) {
+std::ostream& operator<<(std::ostream& os, const algebra::Polynomial<F>& p) {
   unsigned int n = p.getNumberOfTerms();
   unsigned int nVars = p.getNumberOfVariables();
-//  for (int i = 0; i < n; i++) {
-//    os << '+' << p.getCoeff(i);
-//    for (int j = 0; j < nVars; j++) {
-//      os << '*' << p.getVarName(j) << '^' << p.getDegree(i,j);
-//    }
-//  }
-//  return os;
+  //  for (int i = 0; i < n; i++) {
+  //    os << '+' << p.getCoeff(i);
+  //    for (int j = 0; j < nVars; j++) {
+  //      os << '*' << p.getVarName(j) << '^' << p.getDegree(i,j);
+  //    }
+  //  }
+  //  return os;
   for (unsigned int i = 0; i < n; i++) {
     bool firstItem = true;
     F coeff = p.getCoeff(i);
     if (coeff.template is<-1>()) {
       os << '-';
-    }
-    else if (coeff.template is<1>()) {
+    } else if (coeff.template is<1>()) {
       if (i) {
         os << '+';
       }
@@ -150,7 +154,7 @@ std::ostream& operator << (std::ostream& os, const algebra::Polynomial<F>& p) {
       firstItem = false;
     }
     for (unsigned int j = 0; j < nVars; ++j) {
-      int deg = p.getDegree(i,j);
+      int deg = p.getDegree(i, j);
       if (deg != 0) {
         if (firstItem) {
           firstItem = false;
@@ -173,4 +177,4 @@ std::ostream& operator << (std::ostream& os, const algebra::Polynomial<F>& p) {
   return os;
 }
 
-} // namespace algebra
+}  // namespace algebra

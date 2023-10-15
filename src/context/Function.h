@@ -6,7 +6,6 @@
  */
 
 #include "ValueList.h"
-
 #include "context/FunctionEnum.h"
 
 #include <boost/shared_ptr.hpp>
@@ -14,16 +13,17 @@
 namespace context {
 
 class Function : public Value {
-public:
+ public:
   Function(FunctionEnum name, ValueList* valueList)
-      : name_(name), valList_(valueList) { }
+      : name_(name), valList_(valueList) {}
 
   const FunctionEnum& getName() const { return name_; }
 
   const ValueList& getArguments() const { return *valList_; }
 
   virtual void accept(Processor& proc) const { proc.process(*this); }
-private:
+
+ private:
   FunctionEnum name_;
   boost::shared_ptr<ValueList> valList_;
 };

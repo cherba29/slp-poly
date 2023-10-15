@@ -4,6 +4,4 @@
 
 #include "Polynomial.h"
 
-namespace algebra {
-
-}  // namespace algebra
+namespace algebra {}  // namespace algebra
