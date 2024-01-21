@@ -6,8 +6,7 @@
  * @file Field_uint2x32-Impl.h Implementation of math::Field_uint2x32<MOD1,MOD2>
  */
 
-namespace math {
-namespace field {
+namespace math::field {
 
 //**************************************************************************************************
 // Constructor for base type
@@ -482,5 +481,4 @@ int Field_uint2x32<MOD1,MOD2>::toString(char* buffer) const {
   return pos;
 }
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field

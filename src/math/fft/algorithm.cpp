@@ -6,8 +6,7 @@
  */
 #include "algorithm.h"
 
-namespace math {
-namespace fft {
+namespace math::fft {
 
 // Find the bit-reversed permutation of 2^logsize items
 unsigned int* bitrevPerm(unsigned int logsize) {
@@ -28,5 +27,4 @@ unsigned int* bitrevPerm(unsigned int logsize) {
   return perm;
 }
 
-}  // namespace fft
-}  // namespace math
+}  // namespace math::fft

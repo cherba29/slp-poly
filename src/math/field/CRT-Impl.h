@@ -9,8 +9,7 @@
 #include "math/util/prime.h"
 #include "util/SmartAssert.h"
 
-namespace math {
-namespace field {
+namespace math::field {
 
 template <typename UIntType>
 unsigned int CRT<UIntType>::nPrimes_ = 0;
@@ -802,5 +801,4 @@ void CRT32::randomInit(unsigned int seed) {
 }
 */
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field

@@ -5,16 +5,12 @@
 /**
  * @file FFTSolver-Impl.h
  * @brief Implementation of Fast Fourier Vandermonde solver
- *
- * $URL$
- * $Id$
  */
 
 #include "math/fft/algorithm.h"
 #include "util/SmartAssert.h"
 
-namespace math {
-namespace vandermonde {
+namespace math::vandermonde {
 
 template <class F>
 FFTSolver<F>::FFTSolver(unsigned int size, const F* entries)
@@ -177,5 +173,4 @@ void FFTSolver<F>::evaluate(const F* coeffs, F* result) {
   }
 }
 
-}  // namespace vandermonde
-}  // namespace math
+}  // namespace math::vandermonde

@@ -10,8 +10,7 @@
 
 #include <boost/scoped_array.hpp>
 
-namespace math {
-namespace field {
+namespace math::field {
 /**
  * @brief Represents a number by its value % a sequence of primes < 2^32
  * The primes are set via static method setPrimes, and must be done before
@@ -521,8 +520,7 @@ __forceinline CRT<U> operator/(const CRT<U>& left, const CRT<U>& right) {
  */
 // static void showPrimes(std::ostream& os);
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field
 
 #include "CRT-Impl.h"
 

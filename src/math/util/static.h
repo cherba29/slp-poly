@@ -5,9 +5,8 @@
  * @file: static.h static math template meta utilities.
  */
 
-#include <limits>
-//#include <boost/mpl/if.hpp>
 #include <boost/static_assert.hpp>
+#include <limits>
 
 namespace math {
 

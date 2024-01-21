@@ -10,8 +10,7 @@
 #include <sstream>
 #include <stdexcept>
 
-namespace math {
-namespace vandermonde {
+namespace math::vandermonde {
 
 template <class F>
 QuadSolver<F>::QuadSolver(unsigned int size, const F* entries) {
@@ -84,5 +83,4 @@ void QuadSolver<F>::evaluate(const F* coeffs, F* result) {
   }
 }
 
-}  // namespace vandermonde
-}  // namespace math
+}  // namespace math::vandermonde

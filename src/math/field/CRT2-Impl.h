@@ -9,8 +9,7 @@
 #include "util/SmartAssert.h"
 #include "math/util/prime.h"
 
-namespace math {
-namespace field {
+namespace math::field {
 
 //template <typename UIntType>
 //unsigned int CRT2<UIntType>::multMod.getSize() = 0;
@@ -709,5 +708,4 @@ void CRT232::randomInit(unsigned int seed) {
 }
 */
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field

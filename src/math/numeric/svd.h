@@ -5,8 +5,7 @@
  * @file svd.h Implementation of Singular Value Decomposition
  */
 
-namespace math {
-namespace numeric {
+namespace math::numeric {
 
 /** @brief Solves A X = B for a vector X.
  *  where A = U W V^T as returned by svdcmp. Complexity O(m*n+n^2)
@@ -32,7 +31,6 @@ void solveViaSVD(long double** A, long double X[], long double B[], int m,
  */
 bool svdcmp(long double** a, int m, int n, long double w[], long double** v);
 
-}  // namespace numeric
-}  // namespace math
+}  // namespace math::numeric
 
 #endif  // NTRP_MATH_LINEAR_SVD_H_

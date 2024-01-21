@@ -10,8 +10,7 @@
 #include <math/util/static.h>
 #include <boost/scoped_array.hpp>
 
-namespace math {
-namespace field {
+namespace math::field {
 /**
  * @brief Finite field of statically specified modulo.
  * Use these primes for fast fourier transform,
@@ -438,8 +437,7 @@ private:
   }
 
 };
-}  // namespace field
-}  // namespace math
+}  // namespace math::field
 
 #include "Field_uint2x32-Impl.h"
 

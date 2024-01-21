@@ -10,8 +10,7 @@
 
 #include <cstdio>  // for snprintf
 
-namespace math {
-namespace field {
+namespace math::field {
 
 // Constructor for base type
 // template <typename UIntType, UIntType MOD> __forceinline
@@ -493,5 +492,4 @@ void Field_uint<UIntType, MOD>::toString(char* buffer) const {
                      : -static_cast<long>(MOD - val_));
 }
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field

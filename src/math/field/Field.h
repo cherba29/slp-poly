@@ -7,13 +7,9 @@
 
 /**
  * @file: Field.h interface for the Field<Uint> class.
- *
- * $URL$
- * $Id$
  */
 
-namespace math {
-namespace field {
+namespace math::field {
 
 template <typename T>
 class Field {
@@ -171,8 +167,7 @@ class Field {
     return buff;
   }
 };
-}  // namespace field
-}  // namespace math
+}  // namespace math::field
 
 #include "Field-Impl.h"
 

@@ -11,8 +11,7 @@
 
 #include <boost/scoped_array.hpp>
 
-namespace math {
-namespace field {
+namespace math::field {
 /**
  * @brief Finite field of statically specified modulo.
  * Use these primes for fast fourier transform,
@@ -404,8 +403,7 @@ class Field_uint2x {
   // rads[0] = crt[0];
   // rads[1] = ((crt[1] - crt[0])*mixmul[1]) % MOD2
 };
-}  // namespace field
-}  // namespace math
+}  // namespace math::field
 
 #include "Field_uint2x-Impl.h"
 

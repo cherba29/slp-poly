@@ -9,8 +9,7 @@
 // @todo use boost format
 #include <cstdio>  // for snprintf
 
-namespace math {
-namespace field {
+namespace math::field {
 
 // Constructor for base type
 // template <typename UIntType, UIntType MOD1, UIntType MOD2> __forceinline
@@ -553,5 +552,4 @@ int Field_uint2x<UIntType, MOD1, MOD2>::toString(char* buffer) const {
   */
 }
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field

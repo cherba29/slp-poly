@@ -6,8 +6,7 @@
  * @brief Abstract interface for Vandermonde Solver
  */
 
-namespace math {
-namespace vandermonde {
+namespace math::vandermonde {
 /**
  * @brief Abstract parent of Vandermonde matrix solver classes
  * Solving transposed Vandermonde system of equations \f$A \hat{x} = \hat{a}\f$
@@ -61,7 +60,6 @@ class Solver {
  private:
 };
 
-}  // namespace vandermonde
-}  // namespace math
+}  // namespace math::vandermonde
 
 #endif  // NTRP_MATH_VANDERMONDE_SOLVER_H

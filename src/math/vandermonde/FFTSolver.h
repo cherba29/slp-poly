@@ -8,8 +8,7 @@
 
 #include "Solver.h"
 
-namespace math {
-namespace vandermonde {
+namespace math::vandermonde {
 
 /**
  * @brief \f$O(n \log^2 n)\f$ solver of Vandermonde matrix systems
@@ -123,8 +122,7 @@ class FFTSolver : public Solver<F> {
   F** subprods_;
 };
 
-}  // namespace vandermonde
-}  // namespace math
+}  // namespace math::vandermonde
 
 #include "FFTSolver-Impl.h"
 

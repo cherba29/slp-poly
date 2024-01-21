@@ -9,8 +9,7 @@
 #include <complex>
 #include <limits>
 
-namespace math {
-namespace numeric {
+namespace math::numeric {
 
 void svbksb(long double** U, long double W[], long double** V, int m, int n,
             long double B[], long double X[]) {
@@ -585,5 +584,4 @@ absb)));
 }
 */
 
-}  // namespace numeric
-}  // namespace math
+}  // namespace math::numeric

@@ -11,8 +11,7 @@
 #include "math/util/prime.h"
 #include "math/util/random.h"
 
-namespace math {
-namespace field {
+namespace math::field {
 
 //*****************************************************************************
 template <typename T>
@@ -589,5 +588,4 @@ int Field<T>::toDebugString(char* buffer) const {
   return currPos;
 }
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field

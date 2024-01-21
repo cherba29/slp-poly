@@ -14,9 +14,7 @@
 
 #include <boost/scoped_array.hpp>
 
-namespace math {
-
-namespace fft {
+namespace math::fft {
 /******************************************************************************/
 /* @brief
  * @param logsize - input size 2^logsize
@@ -329,5 +327,4 @@ void polyDivMod(unsigned int aNTerms, const F* a, unsigned int bNTerms,
   delete[] prod;
 }
 
-}  // namespace fft
-}  // namespace math
+}  // namespace math::fft

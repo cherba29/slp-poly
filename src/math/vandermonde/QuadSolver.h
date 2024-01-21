@@ -8,8 +8,7 @@
 
 #include "Solver.h"
 
-namespace math {
-namespace vandermonde {
+namespace math::vandermonde {
 
 /**
  * @brief Quadratic-time solver of Vandermonde matrix systems
@@ -35,8 +34,7 @@ class QuadSolver : public Solver<F> {
   F* rootPoly_;
 };
 
-}  // namespace vandermonde
-}  // namespace math
+}  // namespace math::vandermonde
 
 #include "QuadSolver-Impl.h"
 

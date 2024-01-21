@@ -11,8 +11,7 @@
 
 #include <boost/scoped_array.hpp>
 
-namespace math {
-namespace field {
+namespace math::field {
 /**
  * @brief Finite field of statically specified modulo.
  * Use these primes for fast fourier transform,
@@ -427,8 +426,7 @@ class Field_uint {
   ubase_type val_; /**< actual value in the field */
 };
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field
 
 #include "Field_uint-Impl.h"
 

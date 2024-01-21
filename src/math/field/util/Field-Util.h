@@ -11,8 +11,7 @@
 #include <istream>
 #include <ostream>
 
-namespace math {
-namespace field {
+namespace math::field {
 namespace util {
 
 /*****************************************************************************/
@@ -268,8 +267,7 @@ inline std::istream& operator>>(std::istream& is, F& f) {
   return is;
 }
 
-}  // namespace field
-}  // namespace math
+}  // namespace math::field
 
 #endif  // NTRP_MATH_FIELD_UTIL_H
 

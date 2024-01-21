@@ -4,9 +4,6 @@
 /**
  * @file algorithm.h
  * @todo doc the file
- *
- * $URL$
- * $Id$
  */
 
 #include "util/log.h"
@@ -100,8 +97,8 @@ namespace math {
  */
 template <class F>
 class Fourier {
-  // F* primRoots;		    /**< Index n holds 2^(n+1)th primitive root of
-  // 1 in field F */ F* invRoots;		    /**< Index n holds
+  // F* primRoots;		    /**< Index n holds 2^(n+1)th primitive root
+  // of 1 in field F */ F* invRoots;		    /**< Index n holds
   // inv(primRoots[n])
   // */ unsigned int depth;	/**< Size of primRoots == Fourier Order of the
   // Field */
